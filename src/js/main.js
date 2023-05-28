@@ -1,1 +1,1 @@
-require("./title"); // Title to be displayed
+require("./title"); // Import dynamic title
