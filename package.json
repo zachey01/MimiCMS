@@ -1,0 +1,26 @@
+{
+  "name": "MimiCMS",
+  "version": "1.1.0",
+  "description": "A admin panel and shop for CS:GO, CS:2 serves",
+  "main": "gulpfile.js",
+  "scripts": {
+    "dev": "npx gulp default",
+    "zip": "npx gulp zip"
+  },
+  "keywords": [],
+  "author": "Zachey",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.29.3",
+    "gulp": "^4.0.2",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-file-include": "^2.3.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-real-favicon": "^0.3.2",
+    "gulp-sass": "^5.1.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-zip": "^5.1.0",
+    "sass": "^1.62.1"
+  }
+}
