@@ -10,29 +10,31 @@ const realFavicon = require("gulp-real-favicon");
 const fs = require("fs");
 const zip = require("gulp-zip");
 
+let FAVICON_DATA_FILE = "faviconData.json";
+
+// Convert SCSS to css
 gulp.task("sass", function () {
   return gulp.src("src/scss/*.scss").pipe(sass()).pipe(gulp.dest("dist/css"));
 });
 
+// Create zip build
 gulp.task("zip", function (callback) {
   gulp.src("dist/*").pipe(zip("dist.zip")).pipe(gulp.dest("./"));
   callback();
 });
 
-var FAVICON_DATA_FILE = "faviconData.json";
-
-// Генератор фавиконок
+// Favicons generator
 gulp.task("generate-favicon", function (done) {
   console.log("---------- Генерация фавиконок ----------");
   realFavicon.generateFavicon(
     {
-      masterPicture: "./src/img/favicons/logo.svg", // Указываем путь к исходному изображению
-      dest: "./dist/img/favicon", // Указываем путь к папке выгрузки фавиконок
-      iconsPath: "./src/img/favicon/", // Указываем папку для фавиконок
+      masterPicture: "./src/img/favicons/logo.svg", // Specify the path to the original image
+      dest: "./dist/img/favicon", // Specify the path to the favicon upload folder
+      iconsPath: "./src/img/favicon/", // Specify a folder for favicons
       design: {
         ios: {
-          // pictureAspect: 'noChange', // По умолчанию, без отступов
-          // Все дополнительные опции смотрим на https://realfavicongenerator.net/favicon/gulp
+          // pictureAspect: 'noChange', // Default, no indentation
+          // For all additional options, see https://realfavicongenerator.net/favicon/gulp
           pictureAspect: "backgroundAndMargin",
           backgroundColor: "#ffffff",
           margin: "10%",
@@ -89,7 +91,7 @@ gulp.task("generate-favicon", function (done) {
   );
 });
 
-// Вставка кода в HTML с подключением фавиконок
+// Inserting code into HTML with the connection of favicons
 gulp.task("inject-favicon-markups", function () {
   return gulp
     .src(["./src/include/head.html"])
@@ -101,10 +103,10 @@ gulp.task("inject-favicon-markups", function () {
     .pipe(gulp.dest("./dist/include/"));
 });
 
-// Ручная проверка актуальности данных для favicon. Запускать перед стартом нового проекта.
+// Manually check if the data for the favicon is up to date. Run before starting a new project.
 gulp.task("check-for-favicon-update", function (done) {
   console.log("---------- Проверка актуальности данных ----------");
-  var currentVersion = JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).version;
+  let currentVersion = JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).version;
   realFavicon.checkForUpdates(currentVersion, function (err) {
     if (err) {
       throw err;
@@ -112,6 +114,7 @@ gulp.task("check-for-favicon-update", function (done) {
   });
 });
 
+// HTML includes
 gulp.task("html:build", function () {
   return gulp
     .src([`src/*.html`])
@@ -125,6 +128,7 @@ gulp.task("html:build", function () {
     .pipe(browserSync.stream());
 });
 
+// Live server
 gulp.task("browserSync", function () {
   browserSync.init({
     server: {
@@ -133,6 +137,7 @@ gulp.task("browserSync", function () {
   });
 });
 
+// Compile JS
 gulp.task("js", function () {
   return gulp
     .src("src/js/*.js")
@@ -150,19 +155,7 @@ gulp.task("js", function () {
     );
 });
 
-gulp.task("otherjs", function () {
-  return gulp
-    .src("src/server.js")
-    .pipe(concat("server.js"))
-    .pipe(uglify())
-    .pipe(gulp.dest("dist/"))
-    .pipe(
-      browserSync.reload({
-        stream: true,
-      })
-    );
-});
-
+// Copy PHP files
 gulp.task("php", function () {
   return gulp
     .src("src/php/*.php")
@@ -174,6 +167,7 @@ gulp.task("php", function () {
     );
 });
 
+// Copy img
 gulp.task("img", function () {
   return gulp
     .src("src/img/*")
@@ -185,6 +179,7 @@ gulp.task("img", function () {
     );
 });
 
+// Minify HTML
 gulp.task("html", () => {
   return gulp
     .src("src/**/*.html")
@@ -197,10 +192,10 @@ gulp.task("html", () => {
     );
 });
 
+// Watch for changes
 gulp.task("watch", function () {
   gulp.watch("src/scss/*.scss", gulp.series("sass"));
   gulp.watch("src/js/*.js", gulp.series("js"));
-  gulp.watch("src/*.js", gulp.series("otherjs"));
   gulp.watch("src/php/*.php", gulp.series("php"));
   gulp.watch("src/img/*", gulp.series("img"));
   gulp.watch("src/**/*.html", gulp.series("html"));
@@ -209,13 +204,13 @@ gulp.task("watch", function () {
   gulp.watch("src/include/*.html", gulp.series("inject-favicon-markups"));
 });
 
+// default task
 gulp.task(
   "default",
   gulp.parallel(
     "sass",
     "js",
     "php",
-    "otherjs",
     "img",
     "html",
     "browserSync",
