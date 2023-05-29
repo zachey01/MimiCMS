@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "prettier": "prettier .prettierrc ./ --write"
   },
   "keywords": [],
   "author": "Zachey",
@@ -18,6 +19,7 @@
     "mysql": "^2.18.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8"
   }
 }

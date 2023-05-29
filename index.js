@@ -1,5 +1,5 @@
 // BackendService
-require("./app");
+require("./app/app");
 
 // FrontendService
 require("./public/app");

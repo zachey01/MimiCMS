@@ -15,7 +15,7 @@ connection.connect((err) => {
 
   // ! Example create new table
   /* const sql = `CREATE TABLE products ( id INT NOT NULL AUTO_INCREMENT, 
-        name VARCHAR(255) NOT NULL, 
+        name letCHAR(255) NOT NULL, 
         price DECIMAL(10, 2) NOT NULL, 
         PRIMARY KEY (id) )`;
     connection.query(sql, (err, result) => {
