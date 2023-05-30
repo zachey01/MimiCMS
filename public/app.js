@@ -24,8 +24,9 @@ app.get("/products", async (req, res) => {
 });
 
 app.get("/", function (req, res) {
-  const filePath = path.join(__dirname, "views", "./index.ejs");
-  res.render(filePath);
+  res.render(path.join(__dirname, "views", "./index.ejs"), {
+    name: process.env.NAME,
+  });
 });
 
 // Starting the server
