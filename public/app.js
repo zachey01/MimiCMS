@@ -1,9 +1,14 @@
 const express = require("express");
+const employees = require("./routes/employee");
 const app = express();
+const path = require("path");
+const ejs = require("ejs");
+
+app.set("view engine", "ejs");
 require("dotenv").config();
 const axios = require("axios");
 
-// ! API routes
+// ! Routes
 
 app.get("/products", async (req, res) => {
   try {
@@ -16,6 +21,11 @@ app.get("/products", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Error fetching data from API" });
   }
+});
+
+app.get("/", function (req, res) {
+  const filePath = path.join(__dirname, "views", "./index.ejs");
+  res.render(filePath);
 });
 
 // Starting the server

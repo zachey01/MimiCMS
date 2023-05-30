@@ -119,13 +119,9 @@ app.use((error, req, res, next) => {
 });
 
 connection.on("error", (err) => {
-  console.log("Database error:", err);
-  if (err.code === "PROTOCOL_CONNECTION_LOST") {
-    console.log("Reconnecting to database...");
-    connection.connect();
-  } else {
-    throw err;
-  }
+  connection.connect((err) => {
+    console.log("Connected to database       ✅");
+  });
 });
 
 const port = process.env.BACKEND_PORT;
