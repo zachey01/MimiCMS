@@ -8,6 +8,7 @@ in development...
 
 ## Todo:
 
+- [x] Logging
 - [ ] Adding SourceQuery
 - [ ] Adding ChatGPT and Midjourney
 - [ ] Adding synchronization with Discord, Telegram, VK
