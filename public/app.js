@@ -3,7 +3,8 @@ const app = express();
 require("dotenv").config();
 const axios = require("axios");
 
-// API роуты
+// ! API routes
+
 app.get("/products", async (req, res) => {
   try {
     const response = await axios.get(
@@ -17,6 +18,6 @@ app.get("/products", async (req, res) => {
   }
 });
 
-// Запуск сервера
+// Starting the server
 const port = process.env.FRONTEND_PORT || 3000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
