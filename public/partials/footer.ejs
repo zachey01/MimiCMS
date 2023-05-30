@@ -1,1 +1,7 @@
-<p class="text-center text-muted">&copy; Copyright 2020 MimiCMS `${'jk'}`</p>
+<p class="text-center text-muted" id="copyright"></p>
+
+<script>
+  document.getElementById(
+    "copyright"
+  ).innerHTML = `&copy; Copyright ${new Date().getFullYear()} <a class="link-offset-3" href="https://github.com/zachey01/MimiCMS">MimiCMS</a>`;
+</script>

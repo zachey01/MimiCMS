@@ -118,12 +118,6 @@ app.use((error, req, res, next) => {
   res.json({ error: { message: error.message } });
 });
 
-connection.on("error", (err) => {
-  connection.connect((err) => {
-    console.log("Connected to database       ✅");
-  });
-});
-
 const port = process.env.BACKEND_PORT;
 app.listen(port, () => console.log(`Server started on port ${port} ✅`));
 

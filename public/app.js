@@ -4,6 +4,11 @@ const app = express();
 const path = require("path");
 const ejs = require("ejs");
 
+let vars = {
+  name: process.env.NAME,
+  logo: process.env.LOGO,
+};
+app.use(express.static("./public/public"));
 app.set("view engine", "ejs");
 require("dotenv").config();
 const axios = require("axios");
@@ -24,9 +29,7 @@ app.get("/products", async (req, res) => {
 });
 
 app.get("/", function (req, res) {
-  res.render(path.join(__dirname, "views", "./index.ejs"), {
-    name: process.env.NAME,
-  });
+  res.render(path.join(__dirname, "views", "./index.ejs"), vars);
 });
 
 // Starting the server
