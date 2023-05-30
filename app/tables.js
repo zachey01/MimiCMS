@@ -1,6 +1,3 @@
-// TODO: Create other tables here
-const express = require("express");
-const app = express();
 const mysql = require("mysql");
 require("dotenv").config();
 
@@ -11,29 +8,36 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-connection.connect((err) => {
-  const products = `CREATE TABLE ${process.env.PRODUCTS_TABLE} ( id INT NOT NULL AUTO_INCREMENT, 
-        name letCHAR(255) NOT NULL, 
-        price DECIMAL(10, 2) NOT NULL, 
-        PRIMARY KEY (id) )`;
-  connection.query(products, (err, result) => {
+module.exports = function createTables() {
+  // Products table
+  connection.query("SELECT 1 FROM products LIMIT 1", (err, result) => {
     if (err) {
-      console.log(`Table ${process.env.PRODUCTS_TABLE} not is created`);
+      const products = `CREATE TABLE products ( id INT NOT NULL AUTO_INCREMENT,
+                  name VARCHAR(255) NOT NULL,
+                     price DECIMAL(10, 2) NOT NULL,
+                PRIMARY KEY (id) )`;
+      connection.query(products, (err, result) => {
+        if (err) throw err;
+        console.log("Table products created ✅");
+      });
     } else {
-      console.log(`Table ${process.env.PRODUCTS_TABLE} created!`);
+      console.log(`Table products exists       ✅`);
     }
   });
 
-  const users = `CREATE TABLE ${process.env.USERS_TABLE} ( id INT NOT NULL AUTO_INCREMENT, 
-    name letCHAR(255) NOT NULL, 
-    steamid DECIMAL(10, 2) NOT NULL, 
-    PRIMARY KEY (id) )`;
-  connection.query(userss, (err, result) => {
+  // User table
+  connection.query("SELECT 1 FROM users LIMIT 1", (err, result) => {
     if (err) {
-      console.log(`Table ${process.env.USERS_TABLE} not is created`);
+      const users = `CREATE TABLE users ( id INT NOT NULL AUTO_INCREMENT,
+                  name VARCHAR(255) NOT NULL,
+                     steamid DECIMAL(10, 2) NOT NULL,
+                PRIMARY KEY (id) )`;
+      connection.query(users, (err, result) => {
+        if (err) throw err;
+        console.log("Table users created ✅");
+      });
     } else {
-      console.log(`Table ${process.env.USERS_TABLE} created!`);
+      console.log(`Table users exists          ✅`);
     }
   });
-});
-connection.end();
+};
