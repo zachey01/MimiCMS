@@ -1,8 +1,12 @@
 const express = require("express");
-const employees = require("./routes/employee");
 const app = express();
 const path = require("path");
 const ejs = require("ejs");
+require("dotenv").config();
+const axios = require("axios");
+
+app.use(express.static("./public/public"));
+app.set("view engine", "ejs");
 
 let vars = {
   // Slides
@@ -15,10 +19,6 @@ let vars = {
   name: process.env.NAME,
   logo: process.env.LOGO,
 };
-app.use(express.static("./public/public"));
-app.set("view engine", "ejs");
-require("dotenv").config();
-const axios = require("axios");
 
 // ! Routes
 
