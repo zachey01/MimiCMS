@@ -6,81 +6,10 @@
   <body class="container">
     <header id="header"><%- include('../partials/header'); %></header>
     <main>
-      <div class="container-sm">
-        <div
-          id="carouselExampleIndicators"
-          class="carousel slide rounded"
-          data-bs-ride="true"
-        >
-          <div class="carousel-indicators">
-            <button
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="0"
-              class="active"
-              aria-current="true"
-              aria-label="Slide 1"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="1"
-              aria-label="Slide 2"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="2"
-              aria-label="Slide 3"
-            ></button>
-          </div>
-          <div class="carousel-inner">
-            <div class="carousel-item active rounded">
-              <img
-                src="https://dummyimage.com/1920x720/000/fff"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
-            <div class="carousel-item rounded">
-              <img
-                src="https://dummyimage.com/1920x720/"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
-            <div class="carousel-item rounded">
-              <img
-                src="https://dummyimage.com/1920x720/000/38868c"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
-          </div>
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-
-      <%- include('../partials/chat'); %>
+      <%- include('../partials/main-slides'); %> <%-
+      include('../partials/chat'); %>
     </main>
-
+    <%- include('../partials/banners'); %>
     <footer id="footer" class="text-center text-muted">
       <%- include('../partials/footer'); %>
     </footer>

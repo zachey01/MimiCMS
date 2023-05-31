@@ -5,6 +5,13 @@ const path = require("path");
 const ejs = require("ejs");
 
 let vars = {
+  // Slides
+  slide_1: process.env.SLIDE_1,
+  slide_2: process.env.SLIDE_2,
+  slide_3: process.env.SLIDE_3,
+  lang: process.env.LANG,
+  tg_channel: process.env.TG_CHANNEL,
+  discord_server_id: process.env.DISCORD_SERVER_ID,
   name: process.env.NAME,
   logo: process.env.LOGO,
 };
