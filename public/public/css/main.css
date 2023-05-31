@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Monomaniac+One&display=swap");
+
+header {
+  margin-bottom: 50px;
+}
+
+footer {
+  margin-top: 50px;
+}
+
+.header-icon {
+  margin-left: 25px;
+  opacity: 1;
+}
+
+.header-icon:hover {
+  opacity: 0.5;
+}
+
+.profile-icon {
+  margin-left: 5px;
+  opacity: 1;
+}
+
+a.nav-link {
+  color: gray;
+  font-size: 18px;
+  padding: 0;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #e84118;
+  padding: 2px;
+  flex: none;
+}
+
+input:focus {
+  outline: 0px !important;
+  box-shadow: none !important;
+}
+
+.card-text {
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}

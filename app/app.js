@@ -3,7 +3,8 @@ const app = express();
 const mysql = require("mysql");
 require("dotenv").config();
 const winston = require("winston");
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
+  poolLimit: 10,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -12,10 +13,38 @@ const connection = mysql.createConnection({
 
 // Create tables if they don't exist
 const createTables = require("./tables");
-connection.connect((err) => {
-  if (err) throw err;
-  console.log("Connected to database       ✅");
-  createTables();
+pool.getConnection((err) => {
+  // Products table
+  pool.query("SELECT 1 FROM products LIMIT 1", (err, result) => {
+    if (err) {
+      const products = `CREATE TABLE products ( id INT NOT NULL AUTO_INCREMENT,
+                  name VARCHAR(255) NOT NULL,
+                     price DECIMAL(10, 2) NOT NULL,
+                PRIMARY KEY (id) )`;
+      pool.query(products, (err, result) => {
+        if (err) throw err;
+        console.log("Table products created ✅");
+      });
+    } else {
+      console.log(`Table products exists       ✅`);
+    }
+  });
+
+  // User table
+  pool.query("SELECT 1 FROM users LIMIT 1", (err, result) => {
+    if (err) {
+      const users = `CREATE TABLE users ( id INT NOT NULL AUTO_INCREMENT,
+                  name VARCHAR(255) NOT NULL,
+                     steamid DECIMAL(10, 2) NOT NULL,
+                PRIMARY KEY (id) )`;
+      pool.query(users, (err, result) => {
+        if (err) throw err;
+        console.log("Table users created ✅");
+      });
+    } else {
+      console.log(`Table users exists          ✅`);
+    }
+  });
 });
 
 // Winston logger configuration
@@ -40,7 +69,7 @@ app.use((req, res, next) => {
 
 // Routes for products
 app.get("/api/products", (req, res) => {
-  connection.query("SELECT * FROM products", (error, results) => {
+  pool.query("SELECT * FROM products", (error, results) => {
     if (error) {
       logger.error(error);
       throw error;
@@ -51,7 +80,7 @@ app.get("/api/products", (req, res) => {
 
 app.post("/api/products", (req, res) => {
   const product = req.body;
-  connection.query("INSERT INTO products SET ?", product, (error, results) => {
+  pool.query("INSERT INTO products SET ?", product, (error, results) => {
     if (error) {
       logger.error(error);
       throw error;
@@ -62,7 +91,7 @@ app.post("/api/products", (req, res) => {
 
 // Routes for orders
 app.get("/api/orders", (req, res) => {
-  connection.query("SELECT * FROM orders", (error, results) => {
+  pool.query("SELECT * FROM orders", (error, results) => {
     if (error) {
       logger.error(error);
       throw error;
@@ -73,7 +102,7 @@ app.get("/api/orders", (req, res) => {
 
 app.post("/api/orders", (req, res) => {
   const order = req.body;
-  connection.query("INSERT INTO orders SET ?", order, (error, results) => {
+  pool.query("INSERT INTO orders SET ?", order, (error, results) => {
     if (error) {
       logger.error(error);
       throw error;
@@ -84,7 +113,7 @@ app.post("/api/orders", (req, res) => {
 
 // Routes for users
 app.get("/api/users", (req, res) => {
-  connection.query("SELECT * FROM users", (error, results) => {
+  pool.query("SELECT * FROM users", (error, results) => {
     if (error) {
       logger.error(error);
       throw error;
@@ -95,7 +124,7 @@ app.get("/api/users", (req, res) => {
 
 app.post("/api/users", (req, res) => {
   const user = req.body;
-  connection.query("INSERT INTO users SET ?", user, (error, results) => {
+  pool.query("INSERT INTO users SET ?", user, (error, results) => {
     if (error) {
       logger.error(error);
       throw error;
