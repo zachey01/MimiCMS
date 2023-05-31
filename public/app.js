@@ -41,4 +41,4 @@ app.get("/", function (req, res) {
 
 // Starting the server
 const port = process.env.FRONTEND_PORT || 3000;
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.listen(port, () => console.log(`Server started on port ${port} ✅`));
