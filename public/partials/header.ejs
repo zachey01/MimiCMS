@@ -4,7 +4,7 @@
   <div class="container-fluid">
     <nav class="navbar bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
           <img
             src="<%= logo %>"
             alt="Logo"
@@ -30,7 +30,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#" title="Форум"
+          <a class="nav-link" href="forum" title="Форум"
             ><svg
               xmlns="http://www.w3.org/2500/svg"
               width="25"
@@ -50,9 +50,8 @@
         <li class="nav-item">
           <a
             class="nav-link"
-            href="#"
+            href="shop"
             role="button"
-            data-bs-toggle="dropdown"
             aria-expanded="false"
             title="Магазин"
             ><svg
@@ -70,7 +69,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" title="Поддержка"
+          <a class="nav-link" href="tickets" title="Поддержка"
             ><svg
               xmlns="http://www.w3.org/2500/svg"
               width="25"
@@ -88,6 +87,23 @@
           ></a>
         </li>
       </ul>
+      <li class="nav-item" style="list-style-type: none">
+        <a class="nav-link" href="#"
+          >999 <%= currency %><svg
+            style="margin-left: 5px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-plus-square-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"
+            /></svg
+        ></a>
+      </li>
+
       <div class="d-flex">
         <div class="dropdown">
           <button
@@ -100,7 +116,7 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="#"
+              <a class="dropdown-item" href="profile"
                 >Профиль
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +134,7 @@
               ></a>
             </li>
             <li>
-              <a class="dropdown-item" href="#"
+              <a class="dropdown-item" href="/settings"
                 >Настройки
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +169,12 @@
               ></a>
             </li>
             <li>
-              <a class="dropdown-item" href="#"
+              <a
+                class="dropdown-item"
+                href="#"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
                 >Выйти
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -174,6 +195,34 @@
               ></a>
             </li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Подтверждение</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">...</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary">Выйти</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            Отмена
+          </button>
         </div>
       </div>
     </div>

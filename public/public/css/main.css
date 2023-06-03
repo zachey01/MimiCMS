@@ -1,9 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Monomaniac+One&display=swap");
+@import url("shop.css");
 
 header {
   margin-bottom: 50px;
 }
-
+body {
+  display: none;
+}
 footer {
   margin-top: 50px;
 }
@@ -45,4 +48,48 @@ input:focus {
 .card-text {
   border: 2px solid #ddd;
   border-radius: 8px;
+}
+
+.card {
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-size: 1rem;
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: none;
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
 }

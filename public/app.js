@@ -9,11 +9,10 @@ app.use(express.static("./public/public"));
 app.set("view engine", "ejs");
 
 let vars = {
-  // Slides
+  currency: process.env.CURRENCY,
   slide_1: process.env.SLIDE_1,
   slide_2: process.env.SLIDE_2,
   slide_3: process.env.SLIDE_3,
-  lang: process.env.LANG,
   tg_channel: process.env.TG_CHANNEL,
   discord_server_id: process.env.DISCORD_SERVER_ID,
   name: process.env.NAME,
@@ -37,6 +36,26 @@ app.get("/products", async (req, res) => {
 
 app.get("/", function (req, res) {
   res.render(path.join(__dirname, "views", "./index.ejs"), vars);
+});
+
+app.get("/shop", function (req, res) {
+  res.render(path.join(__dirname, "views", "./shop.ejs"), vars);
+});
+
+app.get("/tickets", function (req, res) {
+  res.render(path.join(__dirname, "views", "./tickets.ejs"), vars);
+});
+
+app.get("/forum", function (req, res) {
+  res.render(path.join(__dirname, "views", "./forum.ejs"), vars);
+});
+
+app.get("/profile", function (req, res) {
+  res.render(path.join(__dirname, "views", "./user-profile.ejs"), vars);
+});
+
+app.get("/settings", function (req, res) {
+  res.render(path.join(__dirname, "views", "./user-settings.ejs"), vars);
 });
 
 // Starting the server
