@@ -13,3 +13,5 @@ in development...
 - [ ] Adding ChatGPT and Midjourney
 - [ ] Adding synchronization with Discord, Telegram, VK
 - [ ] Creating a handy installer
+
+I used [NiceAdmin](https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/) for admin panel
