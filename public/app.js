@@ -58,6 +58,14 @@ app.get("/settings", function (req, res) {
   res.render(path.join(__dirname, "views", "./user-settings.ejs"), vars);
 });
 
+app.get("/balance", function (req, res) {
+  res.render(path.join(__dirname, "views", "./balance.ejs"), vars);
+});
+
+app.get("/admin", function (req, res) {
+  res.render(path.join(__dirname, "views", "./admin-main.ejs"), vars);
+});
+
 // Starting the server
 const port = process.env.FRONTEND_PORT || 3000;
 app.listen(port, () => console.log(`Server started on port ${port} ✅`));
