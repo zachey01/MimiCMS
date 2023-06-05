@@ -58,7 +58,7 @@ passport.use(
             return done(err);
           }
           pool.query(
-            "REPLACE INTO users SET ?",
+            "INSERT IGNORE INTO users SET ?",
             {
               steamid: profile.id,
               name: profile.displayName,
