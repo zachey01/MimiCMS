@@ -1,29 +1,19 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card">
-        <img
-          src="https://via.placeholder.com/150"
-          class="card-img-top"
-          alt="Profile Picture"
-        />
-        <div class="card-body">
-          <h5 class="card-title">Имя</h5>
-          <p class="card-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eget
-            sapien at sem lacinia dapibus. Ut nec elit auctor, feugiat nisl sit
-            amet, tempus quam.
-          </p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Email: john.doe@example.com</li>
-          <li class="list-group-item">Steam: <a href="#">@zachey01</a></li>
-        </ul>
+<center>
+  <div class="container text-center" style="max-width: 30%">
+    <div class="card">
+      <img src="<%= avatar %>" class="card-img-top" alt="Profile Picture" />
+      <div class="card-body">
+        <h5 class="card-title"><%= userName %></h5>
       </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          Steam: <a href="<%= steamLink %>">@<%= userName %></a>
+        </li>
+      </ul>
     </div>
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-body">
+  </div>
+  <div class="col-md-8">
+    <!-- <div class="card-body">
           <h5 class="card-title">Обо мне</h5>
           <p class="card-text">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eget
@@ -34,39 +24,6 @@
             facilisis odio sit amet quam maximus tincidunt. Cras et quam vel
             sapien pulvinar suscipit.
           </p>
-        </div>
-      </div>
-      <div class="card mt-3">
-        <div class="card-body">
-          <h5 class="card-title">Записи:</h5>
-          <div class="media">
-            <img
-              src="https://via.placeholder.com/64"
-              class="mr-3 rounded-circle"
-              alt="..."
-            />
-            <div class="media-body">
-              <h5 class="mt-0">Post Title</h5>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eget
-              sapien at sem lacinia dapibus. Ut nec elit auctor, feugiat nisl
-              sit amet, tempus quam.
-            </div>
-          </div>
-          <div class="media mt-3">
-            <img
-              src="https://via.placeholder.com/64"
-              class="mr-3 rounded-circle"
-              alt="..."
-            />
-            <div class="media-body">
-              <h5 class="mt-0">Post Title</h5>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eget
-              sapien at sem lacinia dapibus. Ut nec elit auctor, feugiat nisl
-              sit amet, tempus quam.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </div> -->
   </div>
-</div>
+</center>
