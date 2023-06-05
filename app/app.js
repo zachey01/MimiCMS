@@ -1,8 +1,28 @@
-const express = require("express");
-const app = express();
-const mysql = require("mysql");
+let express = require("express"),
+  passport = require("passport"),
+  SteamStrategy = require("passport-steam").Strategy,
+  SteamWebAPI = require("steam-web"),
+  mysql = require("mysql"),
+  session = require("express-session"),
+  app = express(),
+  path = require("path"),
+  ejs = require("ejs");
 require("dotenv").config();
-const winston = require("winston");
+
+let userSteamID;
+let userAvatar;
+let userName;
+
+app.set("view engine", "ejs");
+app.use(express.static("./public/public"));
+app.use(
+  session({
+    secret: "test secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+const port = process.env.PORT || 3000;
 const pool = mysql.createPool({
   poolLimit: 10,
   host: process.env.DB_HOST,
@@ -11,116 +31,157 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
-// Create tables if they don't exist
-const createTables = require("./tables");
 pool.getConnection((err) => {
-  createTables();
+  if (err) {
+    console.error("Ошибка подключения к базе данных: " + err.stack);
+    return;
+  }
+  console.log("Подключение к базе данных успешно установлено");
 });
 
-// Winston logger configuration
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  defaultMeta: { service: "user-service" },
-  transports: [
-    new winston.transports.File({
-      filename: "error.log",
-      level: "error",
-    }),
-    new winston.transports.File({ filename: "combined.log" }),
-  ],
-});
-
-// Middleware to log requests
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.url}`);
-  next();
-});
-
-// Routes for products
-app.get("/api/products", (req, res) => {
-  pool.query("SELECT * FROM products", (error, results) => {
-    if (error) {
-      logger.error(error);
-      throw error;
+passport.use(
+  new SteamStrategy(
+    {
+      returnURL: "http://localhost:3000/auth/steam/return",
+      realm: `http://localhost:3000/`,
+      apiKey: process.env.STEAM_API_KEY,
+    },
+    (identifier, profile, done) => {
+      const steam = new SteamWebAPI({ apiKey: process.env.STEAM_API_KEY });
+      steam.getPlayerSummaries({
+        steamids: profile.id,
+        callback: (err, data) => {
+          if (err) {
+            console.error(
+              "Ошибка получения данных о пользователе: " + err.stack
+            );
+            return done(err);
+          }
+          pool.query(
+            "REPLACE INTO users SET ?",
+            {
+              steamid: profile.id,
+              name: profile.displayName,
+              avatar: data.response.players[0].avatarfull,
+            },
+            (err, result) => {
+              if (err) {
+                console.error(
+                  "Ошибка записи данных о пользователе в базу данных: " +
+                    err.stack
+                );
+                return done(err);
+              }
+              console.log(
+                "Данные о пользователе успешно записаны в базу данных"
+              );
+              // Сохраняем steam id пользователя
+              userSteamID = profile.id;
+              userName = profile.displayName;
+              return done(null, profile);
+            }
+          );
+        },
+      });
     }
-    res.json(results);
-  });
+  )
+);
+const vars = {
+  logo: process.env.LOGO,
+  currency: process.env.CURRENCY,
+  slide_1: process.env.SLIDE_1,
+  slide_2: process.env.SLIDE_2,
+  slide_3: process.env.SLIDE_3,
+  tg_channel: process.env.TG_CHANNEL,
+  discord_server_id: process.env.DISCORD_SERVER_ID,
+  name: process.env.NAME,
+};
+passport.serializeUser((user, done) => {
+  done(null, user);
 });
 
-app.post("/api/products", (req, res) => {
-  const product = req.body;
-  pool.query("INSERT INTO products SET ?", product, (error, results) => {
-    if (error) {
-      logger.error(error);
-      throw error;
+passport.deserializeUser((steamid, done) => {
+  connection.query(
+    "SELECT * FROM users WHERE steamid = ?",
+    [profile.id],
+    (err, results) => {
+      if (err) {
+        console.error("Ошибка поиска пользователя в базе данных: " + err.stack);
+        return done(err);
+      }
+      if (results.length === 0) {
+        // Пользователь не найден
+        return done(null, null);
+      }
+      // Пользователь найден, возвращаем его данные
+      return done(null, results[0]);
     }
-    res.json(results);
-  });
+  );
 });
 
-// Routes for orders
-app.get("/api/orders", (req, res) => {
-  pool.query("SELECT * FROM orders", (error, results) => {
-    if (error) {
-      logger.error(error);
-      throw error;
+app.get(
+  "/auth/steam",
+  passport.authenticate("steam", { failureRedirect: "/login" }),
+  (req, res) => {
+    // Пользователь уже авторизован, перенаправляем на страницу профиля
+    if (req.isAuthenticated()) {
+      return res.redirect("/");
     }
-    res.json(results);
-  });
+    res.redirect("/");
+  }
+);
+
+app.get("/logout", (req, res) => {
+  userSteamID = null; // Сбрасываем steam id пользователя
+  res.redirect("/"); // Перенаправляем на главную страницу
 });
 
-app.post("/api/orders", (req, res) => {
-  const order = req.body;
-  pool.query("INSERT INTO orders SET ?", order, (error, results) => {
-    if (error) {
-      logger.error(error);
-      throw error;
+app.get(
+  "/auth/steam/return",
+  passport.authenticate("steam", { failureRedirect: "/login" }),
+  (req, res) => {
+    // Пользователь уже авторизован, перенаправляем на страницу профиля
+    if (req.isAuthenticated()) {
+      return res.redirect("/");
     }
-    res.json(results);
-  });
+    res.redirect("/");
+  }
+);
+
+app.get("/profile", (req, res) => {
+  if (userSteamID) {
+    res.send(`Steam ID пользователя: ${userSteamID}`);
+  } else {
+    res.send("Вы не авторизован");
+  }
 });
 
-// Routes for users
-app.get("/api/users", (req, res) => {
-  pool.query("SELECT * FROM users", (error, results) => {
-    if (error) {
-      logger.error(error);
-      throw error;
-    }
-    res.json(results);
-  });
+app.get("/", function (req, res) {
+  let avatar = "";
+  if (userSteamID) {
+    pool.query(
+      `SELECT avatar, balance FROM users WHERE steamid = '${userSteamID}'`,
+      (error, results, fields) => {
+        if (error) throw error;
+        avatar = results[0].avatar;
+        balance = results[0].balance;
+        const authVars = {
+          logo: process.env.LOGO,
+          currency: process.env.CURRENCY,
+          slide_1: process.env.SLIDE_1,
+          slide_2: process.env.SLIDE_2,
+          slide_3: process.env.SLIDE_3,
+          tg_channel: process.env.TG_CHANNEL,
+          discord_server_id: process.env.DISCORD_SERVER_ID,
+          name: process.env.NAME,
+          avatar: avatar,
+          balance: balance,
+        };
+        res.render(path.join(__dirname, "views", "./index.ejs"), authVars);
+      }
+    );
+  } else {
+    res.render(path.join(__dirname, "views", "./nonAuthIndex.ejs"), vars);
+  }
 });
-
-app.post("/api/users", (req, res) => {
-  const user = req.body;
-  pool.query("INSERT INTO users SET ?", user, (error, results) => {
-    if (error) {
-      logger.error(error);
-      throw error;
-    }
-    res.json(results);
-  });
-});
-
-// Middleware for handling 404 errors
-app.use((req, res, next) => {
-  const error = new Error("Not found");
-  error.status = 404;
-  next(error);
-});
-
-// Middleware for handling all other errors
-app.use((error, req, res, next) => {
-  logger.error(error);
-  res.status(error.status || 500);
-  res.json({ error: { message: error.message } });
-});
-
-const port = process.env.BACKEND_PORT;
-app.listen(port, () => console.log(`Server started on port ${port} ✅`));
-
-// Log unhandled promise rejections
-process.on("unhandledRejection", (reason, promise) => {
-  logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
-});
+app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
