@@ -8,6 +8,8 @@ let express = require("express"),
   path = require("path"),
   ejs = require("ejs");
 require("dotenv").config();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 
 let userSteamID;
 let userAvatar;
@@ -73,7 +75,7 @@ passport.use(
                 return done(err);
               }
               console.log(
-                "Данные о пользователе успешно записаны в базу данных"
+                `Данные о ${profile.displayName} пользователе успешно записаны в базу данных`
               );
               // Сохраняем steam id пользователя
               userSteamID = profile.id;
@@ -209,5 +211,80 @@ app.get("/", function (req, res) {
   } else {
     res.render(path.join(__dirname, "views", "./nonAuthIndex.ejs"), vars);
   }
+});
+
+const messages = [];
+app.use(express.json());
+io.on("connection", (socket) => {
+  console.log("Пользователь подключился");
+
+  socket.on("chat message", (msg) => {
+    console.log(`Сообщение: ${msg}`);
+    messages.push(msg);
+    io.emit("chat message", msg);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Пользователь отключился");
+  });
+});
+app.get("/chat", (req, res) => {
+  pool.query(
+    "SELECT messages.message, users.name FROM messages JOIN users ON messages.author = users.steamid ORDER BY messages.created_at ASC",
+    (error, results) => {
+      if (error) {
+        console.error("Ошибка чтения сообщений из базы данных:", error);
+        res.render(path.join(__dirname, "views", "./chat.ejs"), {
+          messages: [],
+        });
+      } else {
+        const messages = results.map((result) => {
+          return { message: result.message, author: result.name };
+        });
+        res.render(path.join(__dirname, "views", "./chat.ejs"), {
+          messages: messages,
+        });
+      }
+    }
+  );
+});
+app.post("/message", (req, res) => {
+  const message = req.body.message;
+  console.log(`Сообщение: ${message}`);
+  const author = userSteamID;
+  const newMessage = { message: message, author: author }; // Создаем новый объект сообщения
+  messages.push(newMessage); // Добавляем объект сообщения в массив сообщений
+  io.emit("chat message", newMessage); // Отправляем сообщение
+  pool.query(
+    "INSERT INTO messages (message, author) VALUES (?, ?)",
+    [message, author],
+    (error, result) => {
+      if (error) {
+        console.error("Ошибка сохранения сообщения в базу данных:", error);
+      } else {
+        console.log("Сообщение успешно сохранено в базе данных");
+      }
+    }
+  );
+  res.sendStatus(200);
+});
+app.get("/messages", (req, res) => {
+  pool.query(
+    "SELECT messages, created_at FROM messages ORDER BY created_at DESC",
+    (error, results) => {
+      if (error) {
+        console.error("Ошибка чтения сообщений из базы данных:", error);
+        res.sendStatus(500);
+      } else {
+        const messages = results.map((result) => {
+          return {
+            message: result.message,
+            created_at: result.created_at,
+          };
+        });
+        res.send(messages);
+      }
+    }
+  );
 });
 app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));

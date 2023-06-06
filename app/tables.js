@@ -53,3 +53,26 @@ pool.getConnection((err, connection) => {
     connection.release();
   });
 });
+
+// Message table
+pool.getConnection((err, connection) => {
+  if (err) throw err;
+  connection.query("SELECT 1 FROM messages LIMIT 1", (err, result) => {
+    if (err) {
+      const users = `CREATE TABLE messages (
+        id INT NOT NULL AUTO_INCREMENT,
+        message TEXT NOT NULL,
+        author TEXT NOT NULL,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+      );`;
+      connection.query(users, (err, result) => {
+        if (err) throw err;
+        console.log("Table messages created ✅");
+      });
+    } else {
+      console.log(`Table messages exists ✅`);
+    }
+    connection.release();
+  });
+});
