@@ -9,6 +9,7 @@ let express = require("express"),
   // http = require("http").createServer(app),
   // io = require("socket.io")(http),
   ejs = require("ejs");
+createTables = require("../modules/createTables");
 require("dotenv").config();
 
 let userSteamID;
@@ -41,6 +42,7 @@ pool.getConnection((err) => {
     return;
   }
   console.log("Подключение к базе данных успешно установлено");
+  createTables();
 });
 
 passport.use(
