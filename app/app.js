@@ -327,6 +327,39 @@ app.get("/", function (req, res) {
 //     }
 //   );
 // });
+app.get("/tickets", function (req, res) {
+  let avatar = "";
+  if (userSteamID) {
+    pool.query(
+      `SELECT avatar, balance FROM users WHERE steamid = '${userSteamID}'`,
+      (error, results, fields) => {
+        if (error) throw error;
+        avatar = results[0].avatar;
+        balance = results[0].balance;
+        const authVars = {
+          logo: process.env.LOGO,
+          currency: process.env.CURRENCY,
+          slide_1: process.env.SLIDE_1,
+          slide_2: process.env.SLIDE_2,
+          slide_3: process.env.SLIDE_3,
+          tg_channel: process.env.TG_CHANNEL,
+          discord_server_id: process.env.DISCORD_SERVER_ID,
+          name: process.env.NAME,
+          avatar: avatar,
+          balance: balance,
+          steamid: userSteamID,
+          userName: userName,
+        };
+        if (avatar) {
+          authVars.avatar = avatar;
+        }
+        res.render(path.join(__dirname, "views", "./tickets.ejs"), authVars);
+      }
+    );
+  } else {
+    res.send(404);
+  }
+});
 
 // // Отображение комментариев к теме
 // app.get("/topics/:id", function (req, res) {
