@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= topic.title %></title>
+  </head>
+  <body>
+    <h1><%= topic.title %></h1>
+    <p>Автор: <%= topic.author %></p>
+    <p>Дата создания: <%= topic.created_at %></p>
+    <p><%= topic.content %></p>
+    <hr />
+    <h2>Комментарии</h2>
+    <ul>
+      <% comments.forEach(function(comment) { %>
+      <li>
+        <p>Автор: <%= comment.author %></p>
+        <p>Дата создания: <%= comment.created_at %></p>
+        <p><%= comment.content %></p>
+      </li>
+      <% }); %>
+    </ul>
+    <hr />
+    <h2>Добавить комментарий</h2>
+    <form action="/topics/<%= topic.id %>/comments" method="POST">
+      <label for="author">Автор:</label>
+      <input type="text" name="author" id="author" required />
+      <br />
+      <label for="content">Содержание:</label>
+      <textarea name="content" id="content" required></textarea>
+      <br />
+      <button type="submit">Отправить</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Список тем</title>
+  </head>
+  <body>
+    <h1>Список тем</h1>
+    <ul>
+      <% topics.forEach(function(topic) { %>
+      <li>
+        <a href="/topics/<%= topic.id %>"><%= topic.title %></a>
+        <p>Автор: <%= topic.author %></p>
+        <p>Дата создания: <%= topic.created_at %></p>
+      </li>
+      <% }); %>
+    </ul>
+  </body>
+</html>

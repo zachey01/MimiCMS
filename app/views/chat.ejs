@@ -1,65 +1,59 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Простой чат на Socket.io</title>
-  </head>
-  <body>
-    <ul id="messages">
-      <% for (var i = 0; i < messages.length; i++) { %>
-      <li><%= messages[i].author %>: <%= messages[i].message %></li>
-      <% } %>
-    </ul>
-    <form id="message-form">
-      <input id="message" autocomplete="off" /><button>Отправить</button>
-    </form>
-    <script
-      src="https://cdn.socket.io/4.6.0/socket.io.min.js"
-      integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.7.0.min.js"
-      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-      crossorigin="anonymous"
-    ></script>
+<div class="container">
+  <ul id="messages" class="list-group">
+    <% for (var i = 0; i < messages.length; i++) { %>
+    <li class="list-group-item">
+      <%= messages[i].author %>: <%= messages[i].message %>
+    </li>
+    <% } %>
+  </ul>
+</div>
+<link rel="stylesheet" href="libs/bootstrap-5.3.0-dist/css/bootstrap.min.css" />
+<script
+  src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+  integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+  crossorigin="anonymous"
+></script>
 
-    <script>
-      const form = document.querySelector("#message-form");
-      const input = document.querySelector("#message");
-      const messages = document.querySelector("#messages");
+<script>
+  const form = document.querySelector("#message-form");
+  const input = document.querySelector("#message");
+  const messages = document.querySelector("#messages");
 
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        if (input.value) {
-          const message = input.value;
-          input.value = "";
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (input.value) {
+      const message = input.value;
+      input.value = "";
 
-          const xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                console.log("Сообщение успешно отправлено");
-              } else {
-                console.error("Ошибка отправки сообщения");
-              }
-            }
-          };
-          xhr.open("POST", "/message");
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.send(JSON.stringify({ message: message }));
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            console.log("Сообщение успешно отправлено");
+          } else {
+            console.error("Ошибка отправки сообщения");
+          }
         }
-      });
+      };
+      xhr.open("POST", "/message");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.send(JSON.stringify({ message: message }));
+    }
+  });
 
-      const socket = io();
-      socket.on("update messages", (messages) => {
-        const messagesDiv = document.querySelector("#messages");
-        messagesDiv.innerHTML = "";
-        messages.forEach((message) => {
-          const li = document.createElement("p");
-          li.textContent = message;
-          messagesDiv.appendChild(li);
-        });
-      });
-    </script>
-  </body>
-</html>
+  const socket = io();
+  socket.on("chat message", (messages) => {
+    const messagesDiv = document.querySelector("#messages");
+    messagesDiv.innerHTML = "";
+    messages.forEach((message) => {
+      const li = document.createElement("p");
+      li.textContent = message;
+      messagesDiv.appendChild(li);
+    });
+  });
+</script>

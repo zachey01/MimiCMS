@@ -76,3 +76,49 @@ pool.getConnection((err, connection) => {
     connection.release();
   });
 });
+
+pool.getConnection((err, connection) => {
+  if (err) throw err;
+  connection.query("SELECT 1 FROM topics LIMIT 1", (err, result) => {
+    if (err) {
+      const users = `CREATE TABLE IF NOT EXISTS topics (
+        id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        author VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )`;
+      connection.query(users, (err, result) => {
+        if (err) throw err;
+        console.log("Table topics created ✅");
+      });
+    } else {
+      console.log(`Table topics exists ✅`);
+    }
+    connection.release();
+  });
+});
+
+pool.getConnection((err, connection) => {
+  if (err) throw err;
+  connection.query("SELECT 1 FROM comments LIMIT 1", (err, result) => {
+    if (err) {
+      const users = `CREATE TABLE IF NOT EXISTS comments (
+        id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        topic_id INT(11) NOT NULL,
+        content TEXT NOT NULL,
+        author VARCHAR(255) NOT NULL,
+        rating INT(11) NOT NULL DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
+      )`;
+      connection.query(users, (err, result) => {
+        if (err) throw err;
+        console.log("Table comments created ✅");
+      });
+    } else {
+      console.log(`Table comments exists ✅`);
+    }
+    connection.release();
+  });
+});
