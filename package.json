@@ -1,0 +1,34 @@
+{
+  "name": "MimiCMS",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "prettier": "prettier ./ --write"
+  },
+  "keywords": [],
+  "author": "Zachey",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "passport": "^0.6.0",
+    "passport-steam": "^1.0.17",
+    "socket.io": "^4.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
+    "winston": "^3.9.0"
+  }
+}

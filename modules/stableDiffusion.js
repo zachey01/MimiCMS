@@ -10,7 +10,7 @@ const options = {
   body: JSON.stringify({
     key: process.env.STABLE_DIFFUSION_API,
     prompt:
-      "ultra realistic close up portrait ((beautiful pale cyberpunk female with heavy black eyeliner))",
+      "Cute ghost, 4k, 3d, anime style, flying, smile, night, dramatic lighting, digital art, professional photography, single subject, low camera angle, atmospheric, trending on artstation",
     negative_prompt: null,
     width: "512",
     height: "512",

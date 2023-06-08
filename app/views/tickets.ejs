@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header id="header"><%- include('../partials/header'); %></header>
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <div class="card mt-5">
+              <div class="card-body">
+                <h3 class="card-title text-center mb-4">Создать тикет</h3>
+                <form id="telegram-form">
+                  <div class="form-group">
+                    <label for="message">Опишите вашу проблему</label>
+                    <textarea
+                      class="form-control"
+                      id="text"
+                      name="text"
+                      rows="5"
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block mt-4">
+                    Отправить
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        document
+          .getElementById("telegram-form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            var chatid = "-903541727";
+            var text = document.getElementById("text").value;
+            var steamid = document.getElementById("steamid").value;
+            otpravka(
+              "6017236634:AAGYg4KOwf_RLj5Go_DxbhudIIXQ1D3EIjk",
+              text + ` | Отправлен - <%= userName %> (<%= steamid %>)`,
+              chatid
+            );
+          });
+
+        function otpravka(token, text, chatid) {
+          $.ajax({
+            type: "POST",
+            url:
+              "https://api.telegram.org/bot" +
+              token +
+              "/sendMessage?chat_id=" +
+              chatid,
+            data: "parse_mode=HTML&text=" + encodeURIComponent(text),
+            success: function (response) {
+              console.log("Сообщение успешно отправлено");
+            },
+            error: function (error) {
+              console.error("Ошибка отправки сообщения:", error);
+            },
+          });
+        }
+      </script>
+    </main>
+
+    <footer id="footer" class="text-center text-muted">
+      <%- include('../partials/footer'); %>
+    </footer>
+  </body>
+</html>
