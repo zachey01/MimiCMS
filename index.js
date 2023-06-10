@@ -1,2 +1,0 @@
-// BackendService
-require("./app/app");
