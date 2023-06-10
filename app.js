@@ -9,7 +9,7 @@ let express = require("express"),
   // http = require("http").createServer(app),
   // io = require("socket.io")(http),
   ejs = require("ejs");
-createTables = require("./modules/createTables");
+// Routes
 require("dotenv").config();
 const {
   Server,
@@ -458,5 +458,36 @@ app.get("/test", function (req, res) {
 //     }
 //   );
 // });
+
+app.get("/shop", function (req, res) {
+  let avatar = "";
+  if (userSteamID) {
+    pool.query(
+      `SELECT avatar, balance FROM users WHERE steamid = '${userSteamID}'`,
+      (error, results, fields) => {
+        if (error) throw error;
+        avatar = results[0].avatar;
+        balance = results[0].balance;
+        const authVars = {
+          logo: process.env.LOGO,
+          currency: process.env.CURRENCY,
+          slide_1: process.env.SLIDE_1,
+          slide_2: process.env.SLIDE_2,
+          slide_3: process.env.SLIDE_3,
+          tg_channel: process.env.TG_CHANNEL,
+          discord_server_id: process.env.DISCORD_SERVER_ID,
+          name: process.env.NAME,
+          avatar: avatar,
+          balance: balance,
+          userName: userName,
+          steamLink: `https://steamcommunity.com/profiles/${userSteamID}`,
+        };
+        res.render(path.join(__dirname, "views", "./shop.ejs"), authVars);
+      }
+    );
+  } else {
+    res.render(path.join(__dirname, "views", "./nonAuthShop.ejs"), vars);
+  }
+});
 
 app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
