@@ -403,7 +403,7 @@ app.get("/tickets", function (req, res) {
   }
 });
 
-app.get("/test", function (req, res) {
+app.get("/test6", function (req, res) {
   res.render(path.join(__dirname, "views", "./404.ejs"), vars);
 });
 
@@ -461,33 +461,37 @@ app.get("/test", function (req, res) {
 
 app.get("/shop", function (req, res) {
   let avatar = "";
-  if (userSteamID) {
-    pool.query(
-      `SELECT avatar, balance FROM users WHERE steamid = '${userSteamID}'`,
-      (error, results, fields) => {
-        if (error) throw error;
-        avatar = results[0].avatar;
-        balance = results[0].balance;
-        const authVars = {
-          logo: process.env.LOGO,
-          currency: process.env.CURRENCY,
-          slide_1: process.env.SLIDE_1,
-          slide_2: process.env.SLIDE_2,
-          slide_3: process.env.SLIDE_3,
-          tg_channel: process.env.TG_CHANNEL,
-          discord_server_id: process.env.DISCORD_SERVER_ID,
-          name: process.env.NAME,
-          avatar: avatar,
-          balance: balance,
-          userName: userName,
-          steamLink: `https://steamcommunity.com/profiles/${userSteamID}`,
-        };
-        res.render(path.join(__dirname, "views", "./shop.ejs"), authVars);
-      }
-    );
-  } else {
-    res.render(path.join(__dirname, "views", "./nonAuthShop.ejs"), vars);
+  let userName = "";
+  let balance = "";
+  let userSteamID = "";
+  if (req.user) {
+    avatar = req.user.avatar;
+    userName = req.user.username;
+    balance = req.user.balance;
+    userSteamID = req.user.steamid;
   }
+
+  pool.query("SELECT * FROM products", (error, results) => {
+    if (error) throw error;
+    const shopVars = {
+      logo: process.env.LOGO,
+      currency: process.env.CURRENCY,
+      slide_1: process.env.SLIDE_1,
+      slide_2: process.env.SLIDE_2,
+      slide_3: process.env.SLIDE_3,
+      tg_channel: process.env.TG_CHANNEL,
+      discord_server_id: process.env.DISCORD_SERVER_ID,
+      name: process.env.NAME,
+      products: results,
+      avatar: avatar,
+      balance: balance,
+      userName: userName,
+      steamLink: userSteamID
+        ? `https://steamcommunity.com/profiles/${userSteamID}`
+        : "",
+    };
+    res.render(path.join(__dirname, "views", "./products.ejs"), shopVars);
+  });
 });
 
 app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
