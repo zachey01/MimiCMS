@@ -1,3 +1,5 @@
+//TODO: сделать страниу /balance и добавить оплату на киви через генерацию url для succesUrl qiwi
+//TODO: реализовать списание с баланса с помощью debit
 let express = require("express"),
   passport = require("passport"),
   SteamStrategy = require("passport-steam").Strategy,
@@ -6,20 +8,11 @@ let express = require("express"),
   session = require("express-session"),
   app = express(),
   path = require("path"),
-  // http = require("http").createServer(app),
-  // io = require("socket.io")(http),
-  ejs = require("ejs");
-// Routes
+  ejs = require("ejs"),
+  { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query");
 require("dotenv").config();
-const {
-  Server,
-  RCON,
-  MasterServer,
-} = require("@fabricio-191/valve-server-query");
 
-let userSteamID;
-let userAvatar;
-let userName;
+let userSteamID, userAvatar, userName;
 // const messages = [];
 
 app.use(express.json());
@@ -32,8 +25,8 @@ app.use(
     saveUninitialized: false,
   })
 );
-const port = process.env.PORT || 3000;
-const pool = require("./config/db");
+let port = process.env.PORT || 3000,
+  pool = require("./config/db");
 
 const vars = {
   logo: process.env.LOGO,
@@ -259,114 +252,6 @@ app.get("/", async function (req, res) {
   }
 });
 
-// io.on("connection", (socket) => {
-//   console.log("Пользователь подключился");
-
-//   socket.on("chat message", (msg) => {
-//     console.log(`Сообщение: ${msg}`);
-//     messages.push(msg);
-//     io.emit("chat message", msg);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("Пользователь отключился");
-//   });
-// });
-
-// app.get("/chat", (req, res) => {
-//   pool.query(
-//     "SELECT messages.message, users.name FROM messages JOIN users ON messages.author = users.steamid ORDER BY messages.created_at ASC",
-//     (error, results) => {
-//       if (error) {
-//         console.error("Ошибка чтения сообщений из базы данных:", error);
-//         res.render(path.join(__dirname, "views", "./chat.ejs"), {
-//           messages: [],
-//         });
-//       } else {
-//         const messages = results.map((result) => {
-//           return { message: result.message, author: result.name };
-//         });
-//         res.render(path.join(__dirname, "views", "./chat.ejs"), {
-//           messages: messages,
-//         });
-//       }
-//     }
-//   );
-// });
-
-// app.post("/message", (req, res) => {
-//   const message = req.body.message.trim(); // Удаляем пробелы в начале и конце сообщения
-//   if (!message) {
-//     // Если сообщение пустое, возвращаем ошибку
-//     return res.status(400).send("Сообщение не может быть пустым");
-//   }
-
-//   console.log(`Сообщение: ${message}`);
-//   const author = userSteamID;
-//   const newMessage = { message: message, author: author }; // Создаем новый объект сообщения
-//   messages.push(newMessage); // Добавляем объект сообщения в массив сообщений
-//   io.emit("chat message", newMessage); // Отправляем сообщение
-//   pool.query(
-//     "INSERT INTO messages (message, author) VALUES (?, ?)",
-//     [message, author],
-//     (error, result) => {
-//       if (error) {
-//         console.error("Ошибка сохранения сообщения в базу данных:", error);
-//       } else {
-//         console.log("Сообщение успешно сохранено в базе данных");
-//       }
-//     }
-//   );
-//   res.sendStatus(200);
-// });
-// app.get("/messages", (req, res) => {
-//   pool.query(
-//     "SELECT messages, created_at FROM messages ORDER BY created_at DESC",
-//     (error, results) => {
-//       if (error) {
-//         console.error("Ошибка чтения сообщений из базы данных:", error);
-//         res.sendStatus(500);
-//       } else {
-//         const messages = results.map((result) => {
-//           return {
-//             message: result.message,
-//             created_at: result.created_at,
-//           };
-//         });
-//         res.send(messages);
-//       }
-//     }
-//   );
-// });
-
-// // Отображение списка тем
-// app.get("/topics", function (req, res) {
-//   pool.query("SELECT * FROM topics", function (err, results) {
-//     if (err) throw err;
-//     res.render(path.join(__dirname, "views", "./topics.ejs"), {
-//       topics: results,
-//     });
-//   });
-// });
-
-// // Создание новой темы
-// app.get("/topics/new", function (req, res) {
-//   res.render(path.join(__dirname, "views", "./new_topic.ejs"));
-// });
-
-// app.post("/topics", function (req, res) {
-//   const { title, content } = req.body;
-//   const author = userSteamID;
-//   pool.query(
-//     "INSERT INTO topics (title, content, author) VALUES (?, ?, ?)",
-//     [title, content, author],
-//     function (err, result) {
-//       if (err) throw err;
-//       res.redirect("/topics");
-//     }
-//   );
-// });
-
 app.get("/tickets", function (req, res) {
   let avatar = "";
   if (userSteamID) {
@@ -407,91 +292,114 @@ app.get("/test6", function (req, res) {
   res.render(path.join(__dirname, "views", "./404.ejs"), vars);
 });
 
-// // Отображение комментариев к теме
-// app.get("/topics/:id", function (req, res) {
-//   const topicId = req.params.id;
-//   pool.query(
-//     "SELECT * FROM topics WHERE id = ?",
-//     [topicId],
-//     function (err, topicResults) {
-//       if (err) throw err;
-//       pool.query(
-//         "SELECT * FROM comments WHERE topic_id = ?",
-//         [topicId],
-//         function (err, commentResults) {
-//           if (err) throw err;
-//           res.render("topic", {
-//             topic: topicResults[0],
-//             comments: commentResults,
-//           });
-//         }
-//       );
-//     }
-//   );
-// });
+// Запрос на списание со счета пользователя
 
-// // Создание нового комментария
-// app.post("/topics/:id/comments", function (req, res) {
-//   const topicId = req.params.id;
-//   const { content } = req.body;
-//   const author = userSteamID;
-//   pool.query(
-//     "INSERT INTO comments (topic_id, content, author) VALUES (?, ?, ?)",
-//     [topicId, content, author],
-//     function (err, result) {
-//       if (err) throw err;
-//       res.redirect(`/topics/${topicId}`);
-//     }
-//   );
-// });
+app.get("/rules", function (req, res) {
+  let avatar = "";
+  if (userSteamID) {
+    pool.query(
+      `SELECT avatar, balance FROM users WHERE steamid = '${userSteamID}'`,
+      (error, results, fields) => {
+        if (error) throw error;
+        avatar = results[0].avatar;
+        balance = results[0].balance;
+        const authVars = {
+          logo: process.env.LOGO,
+          currency: process.env.CURRENCY,
+          slide_1: process.env.SLIDE_1,
+          slide_2: process.env.SLIDE_2,
+          slide_3: process.env.SLIDE_3,
+          tg_channel: process.env.TG_CHANNEL,
+          discord_server_id: process.env.DISCORD_SERVER_ID,
+          name: process.env.NAME,
+          avatar: avatar,
+          balance: balance,
+          steamid: userSteamID,
+          userName: userName,
+          tg_token: process.env.TG_BOT_TOKEN,
+          tg_group: process.env.TG_GROUP_ID,
+        };
+        if (avatar) {
+          authVars.avatar = avatar;
+        }
+        res.render(path.join(__dirname, "views", "./rules.ejs"), authVars);
+      }
+    );
+  } else {
+    res.render(path.join(__dirname, "views", "./nonAuthErr.ejs"), vars);
+  }
+});
 
-// // Изменение рейтинга комментария
-// app.post("/comments/:id/rating", function (req, res) {
-//   const commentId = req.params.id;
-//   const { rating } = req.body;
-//   pool.query(
-//     "UPDATE comments SET rating = ? WHERE id = ?",
-//     [rating, commentId],
-//     function (err, result) {
-//       if (err) throw err;
-//       res.sendStatus(200);
-//     }
-//   );
-// });
+app.get("/pay", (req, res) => {
+  pool.query(
+    `SELECT balance FROM users WHERE steamid = ${userSteamID}`,
+    (err, result) => {
+      if (err) throw err;
+      const balance = result[0].balance;
+      res.render("pay.ejs", { balance });
+    }
+  );
+});
+
+app.post("/debit", (req, res) => {
+  pool.query(
+    `SELECT balance FROM users WHERE steamid = ${userSteamID}`,
+    (err, result) => {
+      if (err) throw err;
+      const balance = result[0].balance;
+      if (balance < 10) {
+        console.log("Нету");
+        return;
+      }
+      pool.query(
+        `UPDATE users SET balance = balance - 10  WHERE steamid = ${userSteamID}`,
+        (err, result) => {
+          if (err) throw err;
+          res.send("Success");
+        }
+      );
+    }
+  );
+});
 
 app.get("/shop", function (req, res) {
   let avatar = "";
-  let userName = "";
-  let balance = "";
-  let userSteamID = "";
-  if (req.user) {
-    avatar = req.user.avatar;
-    userName = req.user.username;
-    balance = req.user.balance;
-    userSteamID = req.user.steamid;
-  }
+  if (userSteamID) {
+    let avatar = "";
+    let userName = "";
+    let balance = "";
+    let userSteamID = "";
+    if (req.user) {
+      avatar = req.user.avatar;
+      userName = req.user.username;
+      balance = req.user.balance;
+      userSteamID = req.user.steamid;
+    }
 
-  pool.query("SELECT * FROM products", (error, results) => {
-    if (error) throw error;
-    const shopVars = {
-      logo: process.env.LOGO,
-      currency: process.env.CURRENCY,
-      slide_1: process.env.SLIDE_1,
-      slide_2: process.env.SLIDE_2,
-      slide_3: process.env.SLIDE_3,
-      tg_channel: process.env.TG_CHANNEL,
-      discord_server_id: process.env.DISCORD_SERVER_ID,
-      name: process.env.NAME,
-      products: results,
-      avatar: avatar,
-      balance: balance,
-      userName: userName,
-      steamLink: userSteamID
-        ? `https://steamcommunity.com/profiles/${userSteamID}`
-        : "",
-    };
-    res.render(path.join(__dirname, "views", "./products.ejs"), shopVars);
-  });
+    pool.query("SELECT * FROM products", (error, results) => {
+      if (error) throw error;
+      const shopVars = {
+        logo: process.env.LOGO,
+        currency: process.env.CURRENCY,
+        slide_1: process.env.SLIDE_1,
+        slide_2: process.env.SLIDE_2,
+        slide_3: process.env.SLIDE_3,
+        tg_channel: process.env.TG_CHANNEL,
+        discord_server_id: process.env.DISCORD_SERVER_ID,
+        name: process.env.NAME,
+        products: results,
+        avatar: avatar,
+        balance: balance,
+        userName: userName,
+        steamLink: userSteamID
+          ? `https://steamcommunity.com/profiles/${userSteamID}`
+          : "",
+      };
+      res.render(path.join(__dirname, "views", "./products.ejs"), shopVars);
+    });
+  } else {
+    res.render(path.join(__dirname, "views", "./nonAuthErr.ejs"), vars);
+  }
 });
 
 app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
