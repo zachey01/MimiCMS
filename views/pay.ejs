@@ -28,13 +28,14 @@
         $("#debitBtn").click(function () {
           $.ajax({
             type: "POST",
-            url: "/debit",
+            url: "/debit/20",
             success: function (data) {
               window.location.reload();
             },
           });
         });
       });
+      console.log("<%= balance %>");
     </script>
     <!-- Modal -->
     <div class="modal fade" id="notEnoughBalanceModal" tabindex="-1">
