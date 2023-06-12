@@ -1,17 +1,41 @@
-@import url("https://fonts.googleapis.com/css2?family=Monomaniac+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Work+Sans:wght@300&display=swap");
 @import url("shop.css");
 
 header {
   margin-bottom: 50px;
 }
 
+header,
+footer,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  user-select: none;
+}
+
 footer {
   margin-top: 50px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
 }
 
 .header-icon {
   margin-left: 25px;
   opacity: 1;
+}
+
+.navbar-brand {
+  font-family: "Work Sans", sans-serif;
 }
 
 .header-icon:hover {
@@ -36,6 +60,19 @@ a.nav-link {
   border: 2px solid #e84118;
   padding: 2px;
   flex: none;
+}
+
+@media (max-width: 993px) {
+  header {
+    text-align: center;
+  }
+  .balance {
+    text-align: left;
+  }
+  .header-icon {
+    margin-top: 15px;
+    opacity: 1;
+  }
 }
 
 input:focus {

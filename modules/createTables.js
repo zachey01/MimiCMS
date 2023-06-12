@@ -124,3 +124,24 @@ module.exports = function createTables() {
     });
   });
 };
+
+// const product = {
+//   id: 1,
+//   name: "Product 1",
+//   price: 10.99,
+// };
+
+// pool.getConnection((err, connection) => {
+//   if (err) throw err;
+//   console.log("Connected!");
+
+//   connection.query(
+//     "INSERT INTO products (id, name, price) VALUES (?, ?, ?)",
+//     [product.id, product.name, product.price],
+//     (err, result) => {
+//       connection.release();
+//       if (err) throw err;
+//       console.log("1 record inserted");
+//     }
+//   );
+// });
