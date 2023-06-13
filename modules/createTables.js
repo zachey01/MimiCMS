@@ -31,7 +31,15 @@ module.exports = function createTables() {
       connection.release();
     });
   });
+  // const product = {
+  //   name: "test123555",
+  //   price: 600,
+  // };
 
+  // pool.query("INSERT INTO products SET ?", product, (err, result) => {
+  //   if (err) throw err;
+  //   console.log("Product added to the database ✅");
+  // });
   // User table
   pool.getConnection((err, connection) => {
     if (err) throw err;

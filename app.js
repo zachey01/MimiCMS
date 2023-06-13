@@ -330,15 +330,59 @@ app.get("/rules", function (req, res) {
   }
 });
 
-app.get("/pay", (req, res) => {
-  pool.query(
-    `SELECT balance FROM users WHERE steamid = ${userSteamID}`,
-    (err, result) => {
-      if (err) throw err;
-      const balance = result[0].balance;
-      res.render("pay.ejs", { balance });
-    }
-  );
+app.get("/pay", function (req, res) {
+  let avatar = "";
+  if (userSteamID) {
+    pool.query(
+      `SELECT avatar, balance FROM users WHERE steamid = '${userSteamID}'`,
+      (error, results, fields) => {
+        if (error) throw error;
+        avatar = results[0].avatar;
+        balance = results[0].balance;
+        return (authVars = {
+          logo: process.env.LOGO,
+          currency: process.env.CURRENCY,
+          slide_1: process.env.SLIDE_1,
+          slide_2: process.env.SLIDE_2,
+          slide_3: process.env.SLIDE_3,
+          tg_channel: process.env.TG_CHANNEL,
+          discord_server_id: process.env.DISCORD_SERVER_ID,
+          name: process.env.NAME,
+          avatar: avatar,
+          balance: balance,
+          steamid: userSteamID,
+          userName: userName,
+          tg_token: process.env.TG_BOT_TOKEN,
+          tg_group: process.env.TG_GROUP_ID,
+        });
+      }
+    );
+    pool.query("SELECT * FROM products", (error, results) => {
+      if (error) throw error;
+      const shopVars = {
+        logo: process.env.LOGO,
+        currency: process.env.CURRENCY,
+        slide_1: process.env.SLIDE_1,
+        slide_2: process.env.SLIDE_2,
+        slide_3: process.env.SLIDE_3,
+        tg_channel: process.env.TG_CHANNEL,
+        discord_server_id: process.env.DISCORD_SERVER_ID,
+        name: process.env.NAME,
+        products: results,
+        avatar: avatar,
+        balance: balance,
+        userName: userName,
+        steamLink: userSteamID
+          ? `https://steamcommunity.com/profiles/${userSteamID}`
+          : "",
+        authVars,
+      };
+
+      res.render(path.join(__dirname, "views", "./pay.ejs"), shopVars);
+    });
+  } else {
+    res.render(path.join(__dirname, "views", "./nonAuthErr.ejs"), vars);
+  }
 });
 
 app.post("/debit/:amount", (req, res) => {

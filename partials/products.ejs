@@ -5,14 +5,56 @@
       <div class="card mb-4 shadow-sm">
         <div class="card-body">
           <h4><%= product.name %></h4>
-          <h4><%= product.id %></h4>
           <code><%= product.price %><%= currency %></code>
           <div class="d-flex justify-content-between align-items-center">
-            <a href="#" class="btn btn-sm btn-outline-secondary">Buy</a>
+              <button class="btn btn-sm btn-outline-secondary" id="debitBtn" <% if (balance < product.price) { %>
+    data-toggle="modal" data-target="#notEnoughBalanceModal"
+  <% } %>>Купить</button>
           </div>
         </div>
       </div>
     </div>
+    <script>
+  $(document).ready(function () {
+    $("#buyBtn<%= product.id %>").click(function () {
+      $.ajax({
+        type: "POST",
+        url: `/debit/<%= product.price %>`,
+        success: function (data) {
+          window.location.reload();
+        },
+      });
+    });
+  });
+</script>
     <% }); %>
   </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+  integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+  crossorigin="anonymous"
+></script>
+
+<!-- Modal -->
+<div class="modal fade" id="notEnoughBalanceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Недостаточно средств</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">У вас недостаточно средств для списания.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Закрыть
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
