@@ -1,9 +1,15 @@
-const mysqldump = require("mysqldump");
-const moment = require("moment");
+let mysqldump = require("mysqldump"),
+  moment = require("moment"),
+  fs = require("fs");
 require("dotenv").config();
 
 async function backupDatabase() {
   try {
+    // create backup directory if it doesn't exist
+    if (!fs.existsSync("./backup")) {
+      fs.mkdirSync("./backup");
+    }
+
     // dump the result straight to a file
     await mysqldump({
       connection: {

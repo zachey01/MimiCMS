@@ -32,8 +32,8 @@ module.exports = function createTables() {
     });
   });
   // const product = {
-  //   name: "test123555",
-  //   price: 600,
+  //   name: "abc",
+  //   price: 10,
   // };
 
   // pool.query("INSERT INTO products SET ?", product, (err, result) => {
@@ -49,6 +49,7 @@ module.exports = function createTables() {
           steamid VARCHAR(255) NOT NULL,
           name VARCHAR(255) NOT NULL,
           avatar VARCHAR(255),
+          purchases VARCHAR(255) NOT NULL,
           balance INT NOT NULL DEFAULT 10,
           PRIMARY KEY (steamid)
         )`;
