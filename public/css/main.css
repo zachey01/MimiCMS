@@ -12,7 +12,8 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+.title404 {
   user-select: none;
 }
 
@@ -127,4 +128,11 @@ textarea.form-control {
 .btn-primary:hover {
   background-color: #0069d9;
   border-color: #0062cc;
+}
+
+.title404 {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 100;
+  font-size: 130px;
 }

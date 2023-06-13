@@ -1,6 +1,8 @@
-//TODO: сделать страниу /balance и добавить оплату на киви через генерацию url для succesUrl qiwi
-//TODO: реализовать списание с баланса с помощью debit
-let express = require("express"),
+/*!
+ * MimiCMS v1.0 (https://github.com/zachey01/MimiCMS)
+ */
+let // Modules
+  express = require("express"),
   passport = require("passport"),
   SteamStrategy = require("passport-steam").Strategy,
   SteamWebAPI = require("steam-web"),
@@ -9,11 +11,17 @@ let express = require("express"),
   app = express(),
   path = require("path"),
   ejs = require("ejs"),
-  { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query");
+  { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
+  // Routes
+  mainRoutes = require("./routes/main"),
+  wikiRoutes = require("./routes/wiki"),
+  forumRoutes = require("./routes/forum"),
+  // Config
+  pool = require("./config/db"),
+  port = process.env.PORT || 3000;
 require("dotenv").config();
 
-let userSteamID, userAvatar, userName;
-
+// ExpressJS configuration
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.static("./public"));
@@ -24,8 +32,8 @@ app.use(
     saveUninitialized: false,
   })
 );
-let port = process.env.PORT || 3000,
-  pool = require("./config/db");
+
+let userSteamID, userAvatar, userName;
 
 passport.use(
   new SteamStrategy(
@@ -163,8 +171,8 @@ app.get("/profile", function (req, res) {
   }
 });
 
-var wiki = require("./routes/route");
-// ...
-app.use("/", wiki);
+app.use("/", mainRoutes);
+// app.use("/wiki", wikiRoutes);
+// app.use("/forum", forumRoutes);
 
 app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
