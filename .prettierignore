@@ -1,0 +1,5 @@
+partials/products.ejs
+public/libs/**/*
+node_modules/
+backup/*
+*.log

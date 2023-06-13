@@ -1,24 +1,35 @@
 {
   "name": "MimiCMS",
   "version": "1.0.0",
-  "description": "",
+  "description": "MimiCMS is a CMS for game servers (only CS:GO and CS:2 at the moment) of the new level.",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon",
-    "prettier": "prettier ./ --write"
+    "prettier": "prettier ./ --write",
+    "backup": "node modules/backup.js"
   },
-  "keywords": [],
+  "keywords": [
+    "CMS",
+    "CS:GO",
+    "csgo",
+    "game server panel",
+    "site for csgo",
+    "panel for csgo"
+  ],
   "author": "Zachey",
   "license": "ISC",
   "dependencies": {
     "@fabricio-191/valve-server-query": "^4.1.9",
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
+    "child_process": "^1.0.2",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "moment": "^2.29.4",
     "mysql": "^2.18.1",
+    "mysqldump": "^3.2.0",
     "passport": "^0.6.0",
     "passport-steam": "^1.0.17"
   },

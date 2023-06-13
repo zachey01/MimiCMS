@@ -31,7 +31,15 @@ module.exports = function createTables() {
       connection.release();
     });
   });
+  // const product = {
+  //   name: "abc",
+  //   price: 10,
+  // };
 
+  // pool.query("INSERT INTO products SET ?", product, (err, result) => {
+  //   if (err) throw err;
+  //   console.log("Product added to the database ✅");
+  // });
   // User table
   pool.getConnection((err, connection) => {
     if (err) throw err;
@@ -41,6 +49,7 @@ module.exports = function createTables() {
           steamid VARCHAR(255) NOT NULL,
           name VARCHAR(255) NOT NULL,
           avatar VARCHAR(255),
+          purchases VARCHAR(255) NOT NULL,
           balance INT NOT NULL DEFAULT 10,
           PRIMARY KEY (steamid)
         )`;
