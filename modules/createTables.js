@@ -19,6 +19,8 @@ module.exports = function createTables() {
           id INT NOT NULL AUTO_INCREMENT,
           name VARCHAR(255) NOT NULL,
           price DECIMAL(10, 2) NOT NULL,
+          description VARCHAR(255) NOT NULL,
+          givecmd VARCHAR(255) NOT NULL,
           PRIMARY KEY (id)
         )`;
         connection.query(products, (err, result) => {
@@ -31,15 +33,19 @@ module.exports = function createTables() {
       connection.release();
     });
   });
-  // const product = {
-  //   name: "abc",
-  //   price: 10,
-  // };
+  /* 
+  const product = {
+    name: "abc",
+    price: 10,
+    description: "test description",
+    givecmd: "god",
+  };
 
-  // pool.query("INSERT INTO products SET ?", product, (err, result) => {
-  //   if (err) throw err;
-  //   console.log("Product added to the database ✅");
-  // });
+  pool.query("INSERT INTO products SET ?", product, (err, result) => {
+    if (err) throw err;
+    console.log("Product added to the database ✅");
+  });
+*/
   // User table
   pool.getConnection((err, connection) => {
     if (err) throw err;

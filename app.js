@@ -117,7 +117,7 @@ app.get(
 
 app.get("/logout", (req, res) => {
   userSteamID = null; // Сбрасываем steam id пользователя
-  req.logout(); // Очищаем данные пользователя из сессии
+  req.session.steamid = null;
   res.redirect("/"); // Перенаправляем на главную страницу
 });
 
@@ -147,29 +147,6 @@ let authVars = {
   userName: "",
   steamLink: "",
 };
-
-app.get("/profile", function (req, res) {
-  if (userSteamID) {
-    pool.query(
-      `SELECT avatar, balance FROM users WHERE steamid = '${userSteamID}'`,
-      (error, results, fields) => {
-        if (error) throw error;
-        const avatar = results[0].avatar;
-        const balance = results[0].balance;
-        authVars.avatar = avatar;
-        authVars.balance = balance;
-        authVars.userName = userName;
-        authVars.steamLink = `https://steamcommunity.com/profiles/${userSteamID}`;
-        res.render(
-          path.join(__dirname, "views", "./user-profile.ejs"),
-          authVars
-        );
-      }
-    );
-  } else {
-    res.send("Вы не авторизованы");
-  }
-});
 
 app.use("/", mainRoutes);
 // app.use("/wiki", wikiRoutes);

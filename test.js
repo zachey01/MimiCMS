@@ -257,34 +257,6 @@ app.get("/pay", function (req, res) {
   }
 });
 
-app.post("/debit/:amount/:productId", (req, res) => {
-  const amount = parseInt(req.params.amount);
-  const productId = parseInt(req.params.productId);
-  if (isNaN(amount)) {
-    res.status(400).send("Invalid amount");
-    return;
-  }
-  pool.query(
-    `SELECT balance FROM users WHERE steamid = ${userSteamID}`,
-    (err, result) => {
-      if (err) throw err;
-      const balance = result[0].balance;
-      if (balance < amount) {
-        console.log("Нету");
-        res.status(400).send("Not enough balance");
-        return;
-      }
-      pool.query(
-        `UPDATE users SET balance = balance - ${amount}, purchases = CONCAT(purchases, ${productId}, ',') WHERE steamid = ${userSteamID}`,
-        (error, results) => {
-          if (error) throw error;
-          res.send("Success");
-        }
-      );
-    }
-  );
-});
-
 app.get("/shop", function (req, res) {
   let avatar = "";
   if (userSteamID) {

@@ -13,7 +13,8 @@ h3,
 h4,
 h5,
 h6,
-.title404 {
+.title404,
+code {
   user-select: none;
 }
 
@@ -135,4 +136,9 @@ textarea.form-control {
   text-align: center;
   font-weight: 100;
   font-size: 130px;
+}
+
+.contact-info {
+  font-size: 25px;
+  text-align: center;
 }

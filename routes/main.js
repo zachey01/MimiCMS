@@ -25,6 +25,7 @@ let authVars = {
   balance: "",
   userName: "",
   steamLink: "",
+  products: "",
 };
 
 function renderPage(req, res, userSteamID, fileName) {
@@ -42,49 +43,92 @@ function renderPage(req, res, userSteamID, fileName) {
         authVars.steamid = userSteamID;
         authVars.userName = userName;
         authVars.steamLink = `https://steamcommunity.com/profiles/${userSteamID}`;
-        res.render(
-          path.join(__dirname, "../views", `./${fileName}.ejs`),
-          authVars
-        );
+        pool.query("SELECT * FROM products", (error, results) => {
+          if (error) throw error;
+          authVars.products = results;
+          res.render(
+            path.join(__dirname, "../views", `./${fileName}.ejs`),
+            authVars
+          );
+        });
       }
     );
   } else {
-    res.render(
-      path.join(__dirname, "../views", `./${fileName}NonAuth.ejs`),
-      authVars
-    );
+    pool.query("SELECT * FROM products", (error, results) => {
+      if (error) throw error;
+      authVars.products = results;
+      res.render(
+        path.join(__dirname, "../views", `./nonAuth${fileName}.ejs`),
+        authVars
+      );
+    });
   }
 }
 
 router.get("/", function (req, res) {
-  // userSteamID = req.session.steamid;
-  userSteamID = "76561199219730677";
+  userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "index");
 });
 
 router.get("/shop", function (req, res) {
-  // userSteamID = req.session.steamid;
-  userSteamID = "76561199219730677";
+  userSteamID = req.session.steamid;
+
   renderPage(req, res, userSteamID, "products");
 });
 
+router.get("/profile", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "user-profile");
+});
+
 router.get("/tickets", function (req, res) {
-  // userSteamID = req.session.steamid;
-  userSteamID = "76561199219730677";
+  userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "tickets");
 });
 
 router.get("/rules", function (req, res) {
-  // userSteamID = req.session.steamid;
-  userSteamID = "76561199219730677";
+  userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "rules");
+});
+
+router.get("/contacts", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "contacts");
 });
 
 // 404 page
 router.get("*", function (req, res) {
-  // userSteamID = req.session.steamid;
-  userSteamID = "76561199219730677";
+  userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "404");
+});
+
+router.post("/debit/:amount/:productId", (req, res) => {
+  userSteamID = req.session.steamid;
+  const amount = parseInt(req.params.amount);
+  const productId = parseInt(req.params.productId);
+  if (isNaN(amount)) {
+    res.status(400).send("Invalid amount");
+    return;
+  }
+  pool.query(
+    `SELECT balance FROM users WHERE steamid = ${userSteamID}`,
+    (err, result) => {
+      if (err) throw err;
+      const balance = result[0].balance;
+      if (balance < amount) {
+        console.log("Нету");
+        res.status(400).send("Not enough balance");
+        return;
+      }
+      pool.query(
+        `UPDATE users SET balance = balance - ${amount}, purchases = CONCAT(purchases, ${productId}, ',') WHERE steamid = ${userSteamID}`,
+        (error, results) => {
+          if (error) throw error;
+          res.send("Success");
+        }
+      );
+    }
+  );
 });
 
 module.exports = router;
