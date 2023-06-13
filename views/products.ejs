@@ -5,7 +5,54 @@
   </head>
   <body class="container bg-slate-200">
     <header id="header"><%- include('../partials/header'); %></header>
-    <%- include('../partials/products'); %>
+    <main>
+      <div class="container">
+        <div class="row">
+          <% products.forEach(product => { %>
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h4><%= product.name %></h4>
+                <p class="fw-light"><%= product.description %></p>
+                <p><code><%= product.price %><%= currency %></code></p>
+
+                <div
+                  class="d-flex justify-content-between align-items-center"
+                  id="mainBuyBtn"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <script>
+            if (<%= balance %> < <%= product.price %>) {
+              document.getElementById("mainBuyBtn").innerHTML = '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="notEnoughBalance()">Купить</button>'
+            } else { document.getElementById("mainBuyBtn").innerHTML = '<button class="btn btn-sm btn-outline-secondary" id="buyBtn<%= product.id %>" data-id="<%= product.id %>">Купить</button>' }
+          </script>
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const buyBtn = document.querySelector("#buyBtn<%= product.id %>");
+              buyBtn.addEventListener("click", function () {
+                const xhr = new XMLHttpRequest();
+                xhr.open(
+                  "POST",
+                  `/debit/<%= product.price %>/<%= product.id %>`
+                );
+                xhr.onload = function () {
+                  if (xhr.status === 200) {
+                    window.location.reload();
+                  }
+                };
+                xhr.send();
+              });
+            });
+            function notEnoughBalance() {
+              alert("У вас недостаточно средств для списания");
+            }
+          </script>
+          <% }); %>
+        </div>
+      </div>
+    </main>
     <footer id="footer" class="text-center text-muted">
       <%- include('../partials/footer'); %>
     </footer>
