@@ -11,13 +11,13 @@ const pool = require("../config/db");
 
 let authVars = {
   logo: process.env.LOGO,
-  currency: process.env.CURRENCY,
-  slide_1: process.env.SLIDE_1,
-  slide_2: process.env.SLIDE_2,
-  slide_3: process.env.SLIDE_3,
+  currency: process.env.CURRENCY || "$",
+  slide_1: process.env.SLIDE_1 || "https://dummyimage.com/1920x720/000/fff",
+  slide_2: process.env.SLIDE_2 || "https://dummyimage.com/1920x720/000/fff",
+  slide_3: process.env.SLIDE_3 || "https://dummyimage.com/1920x720/000/fff",
   tg_channel: process.env.TG_CHANNEL,
   discord_server_id: process.env.DISCORD_SERVER_ID,
-  name: process.env.NAME,
+  name: process.env.NAME || "MimiCMS",
   tg_token: process.env.TG_BOT_TOKEN,
   tg_group: process.env.TG_GROUP_ID,
   steamid: null,

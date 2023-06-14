@@ -18,7 +18,7 @@ let // Modules
   forumRoutes = require("./routes/forum"),
   // Config
   pool = require("./config/db"),
-  port = process.env.PORT || 3000;
+  port = process.env.PORT || 80;
 require("dotenv").config();
 
 // ExpressJS configuration
@@ -38,8 +38,10 @@ let userSteamID, userAvatar, userName;
 passport.use(
   new SteamStrategy(
     {
-      returnURL: "http://localhost:3000/auth/steam/return",
-      realm: `http://localhost:3000/`,
+      returnURL: `http://${
+        process.env.DOMAIN || "localhost"
+      }:${port}/auth/steam/return`,
+      realm: `http://${process.env.DOMAIN || "localhost"}:${port}/`,
       apiKey: process.env.STEAM_API_KEY,
     },
     (identifier, profile, done) => {
