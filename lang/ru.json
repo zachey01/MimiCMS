@@ -1,0 +1,9 @@
+{
+  "retrieveUserErr": "Ошибка получения данных о пользователе",
+  "writeUserErr": "Ошибка записи данных о пользователе в базу данных",
+  "succesWriteUser1": "Данные о ",
+  "succesWriteUser2": " успешно записаны в базу данных",
+  "searchUserErr": "Ошибка поиска пользователя в базе данных: ",
+  "startServer": "Сервер запущен на порту ",
+  "backupErr": "Backup error: "
+}

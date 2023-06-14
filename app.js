@@ -22,7 +22,12 @@ let // Modules
   // Config
   pool = require("./config/db"),
   port = process.env.PORT || 80;
+
 require("dotenv").config();
+
+// Lang
+const lang = require(`./lang/${process.env.SITE_LANG}.json`);
+console.log(lang);
 
 const request = require("request");
 
@@ -87,9 +92,7 @@ passport.use(
         steamids: profile.id,
         callback: (err, data) => {
           if (err) {
-            logger.error(
-              "Ошибка получения данных о пользователе: " + err.stack
-            );
+            logger.error(`${lang.retrieveUserErr}: ` + err.stack);
             return done(err);
           }
           pool.query(
@@ -101,14 +104,13 @@ passport.use(
             },
             (err, result) => {
               if (err) {
-                logger.error(
-                  "Ошибка записи данных о пользователе в базу данных: " +
-                    err.stack
-                );
+                logger.error(`${lang.writeUserErr}: ` + err.stack);
                 return done(err);
               }
               logger.info(
-                `Данные о ${profile.displayName} пользователе успешно записаны в базу данных`
+                lang.succesWriteUser1 +
+                  profile.displayName +
+                  lang.succesWriteUser2
               );
               // Сохраняем steam id пользователя
               userSteamID = profile.id;
@@ -130,7 +132,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   pool.query("SELECT * FROM users WHERE steamid = ?", [id], (err, results) => {
     if (err) {
-      console.error("Ошибка поиска пользователя в базе данных: " + err.stack);
+      console.error(lang.searchUserErr + err.stack);
       return done(err);
     }
     if (results.length === 0) {
@@ -200,4 +202,4 @@ app.use("/", mainRoutes);
 // app.use('/forum', forumRoutes);
 
 // Start the server
-app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
+app.listen(port, () => console.log(lang.startServer + port));
