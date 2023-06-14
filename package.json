@@ -17,7 +17,7 @@
     "panel for csgo"
   ],
   "author": "Zachey",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@fabricio-191/valve-server-query": "^4.1.9",
     "axios": "^1.4.0",
