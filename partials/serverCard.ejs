@@ -1,4 +1,4 @@
-<!-- <center>
+<center>
   <div class="col-md-6 container">
     <div class="card mb-3">
       <div class="row no-gutters align-items-center">
@@ -15,11 +15,14 @@
             <p class="card-text"><%= serverDescription %></p>
             <p class="card-text">
               <small class="text-muted"
-                >Текущая карта: <code><%= map %></code></small
+                >Текущая карта: <code><%= serverMap %></code></small
               ><br />
               <small class="text-muted"
                 >Сейчас на сервере:
-                <code><%= numPlayersOnline %>/<%= numPlayers %></code></small
+                <code
+                  ><%= serverPlayerCountOnline %>/<%= serverPlayerCountMax
+                  %></code
+                ></small
               >
             </p>
           </div>
@@ -38,7 +41,7 @@
           </tr>
         </thead>
         <tbody>
-          <% players.forEach((item) => { %>
+          <% serverPlayers.forEach((item) => { %>
           <tr>
             <td><code><%= item.name %></code></td>
             <td>
@@ -50,4 +53,3 @@
         </tbody>
       </table>
     </div> -->
--->

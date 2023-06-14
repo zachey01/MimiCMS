@@ -67,32 +67,6 @@ app.get("/", async function (req, res) {
         if (avatar) {
           authVars.avatar = avatar;
         }
-
-        try {
-          const server = await Server({
-            ip: "144.76.119.139",
-            port: 27015,
-            timeout: 5000,
-          });
-          const info = await server.getInfo();
-          let data = await server.getPlayers();
-          const serverVars = {
-            ping: server.lastPing,
-            players: await server.getPlayers(),
-            numPlayersOnline: await info.players.online,
-            numPlayers: await info.players.max,
-            map: info.map,
-            serverName: info.name,
-            serverDescription: process.env.SERVER_DESCRIPTION,
-          };
-          res.render(
-            path.join(__dirname, "views", "./index.ejs"),
-            Object.assign({}, authVars, serverVars)
-          );
-        } catch (error) {
-          console.error(error);
-          res.render(path.join(__dirname, "views", "./index.ejs"), authVars);
-        }
       }
     );
   } else {

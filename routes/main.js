@@ -20,15 +20,23 @@ let authVars = {
   name: process.env.NAME,
   tg_token: process.env.TG_BOT_TOKEN,
   tg_group: process.env.TG_GROUP_ID,
-  steamid: "",
-  avatar: "",
-  balance: "",
-  userName: "",
-  steamLink: "",
-  products: "",
+  steamid: null,
+  avatar: null,
+  balance: null,
+  userName: null,
+  steamLink: null,
+  products: null,
+  // Server information
+  serverPing: null,
+  serverPlayerCountOnline: null,
+  serverPlayerCountMax: null,
+  serverPlayers: null,
+  serverMap: null,
+  serverName: null,
+  serverDescription: null,
 };
 
-function renderPage(req, res, userSteamID, fileName) {
+function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
   if (userSteamID) {
     console.log(userSteamID);
     pool.query(
@@ -58,48 +66,63 @@ function renderPage(req, res, userSteamID, fileName) {
       if (error) throw error;
       authVars.products = results;
       res.render(
-        path.join(__dirname, "../views", `./nonAuth${fileName}.ejs`),
+        path.join(__dirname, "../views", `./${nonAuthFileName}.ejs`),
         authVars
       );
     });
   }
 }
 
-router.get("/", function (req, res) {
+router.get("/", async function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "index");
+
+  const server = await Server({
+    ip: "144.76.119.139",
+    port: 27015,
+    timeout: 5000,
+  });
+  const infoServer = await server.getInfo();
+  authVars.serverPing = infoServer.ping;
+  authVars.serverPlayerCountOnline = await infoServer.players.online;
+  authVars.serverPlayerCountMax = await infoServer.players.max;
+  authVars.serverPlayers = await server.getPlayers();
+  authVars.serverMap = infoServer.map;
+  authVars.serverName = infoServer.name;
+  authVars.serverDescription = process.env.SERVER_DESCRIPTION;
+
+  renderPage(req, res, userSteamID, "index", "nonAuthIndex");
 });
 
 router.get("/shop", function (req, res) {
   userSteamID = req.session.steamid;
 
-  renderPage(req, res, userSteamID, "products");
+  renderPage(req, res, userSteamID, "products", "nonAuthproducts");
 });
 
 router.get("/profile", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "user-profile");
+  renderPage(req, res, userSteamID, "user-profile", "nonAuthErr");
 });
 
 router.get("/tickets", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "tickets");
+  renderPage(req, res, userSteamID, "tickets", "nonAuthErr");
 });
 
 router.get("/rules", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "rules");
+  renderPage(req, res, userSteamID, "rules", "nonAuthrules");
 });
 
 router.get("/contacts", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "contacts");
+  renderPage(req, res, userSteamID, "contacts", "nonAuthcontacts");
 });
 
 // 404 page
 router.get("*", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "404");
+  renderPage(req, res, userSteamID, "404", "nonAuth404");
 });
 
 router.post("/debit/:amount/:productId", (req, res) => {
