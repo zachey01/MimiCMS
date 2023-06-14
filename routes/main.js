@@ -4,7 +4,11 @@ let express = require("express"),
   path = require("path"),
   ejs = require("ejs"),
   { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
-  router = express.Router();
+  router = express.Router(),
+  winston = require("winston"),
+  expressWinston = require("express-winston"),
+  moment = require("moment"),
+  request = require("request");
 require("dotenv").config();
 
 const pool = require("../config/db");
@@ -36,13 +40,35 @@ let authVars = {
   serverDescription: null,
 };
 
+const passport = require("../passp");
+
+// Logger configuration
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  defaultMeta: { time: `${moment().format("YYYY-MM-DD-HH-mm-ss")}` },
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      ),
+    }),
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
+  ],
+});
+
 function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
   if (userSteamID) {
-    console.log(userSteamID);
+    logger.info(`User with steamid ${userSteamID} is authenticated`);
     pool.query(
       `SELECT * FROM users WHERE steamid = '${userSteamID}'`,
       (error, results, fields) => {
-        if (error) throw error;
+        if (error) {
+          logger.error("Error getting user info", { error });
+          throw error;
+        }
         const avatar = results[0].avatar;
         const balance = results[0].balance;
         const userName = results[0].name;
@@ -52,22 +78,34 @@ function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
         authVars.userName = userName;
         authVars.steamLink = `https://steamcommunity.com/profiles/${userSteamID}`;
         pool.query("SELECT * FROM products", (error, results) => {
-          if (error) throw error;
+          if (error) {
+            logger.error("Error getting products", { error });
+            throw error;
+          }
           authVars.products = results;
           res.render(
             path.join(__dirname, "../views", `./${fileName}.ejs`),
             authVars
+          );
+          logger.info(
+            `Rendered ${fileName} page for user with steamid ${userSteamID}`
           );
         });
       }
     );
   } else {
     pool.query("SELECT * FROM products", (error, results) => {
-      if (error) throw error;
+      if (error) {
+        logger.error("Error getting products", { error });
+        throw error;
+      }
       authVars.products = results;
       res.render(
         path.join(__dirname, "../views", `./${nonAuthFileName}.ejs`),
         authVars
+      );
+      logger.info(
+        `Rendered ${nonAuthFileName} page for non-authenticated user`
       );
     });
   }
@@ -104,6 +142,11 @@ router.get("/profile", function (req, res) {
   renderPage(req, res, userSteamID, "user-profile", "nonAuthErr");
 });
 
+router.get("/purchases", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "contacts", "nonAuthErr");
+});
+
 router.get("/tickets", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "tickets", "nonAuthErr");
@@ -136,18 +179,29 @@ router.post("/debit/:amount/:productId", (req, res) => {
   pool.query(
     `SELECT balance FROM users WHERE steamid = ${userSteamID}`,
     (err, result) => {
-      if (err) throw err;
+      if (err) {
+        logger.error("Error getting user balance", { error: err });
+        throw err;
+      }
       const balance = result[0].balance;
       if (balance < amount) {
-        console.log("Нету");
+        logger.warn(
+          `User with steamid ${userSteamID} tried to debit ${amount} but has only ${balance} in balance`
+        );
         res.status(400).send("Not enough balance");
         return;
       }
       pool.query(
         `UPDATE users SET balance = balance - ${amount}, purchases = CONCAT(purchases, ${productId}, ',') WHERE steamid = ${userSteamID}`,
         (error, results) => {
-          if (error) throw error;
+          if (error) {
+            logger.error("Error updating user balance", { error });
+            throw error;
+          }
           res.send("Success");
+          logger.info(
+            `User with steamid ${userSteamID} debited ${amount} and purchased product ${productId}`
+          );
         }
       );
     }

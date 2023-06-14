@@ -9,9 +9,12 @@ let // Modules
   mysql = require("mysql"),
   session = require("express-session"),
   app = express(),
+  moment = require("moment"),
   path = require("path"),
   ejs = require("ejs"),
   { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
+  winston = require("winston"),
+  expressWinston = require("express-winston"),
   // Routes
   mainRoutes = require("./routes/main"),
   wikiRoutes = require("./routes/wiki"),
@@ -20,6 +23,25 @@ let // Modules
   pool = require("./config/db"),
   port = process.env.PORT || 80;
 require("dotenv").config();
+
+const request = require("request");
+
+// Logger configuration
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  defaultMeta: { time: `${moment().format("YYYY-MM-DD-HH-mm-ss")}` },
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      ),
+    }),
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
+  ],
+});
 
 // ExpressJS configuration
 app.use(express.json());
@@ -30,6 +52,21 @@ app.use(
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
+  })
+);
+
+// Request logging
+app.use(
+  expressWinston.logger({
+    winstonInstance: logger,
+    level: "info",
+    meta: false,
+    msg: "HTTP {{req.method}} {{req.url}}",
+    expressFormat: true,
+    colorize: false,
+    ignoreRoute: function (req, res) {
+      return false;
+    },
   })
 );
 
@@ -50,7 +87,7 @@ passport.use(
         steamids: profile.id,
         callback: (err, data) => {
           if (err) {
-            console.error(
+            logger.error(
               "Ошибка получения данных о пользователе: " + err.stack
             );
             return done(err);
@@ -64,13 +101,13 @@ passport.use(
             },
             (err, result) => {
               if (err) {
-                console.error(
+                logger.error(
                   "Ошибка записи данных о пользователе в базу данных: " +
                     err.stack
                 );
                 return done(err);
               }
-              console.log(
+              logger.info(
                 `Данные о ${profile.displayName} пользователе успешно записаны в базу данных`
               );
               // Сохраняем steam id пользователя
@@ -150,8 +187,17 @@ let authVars = {
   steamLink: "",
 };
 
-app.use("/", mainRoutes);
-// app.use("/wiki", wikiRoutes);
-// app.use("/forum", forumRoutes);
+// Error logging
+app.use(
+  expressWinston.errorLogger({
+    winstonInstance: logger,
+  })
+);
 
+// Routes
+app.use("/", mainRoutes);
+// app.use('/wiki', wikiRoutes);
+// app.use('/forum', forumRoutes);
+
+// Start the server
 app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
