@@ -25,8 +25,8 @@
           </div>
           <script>
             if (<%= balance %> < <%= product.price %>) {
-              document.getElementById("mainBuyBtn").innerHTML = '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="notEnoughBalance()">Купить</button>'
-            } else { document.getElementById("mainBuyBtn").innerHTML = '<button class="btn btn-sm btn-outline-secondary" id="buyBtn<%= product.id %>" data-id="<%= product.id %>">Купить</button>' }
+              document.getElementById("mainBuyBtn").innerHTML = '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="notEnoughBalance()">Buy</button>'
+            } else { document.getElementById("mainBuyBtn").innerHTML = '<button class="btn btn-sm btn-outline-secondary" id="buyBtn<%= product.id %>" data-id="<%= product.id %>">Buy</button>' }
           </script>
           <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -46,7 +46,7 @@
               });
             });
             function notEnoughBalance() {
-              alert("У вас недостаточно средств для списания");
+              alert("You don't have enough money to write off");
             }
           </script>
           <% }); %>

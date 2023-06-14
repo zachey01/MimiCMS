@@ -17,19 +17,11 @@ let // Modules
   expressWinston = require("express-winston"),
   // Routes
   mainRoutes = require("./routes/main"),
-  wikiRoutes = require("./routes/wiki"),
-  forumRoutes = require("./routes/forum"),
   // Config
   pool = require("./config/db"),
   port = process.env.PORT || 80;
 
 require("dotenv").config();
-
-// Lang
-const lang = require(`./lang/${process.env.SITE_LANG}.json`);
-console.log(lang);
-
-const request = require("request");
 
 // Logger configuration
 const logger = winston.createLogger({
@@ -75,6 +67,9 @@ app.use(
   })
 );
 
+// Routes
+app.use("/", mainRoutes);
+
 let userSteamID, userAvatar, userName;
 
 passport.use(
@@ -92,7 +87,7 @@ passport.use(
         steamids: profile.id,
         callback: (err, data) => {
           if (err) {
-            logger.error(`${lang.retrieveUserErr}: ` + err.stack);
+            logger.error(`Failed to retrieve user data: ` + err.stack);
             return done(err);
           }
           pool.query(
@@ -104,13 +99,16 @@ passport.use(
             },
             (err, result) => {
               if (err) {
-                logger.error(`${lang.writeUserErr}: ` + err.stack);
+                logger.error(
+                  `Error writing data about the user to the database: ` +
+                    err.stack
+                );
                 return done(err);
               }
               logger.info(
-                lang.succesWriteUser1 +
+                "Data about " +
                   profile.displayName +
-                  lang.succesWriteUser2
+                  " successfully written to the database"
               );
               // Сохраняем steam id пользователя
               userSteamID = profile.id;
@@ -132,7 +130,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   pool.query("SELECT * FROM users WHERE steamid = ?", [id], (err, results) => {
     if (err) {
-      console.error(lang.searchUserErr + err.stack);
+      console.error("User search error in the database: " + err.stack);
       return done(err);
     }
     if (results.length === 0) {
@@ -196,10 +194,5 @@ app.use(
   })
 );
 
-// Routes
-app.use("/", mainRoutes);
-// app.use('/wiki', wikiRoutes);
-// app.use('/forum', forumRoutes);
-
 // Start the server
-app.listen(port, () => console.log(lang.startServer + port));
+app.listen(port, () => console.log("Server started on port " + port));

@@ -1,14 +1,22 @@
-let express = require("express"),
+let // Modules
+  express = require("express"),
+  passport = require("passport"),
+  SteamStrategy = require("passport-steam").Strategy,
+  SteamWebAPI = require("steam-web"),
   mysql = require("mysql"),
   session = require("express-session"),
-  path = require("path"),
-  ejs = require("ejs"),
-  { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
-  router = express.Router(),
-  winston = require("winston"),
-  expressWinston = require("express-winston"),
-  moment = require("moment"),
-  request = require("request");
+  app = express(),
+  router = express.Router();
+(moment = require("moment")),
+  (path = require("path")),
+  (ejs = require("ejs")),
+  ({
+    Server,
+    RCON,
+    MasterServer,
+  } = require("@fabricio-191/valve-server-query")),
+  (winston = require("winston")),
+  (expressWinston = require("express-winston"));
 require("dotenv").config();
 
 const pool = require("../config/db");
@@ -39,8 +47,6 @@ let authVars = {
   serverName: null,
   serverDescription: null,
 };
-
-const passport = require("../passp");
 
 // Logger configuration
 const logger = winston.createLogger({
@@ -115,7 +121,7 @@ router.get("/", async function (req, res) {
   userSteamID = req.session.steamid;
 
   const server = await Server({
-    ip: "144.76.119.139",
+    ip: process.env.SERVER_IP,
     port: 27015,
     timeout: 5000,
   });
@@ -145,6 +151,11 @@ router.get("/profile", function (req, res) {
 router.get("/purchases", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "contacts", "nonAuthErr");
+});
+
+router.get("/balance", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "balance", "nonAuthErr");
 });
 
 router.get("/tickets", function (req, res) {

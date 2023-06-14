@@ -11,10 +11,10 @@ const pool = mysql.createPool({
 
 pool.getConnection((err) => {
   if (err) {
-    console.error("Ошибка подключения к базе данных: " + err.stack);
+    console.error("Database connection error: " + err.stack);
     return;
   }
-  console.log("Подключение к базе данных успешно установлено");
+  console.log("Connection to the data base is successfully established");
   createTables();
 });
 

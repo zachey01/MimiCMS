@@ -11,10 +11,10 @@
           <div class="col-md-6 mx-auto">
             <div class="card mt-5">
               <div class="card-body">
-                <h3 class="card-title text-center mb-4">Создать тикет</h3>
+                <h3 class="card-title text-center mb-4">Create a ticket</h3>
                 <form id="telegram-form">
                   <div class="form-group">
-                    <label for="message">Опишите вашу проблему</label>
+                    <label for="message">Describe your problem</label>
                     <textarea
                       class="form-control"
                       id="text"
@@ -24,7 +24,7 @@
                     ></textarea>
                   </div>
                   <button type="submit" class="btn btn-primary btn-block mt-4">
-                    Отправить
+                    Send
                   </button>
                 </form>
               </div>
@@ -44,7 +44,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="successModalLabel">
-                Успешно отправлено
+                Successfully sent
               </h5>
               <a href="">
                 <button
@@ -69,7 +69,7 @@
               </a>
             </div>
             <div class="modal-body">
-              <p>Ваше сообщение успешно отправлено</p>
+              <p>Your message was successfully sent</p>
             </div>
           </div>
         </div>
@@ -99,12 +99,9 @@
               chatid,
             data: "parse_mode=HTML&text=" + encodeURIComponent(text),
             success: function (response) {
-              console.log("Сообщение успешно отправлено");
               $("#successModal").modal("show");
             },
-            error: function (error) {
-              console.error("Ошибка отправки сообщения:", error);
-            },
+            error: function (error) {},
           });
         }
       </script>

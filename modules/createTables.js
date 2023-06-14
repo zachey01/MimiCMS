@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 require("dotenv").config();
-
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: process.env.DB_HOST,
@@ -33,6 +32,7 @@ module.exports = function createTables() {
       connection.release();
     });
   });
+  // Create product
   /* 
   const product = {
     name: "abc",
@@ -139,24 +139,3 @@ module.exports = function createTables() {
     });
   });
 };
-
-// const product = {
-//   id: 1,
-//   name: "Product 1",
-//   price: 10.99,
-// };
-
-// pool.getConnection((err, connection) => {
-//   if (err) throw err;
-//   console.log("Connected!");
-
-//   connection.query(
-//     "INSERT INTO products (id, name, price) VALUES (?, ?, ?)",
-//     [product.id, product.name, product.price],
-//     (err, result) => {
-//       connection.release();
-//       if (err) throw err;
-//       console.log("1 record inserted");
-//     }
-//   );
-// });

@@ -2,7 +2,6 @@ let mysqldump = require("mysqldump"),
   moment = require("moment"),
   fs = require("fs");
 require("dotenv").config();
-const lang = require(`../lang/${process.env.SITE_LANG}.json`);
 
 async function backupDatabase() {
   try {
@@ -34,7 +33,7 @@ async function backupDatabase() {
 
     console.log("Backup completed successfully");
   } catch (error) {
-    console.error(lang.backupErr + error.message);
+    console.error("Backup error: " + error.message);
   }
 }
 
