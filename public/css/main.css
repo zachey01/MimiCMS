@@ -51,7 +51,7 @@ h6 {
 
 a.nav-link {
   color: gray;
-  font-size: 18px;
+  font-size: 7px;
   padding: 0;
 }
 
@@ -69,7 +69,7 @@ a.nav-link {
     text-align: center;
   }
   .balance {
-    text-align: left;
+    text-align: center;
   }
   .header-icon {
     margin-top: 15px;
@@ -141,4 +141,15 @@ textarea.form-control {
 .contact-info {
   font-size: 25px;
   text-align: center;
+}
+
+.server-map-img {
+  margin-left: 10px;
+}
+
+@media (max-width: 769px) {
+  .server-map-img {
+    margin-left: 0px;
+    height: 20%;
+  }
 }
