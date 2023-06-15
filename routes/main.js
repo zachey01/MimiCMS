@@ -122,7 +122,7 @@ router.get("/", async function (req, res) {
 
   const server = await Server({
     ip: process.env.SERVER_IP,
-    port: 27015,
+    port: parseInt(process.env.SERVER_PORT, 10),
     timeout: 5000,
   });
   const infoServer = await server.getInfo();
