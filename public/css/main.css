@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Work+Sans:wght@300&display=swap");
-@import url("shop.css");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Work+Sans:wght@300&display=swap");
 
 header {
   margin-bottom: 50px;
@@ -75,9 +74,6 @@ a.nav-link {
 
 @media (max-width: 993px) {
   header {
-    text-align: center;
-  }
-  .balance {
     text-align: center;
   }
   .header-icon {
@@ -165,4 +161,9 @@ textarea.form-control {
     margin-left: 0px;
     height: 20%;
   }
+}
+
+.header-auth-btn button {
+  color: white;
+  font-family: "Montserrat", sans-serif;
 }
