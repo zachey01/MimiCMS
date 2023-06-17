@@ -15,9 +15,9 @@ Modular, fast CMS for CS:GO, CS2 (coming soon) servers. Advantages
 - Possibility of creating backups.
 - Price. MimiCMS is completely free!
 
-## Installation
+## 1. Installation
 
-### 1. Cloning the repository
+### 1.1 Cloning the repository
 
 Clone this repository:
 
@@ -31,7 +31,7 @@ And go to the cloned directory:
 cd MimiCMS
 ```
 
-### 2. Install dependencies
+### 1.2 Install dependencies
 
 > P.S: you must have NodeJS and NPM installed
 
@@ -47,7 +47,7 @@ And if you are using a VPS/VDS, you need to install [forever](https://www.npmjs.
 npm i forever
 ```
 
-### 3. Setup
+### 1.3 Setup
 
 First, rename the env.example file to .env and open it in a text editor.
 
@@ -80,3 +80,37 @@ Next is the configuration of the server itself.
 `SERVER_IP` - server IP address.
 
 `SERVER_PORT` - server port.
+
+## 2. Accessing the admin panel
+
+To access the admin panel, go to the following URL:
+
+```
+http://yourdomain.com/admin
+```
+
+You will be prompted to enter the admin username and password, which you specified in the .env file.
+
+## 3. Adding custom payment methods
+
+To add a custom payment method, you need to rewrite the API request template for the official payment system documentation. You can find the API templates in the `api/` directory.
+
+## 4. Adding custom autodonate methods
+
+To add a custom autodonate method, specify the command to grant the privilege in the `givecmd` field in the admin panel. You can use any plugin to issue donations.
+
+## 5. Creating backups
+
+To create a backup of the site and the database, you can use the built-in backup functionality in the admin panel. This will create a .sql file dump of the database.
+
+## 6. Getting support
+
+If you have any questions about using MimiCMS, you can join the Discord server.
+
+<center><widgetbot
+    server="1097866586444017676"
+    channel="1119731146289332335"
+    width="800"
+    height="400"
+></widgetbot>
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script></center>
