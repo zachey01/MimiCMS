@@ -118,20 +118,20 @@ function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
 }
 
 router.get("/", async function (req, res) {
-  userSteamID = req.session.steamid;
+  userSteamID = "76561199219730677";
 
-  const server = await Server({
-    ip: process.env.SERVER_IP,
-    port: parseInt(process.env.SERVER_PORT, 10),
-    timeout: 5000,
-  });
-  const infoServer = await server.getInfo();
-  authVars.serverPing = infoServer.ping;
-  authVars.serverPlayerCountOnline = await infoServer.players.online;
-  authVars.serverPlayerCountMax = await infoServer.players.max;
-  authVars.serverMap = infoServer.map;
-  authVars.serverName = infoServer.name;
-  authVars.serverDescription = process.env.SERVER_DESCRIPTION;
+  // const server = await Server({
+  //   ip: process.env.SERVER_IP,
+  //   port: parseInt(process.env.SERVER_PORT, 10),
+  //   timeout: 5000,
+  // });
+  // const infoServer = await server.getInfo();
+  // authVars.serverPing = infoServer.ping;
+  // authVars.serverPlayerCountOnline = await infoServer.players.online;
+  // authVars.serverPlayerCountMax = await infoServer.players.max;
+  // authVars.serverMap = infoServer.map;
+  // authVars.serverName = infoServer.name;
+  // authVars.serverDescription = process.env.SERVER_DESCRIPTION;
 
   renderPage(req, res, userSteamID, "index", "nonAuthIndex");
 });
@@ -173,10 +173,10 @@ router.get("/contacts", function (req, res) {
 });
 
 // 404 page
-router.get("*", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "404", "nonAuth404");
-});
+// router.get("*", function (req, res) {
+//   userSteamID = req.session.steamid;
+//   renderPage(req, res, userSteamID, "404", "nonAuth404");
+// });
 
 router.post("/debit/:amount/:productId", (req, res) => {
   userSteamID = req.session.steamid;

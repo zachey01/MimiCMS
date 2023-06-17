@@ -1,92 +1,89 @@
 # MimiCMS
 
 <img src="https://media.discordapp.net/attachments/1110890217478557726/1118836804183928922/1.png" align="right"
-     alt="Size Limit logo by Anton Lovchikov" width="170" height="170">
+     alt="MimiCMS by Zachey" width="170" height="170">
 
-Size Limit is a performance budget tool for JavaScript. It checks every commit
-on CI, calculates the real cost of your JS for end-users and throws an error
-if the cost exceeds the limit.
+Модульная, быстрая CMS для CS:GO, CS2 (скоро) сервера. Приемущества
 
-- **ES modules** and **tree-shaking** support.
-- Add Size Limit to **Travis CI**, **Circle CI**, **GitHub Actions**
-  or another CI system to know if a pull request adds a massive dependency.
-- **Modular** to fit different use cases: big JS applications
-  that use their own bundler or small npm libraries with many files.
-- Can calculate **the time** it would take a browser
-  to download and **execute** your JS. Time is a much more accurate
-  and understandable metric compared to the size in bytes.
-- Calculations include **all dependencies and polyfills**
-  used in your JS.
-
-<p align="center">
-  <img src="./img/example.png" alt="Size Limit CLI" width="738">
-</p>
-
-With **[GitHub action]** Size Limit will post bundle size changes as a comment
-in pull request discussion.
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/andresz1/size-limit-action/master/assets/pr.png"
-  alt="Size Limit comment in pull request about bundle size changes"
-  width="686" height="289">
-</p>
-
-With `--why`, Size Limit can tell you _why_ your library is of this size
-and show the real cost of all your internal dependencies.
-We are using [Statoscope] for this analysis.
-
-<p align="center">
-  <img src="./img/why.png" alt="Statoscope example" width="650">
-</p>
-
-<p align="center">
-  <a href="https://evilmartians.com/?utm_source=size-limit">
-    <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
-         alt="Sponsored by Evil Martians" width="236" height="54">
-  </a>
-</p>
+- Кастомные **способы оплаты**. Вы можете использовать любую систему оплатиы, для добавления нужно переписать шаблон API-запросов под официальную документацию системы оплаты.
+- Кастомный **автодонат** (тоесть: вы можете использовать любой плагин для выдачи доната, достаточно всего лишь указать комманду для выдачи привелегии в графу _givecmd_).
+- Удобная **админ-панель** для управления сайтом и самим сервером через _RCON_.
+- Защита от **DDOS-атак.** IP адреса с подозрительной активностью будут добавляться в blacklist.
+- Прост в **изменении**. В админ-панели в можете изменить каждую страницу под ваши требования.
+- **Быстра и малотредобавтельна**. CMS может быть запущена даже на самом дешевом VPS (P.S: CMS весит всего _~45mb._).
+- Полное **логгирование**. Если в CMS произошла ошибка, то вы с легкостью сможете узнать причины и исправить её, также вы сможете отследить действия забанненого игрока.
+- Возможность **создания бэкапов**.
+- **Цена**. MimiCMS - полностью бесплатна!
 
 [GitHub action]: https://github.com/andresz1/size-limit-action
 [Statoscope]: https://github.com/statoscope/statoscope
 [cult-img]: http://cultofmartians.com/assets/badges/badge.svg
 [cult]: http://cultofmartians.com/tasks/size-limit-config.html
 
-## Who Uses Size Limit
+## Установка
 
-- [MobX](https://github.com/mobxjs/mobx)
-- [Material-UI](https://github.com/callemall/material-ui)
-- [Autoprefixer](https://github.com/postcss/autoprefixer)
-- [PostCSS](https://github.com/postcss/postcss) reduced
-  [25% of the size](https://github.com/postcss/postcss/commit/150edaa42f6d7ede73d8c72be9909f0a0f87a70f).
-- [Browserslist](https://github.com/browserslist/browserslist) reduced
-  [25% of the size](https://github.com/browserslist/browserslist/commit/640b62fa83a20897cae75298a9f2715642531623).
-- [EmojiMart](https://github.com/missive/emoji-mart) reduced
-  [20% of the size](https://github.com/missive/emoji-mart/pull/111)
-- [nanoid](https://github.com/ai/nanoid) reduced
-  [33% of the size](https://github.com/ai/nanoid/commit/036612e7d6cc5760313a8850a2751a5e95184eab).
-- [React Focus Lock](https://github.com/theKashey/react-focus-lock) reduced
-  [32% of the size](https://github.com/theKashey/react-focus-lock/pull/48).
-- [Logux](https://github.com/logux) reduced
-  [90% of the size](https://github.com/logux/logux-client/commit/62b258e20e1818b23ae39b9c4cd49e2495781e91).
+### 1. Клонированние репозитория
 
-## How It Works
+Склонируйте этот репозиторий:
 
-1. Size Limit contains a CLI tool, 3 plugins (`file`, `webpack`, `time`)
-   and 3 plugin presets for popular use cases (`app`, `big-lib`, `small-lib`).
-   A CLI tool finds plugins in `package.json` and loads the config.
-2. If you use the `webpack` plugin, Size Limit will bundle your JS files into
-   a single file. It is important to track dependencies and webpack polyfills.
-   It is also useful for small libraries with many small files and without
-   a bundler.
-3. The `webpack` plugin creates an empty webpack project, adds your library
-   and looks for the bundle size difference.
-4. The `time` plugin compares the current machine performance with that of
-   a low-priced Android devices to calculate the CPU throttling rate.
-5. Then the `time` plugin runs headless Chrome (or desktop Chrome if it’s
-   available) to track the time a browser takes to compile and execute your JS.
-   Note that these measurements depend on available resources and might
-   be unstable. [See here](https://github.com/mbalabash/estimo/issues/5)
-   for more details.
+```bash
+git clone https://github.com/zachey01/MimiCMS.git
+```
+
+И перейдите в склонированную директорию:
+
+```bash
+cd MimiCMS
+```
+
+### 2. Установка зависимостей
+
+> P.S: у вас дожны быть установленны NodeJS и NPM
+
+Для работы CMS нужно установить необходимые зависимости:
+
+```bash
+npm i
+```
+
+И если вы используете VPS/VDS, то вам нужно установить [Forever]() для постоянной работы сайта:
+
+```bash
+npm i forever
+```
+
+### 3. Настройка
+
+Для начала переименуйте файл `env.example` в `.env` и откройте эго в текстовом редакторе.
+
+В начале находятся переменные для подключения к базе данных MySQL.
+
+`DB_HOST` - это адрес расположения базы данных (обычно это 127.0.0.1).
+
+`DB_USER` - это имя пользователя для доступа к бд.
+
+`DB_PASSWORD` - это пароль пользователя для доступа к бд.
+
+`DB_NAME` - это название базы данных.
+
+Далее идет настройка вебсервера:
+
+`PORT`- это порт на котором будет работать сайт (если хотите чтобы порт не отображался в URL, то оставьте пустым то есть будет установлен порт _80_).
+
+`DOMAIN` - тут укажите домен на котором размешен сайт, если локально то оставьте пустым
+
+Далее идут настройки самого сайта.
+
+`STEAM_API_KEY` - это web api key для steam, её можно получить [тут]().
+
+`SECRET` - сюда надо вставить рандомную сгенерированную строку (минимум 32 символа).
+
+Остальные параметры понятны.
+
+Далее идет конфигурация самого сервера
+
+`SERVER_IP` - IP адрес сервера
+`SERVER_PORT` - порт сервера
 
 ## Usage
 
@@ -407,207 +404,3 @@ for this preset.
    ```
 
 </details>
-
-[Travis CI]: https://github.com/dwyl/learn-travis
-[Storeon]: https://github.com/ai/storeon/
-[Nano ID]: https://github.com/ai/nanoid/
-[React]: https://github.com/facebook/react/
-
-## Reports
-
-Size Limit has a [GitHub action] that comments and rejects pull requests based
-on Size Limit output.
-
-1. Install and configure Size Limit as shown above.
-2. Add the following action inside `.github/workflows/size-limit.yml`
-
-```yaml
-name: "size"
-on:
-  pull_request:
-    branches:
-      - master
-jobs:
-  size:
-    runs-on: ubuntu-latest
-    env:
-      CI_JOB_NUMBER: 1
-    steps:
-      - uses: actions/checkout@v1
-      - uses: andresz1/size-limit-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-```
-
-## Config
-
-### Plugins and Presets
-
-Plugins or plugin presets will be loaded automatically from `package.json`.
-For example, if you want to use `@size-limit/webpack`, you can just use
-`npm install --save-dev @size-limit/webpack`, or you can use our preset
-`@size-limit/preset-big-lib`.
-
-Plugins:
-
-- `@size-limit/file` checks the size of files with Gzip, Brotli
-  or without compression.
-- `@size-limit/webpack` adds your library to empty webpack project
-  and prepares bundle file for `file` plugin.
-- `@size-limit/webpack-why` adds reports for `webpack` plugin
-  about your library is of this size to show the cost of all your
-  dependencies.
-- `@size-limit/webpack-css` adds css support for `webpack` plugin.
-- `@size-limit/esbuild` is like `webpack` plugin, but uses `esbuild`
-  to be faster and use less space in `node_modules`.
-- `@size-limit/esbuild-why` add reports for `esbuild` plugin
-  about your library is of this size to show the cost of all your
-  dependencies.
-- `@size-limit/time` uses headless Chrome to track time to execute JS.
-- `@size-limit/dual-publish` compiles files to ES modules with [`dual-publish`]
-  to check size after tree-shaking.
-
-Plugin presets:
-
-- `@size-limit/preset-app` contains `file` and `time` plugins.
-- `@size-limit/preset-big-lib` contains `webpack`, `file`, and `time` plugins.
-- `@size-limit/preset-small-lib` contains `esbuild` and `file` plugins.
-
-[`dual-publish`]: https://github.com/ai/dual-publish
-
-#### Third-Party Plugins
-
-Third-party plugins and presets named starting with `size-limit-` are also supported.
-For example:
-
-- [`size-limit-node-esbuild`](https://github.com/un-ts/size-limit/tree/main/packages/node-esbuild)
-  is like `@size-limit/esbuild` but for Node libraries.
-- [`size-limit-preset-node-lib`](https://github.com/un-ts/size-limit/tree/main/packages/preset-node-lib)
-  is like `@size-limit/preset-small-lib` but for Node libraries which contains
-  above `node-esbuild` and core `file` plugins.
-- [`nx-size-limit`](https://github.com/LironHazan/nx-size-limit)
-  is an [NX](https://nx.dev/community) build system community plugin.
-
-### Limits Config
-
-Size Limits supports three ways to define limits config.
-
-1. `size-limit` section in `package.json`:
-
-   ```json
-     "size-limit": [
-       {
-         "path": "index.js",
-         "import": "{ createStore }",
-         "limit": "500 ms"
-       }
-     ]
-   ```
-
-2. or a separate `.size-limit.json` config file:
-
-   ```js
-   [
-     {
-       path: "index.js",
-       import: "{ createStore }",
-       limit: "500 ms",
-     },
-   ];
-   ```
-
-3. or a more flexible `.size-limit.js` or `.size-limit.cjs` config file:
-
-   ```js
-   module.exports = [
-     {
-       path: "index.js",
-       import: "{ createStore }",
-       limit: "500 ms",
-     },
-   ];
-   ```
-
-Each section in the config can have these options:
-
-- **path**: relative paths to files. The only mandatory option.
-  It could be a path `"index.js"`, a [pattern] `"dist/app-*.js"`
-  or an array `["index.js", "dist/app-*.js", "!dist/app-exclude.js"]`.
-- **import**: partial import to test tree-shaking. It could be `"{ lib }"`
-  to test `import { lib } from 'lib'`, `*` to test all exports,
-  or `{ "a.js": "{ a }", "b.js": "{ b }" }` to test multiple files.
-- **limit**: size or time limit for files from the `path` option. It should be
-  a string with a number and unit, separated by a space.
-  Format: `100 B`, `10 kB`, `500 ms`, `1 s`.
-- **name**: the name of the current section. It will only be useful
-  if you have multiple sections.
-- **entry**: when using a custom webpack config, a webpack entry could be given.
-  It could be a string or an array of strings.
-  By default, the total size of all entry points will be checked.
-- **webpack**: with `false` it will disable webpack.
-- **running**: with `false` it will disable calculating running time.
-- **gzip**: with `false` it will disable gzip compression.
-- **brotli**: with `true` it will use brotli compression and disable
-  gzip compression.
-- **config**: a path to a custom webpack config.
-- **ignore**: an array of files and dependencies to exclude from
-  the project size calculation.
-- **modifyWebpackConfig**: (.size-limit.js only) function that can be used
-  to do last-minute changes to the webpack config, like adding a plugin.
-- **compareWith**: path to `stats.json` from another build to compare
-  (when `--why` is using).
-- **uiReports**: custom UI reports list (see [Statoscope docs]).
-
-If you use Size Limit to track the size of CSS files, make sure to set
-`webpack: false`. Otherwise, you will get wrong numbers, because webpack
-inserts `style-loader` runtime (≈2 kB) into the bundle.
-
-[Statoscope docs]: https://github.com/statoscope/statoscope/tree/master/packages/webpack-plugin#optionsreports-report
-[pattern]: https://github.com/sindresorhus/globby#globbing-patterns
-
-## Analyze with `--why`
-
-You can run `size-limit --why` to analyze the bundle.
-
-You will need to install `@size-limit/esbuild-why` or `@size-limit/webpack-why`
-depends on which bundler you are using (default is `esbuild`).
-
-For `@size-limit/esbuild-why`,
-it will generate a `esbuild-why.html` at the current directory.
-
-If you also specify `--save-bundle <DIR>`,
-the report will be generated inside `<DIR>`.
-
-If you have multiple sections in your config,
-the files will be named `esbuild-why-{n}.html`,
-or you can give it a custom name:
-
-```jsonc
-[
-  {
-    "name": "cjs"
-    /* snap */
-  },
-  {
-    "name": "esm"
-    /* snap */
-  }
-]
-```
-
-This will produce `esbuild-why-cjs.html` and `esbuild-why-esm.html` respectively.
-
-For `@size-limit/webpack-why`,
-it will generate the report and open it in the browser automatically.
-
-## JS API
-
-```js
-const sizeLimit = require("size-limit");
-const filePlugin = require("@size-limit/file");
-const webpackPlugin = require("@size-limit/webpack");
-
-sizeLimit([filePlugin, webpackPlugin], [filePath]).then((result) => {
-  result; //=> { size: 12480 }
-});
-```
