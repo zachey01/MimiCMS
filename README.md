@@ -109,6 +109,6 @@ If you have any questions about using MimiCMS, you can join the Discord server.
 
 <center>
 
-![Discord Banner 3](https://discordapp.com/api/guilds/1097866586444017676/widget.png?style=banner3)
+[![A mushroom-head robot](https://discordapp.com/api/guilds/1097866586444017676/widget.png?style=banner3 "Discord banner")](https://discord.com/invite/dzuhSFG2cX)
 
 </center>
