@@ -107,4 +107,8 @@ To create a backup of the site and the database, you can use the built-in backup
 
 If you have any questions about using MimiCMS, you can join the Discord server.
 
-<iframe src="https://discord.com/widget?id=1097866586444017676&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+<center>
+
+![Discord Banner 3](https://discordapp.com/api/guilds/1097866586444017676/widget.png?style=banner3)
+
+</center>
