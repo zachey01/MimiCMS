@@ -167,3 +167,7 @@ textarea.form-control {
   color: white;
   font-family: "Montserrat", sans-serif;
 }
+
+.banners svg {
+  color: black;
+}
