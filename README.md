@@ -101,7 +101,7 @@ To add a custom autodonate method, specify the command to grant the privilege in
 
 ## 5. Creating backups
 
-To create a backup of the site and the database, you can use the built-in backup functionality in the admin panel. This will create a .sql file dump of the database.
+To create a backup of the site and the database, you can use the built-in backup functionality in the admin panel or enter command: `npm run backup`. This will create a .sql file dump of the database.
 
 ## 6. Getting support
 
