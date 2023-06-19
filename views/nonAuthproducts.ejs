@@ -6,12 +6,18 @@
   <body class="container bg-slate-200">
     <header id="header"><%- include('../partials/nonAuth/header'); %></header>
     <main>
+      <% if (products.length) { %> <% products.forEach(product => { %>
       <div class="container">
         <div class="row">
-          <% products.forEach(product => { %>
           <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
               <div class="card-body">
+                <img
+                  src="<%= product.img %>"
+                  alt=""
+                  class="card-img"
+                  height="210"
+                />
                 <h4><%= product.name %></h4>
                 <p class="fw-light"><%= product.description %></p>
                 <p><code><%= product.price %><%= currency %></code></p>
@@ -33,9 +39,11 @@
               alert("Вы должны войти для покупки");
             }
           </script>
-          <% }); %>
         </div>
       </div>
+      <% }); %> <% } else { %>
+      <p>Нет доступных продуктов</p>
+      <% } %>
     </main>
     <footer id="footer" class="text-center text-muted">
       <%- include('../partials/footer'); %>

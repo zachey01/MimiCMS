@@ -20,6 +20,8 @@ module.exports = function createTables() {
           price DECIMAL(10, 2) NOT NULL,
           description VARCHAR(255) NOT NULL,
           givecmd VARCHAR(255) NOT NULL,
+          img VARCHAR(255) NOT NULL,
+          tags VARCHAR(255) NOT NULL,
           PRIMARY KEY (id)
         )`;
         connection.query(products, (err, result) => {
@@ -32,20 +34,7 @@ module.exports = function createTables() {
       connection.release();
     });
   });
-  // Create product
-  /*
-  const product = {
-    name: "Invisible",
-    price: 130,
-    description: "You can invisible",
-    givecmd: "invisible",
-  };
 
-  pool.query("INSERT INTO products SET ?", product, (err, result) => {
-    if (err) throw err;
-    console.log("Product added to the database ✅");
-  });
-*/
   // User table
   pool.getConnection((err, connection) => {
     if (err) throw err;

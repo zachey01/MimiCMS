@@ -171,3 +171,7 @@ textarea.form-control {
 .banners svg {
   color: black;
 }
+
+.shop-menu-container {
+  max-width: 150px;
+}

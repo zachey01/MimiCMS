@@ -12,7 +12,6 @@
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title"><b><%= serverName %></b></h5>
-            <p class="card-text"><%= serverDescription %></p>
             <p class="card-text">
               <small class="text-muted"
                 >Текущая карта: <code><%= serverMap %></code></small
@@ -25,6 +24,11 @@
                 ></small
               >
             </p>
+            <a href="steam://connect/<%= serverIP %>:<%= serverPort %>">
+              <button type="button" class="btn btn-outline-dark">
+                Присоединиться
+              </button></a
+            >
           </div>
         </div>
       </div>

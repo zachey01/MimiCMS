@@ -32,6 +32,8 @@ let authVars = {
   name: process.env.NAME || "MimiCMS",
   tg_token: process.env.TG_BOT_TOKEN,
   tg_group: process.env.TG_GROUP_ID,
+  serverIP: process.env.SERVER_IP,
+  serverPort: process.env.SERVER_PORT,
   steamid: null,
   avatar: null,
   balance: null,
@@ -138,7 +140,6 @@ router.get("/", async function (req, res) {
 
 router.get("/shop", function (req, res) {
   userSteamID = req.session.steamid;
-
   renderPage(req, res, userSteamID, "products", "nonAuthproducts");
 });
 
@@ -167,9 +168,19 @@ router.get("/rules", function (req, res) {
   renderPage(req, res, userSteamID, "rules", "nonAuthrules");
 });
 
+router.get("/privacy", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "privacy", "privacy");
+});
+
 router.get("/contacts", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "contacts", "nonAuthcontacts");
+});
+
+router.get("/mapViewer", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "mapViewer", "mapViewerNonAuth");
 });
 
 // 404 page
