@@ -1,6 +1,9 @@
 /*!
  * MimiCMS v1.0 (https://github.com/zachey01/MimiCMS)
  */
+
+const { getgroups } = require("process");
+
 let // Modules
   express = require("express"),
   passport = require("passport"),
@@ -19,16 +22,42 @@ let // Modules
   mainRoutes = require("./routes/route"),
   // Middlewares
   friendList = require("./middlewares/friendList"),
+  getBonus = require("./middlewares/getBonus"),
   // Config
   pool = require("./config/db"),
   port = process.env.PORT || 80;
 
 require("dotenv").config();
 
+// Получение списка друзей
+// TODO: добавить их в профиль и отображать тех, кто есть в бд
+/*
 async function getFriendList() {
   const friends = await friendList(userSteamID); // вызываем функцию и ждем завершения
   return await friends;
 }
+
+getFriendList()
+  .then((friends) => {
+    console.log(friends);
+  })
+  .catch((error) => {
+    console.error(error.response.data);
+  });
+*/
+
+// Получение списка подписок пользователя
+// TODO: сделать старницу задания для получения бонусов за подписку игру и т.д.
+/*
+async function getGroupList() {
+  const groups = await getBonus(userSteamID); // вызываем функцию и ждем завершения
+  return await groups;
+}
+
+ getGroupList().then((groups) => {
+  console.log(groups);
+});
+*/
 
 // Logger configuration
 const logger = winston.createLogger({
@@ -186,14 +215,6 @@ app.use(
     winstonInstance: logger,
   })
 );
-
-getFriendList()
-  .then((friends) => {
-    console.log(friends);
-  })
-  .catch((error) => {
-    console.error(error.response.data);
-  });
 
 // Start the server
 app.listen(port, () => console.log("Server started on port " + port));
