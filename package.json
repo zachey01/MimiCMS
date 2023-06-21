@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "prettier": "prettier ./ --write",
-    "backup": "node modules/backup.js"
+    "backup": "node scripts/backup.js"
   },
   "keywords": [
     "CMS",

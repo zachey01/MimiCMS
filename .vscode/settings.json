@@ -7,7 +7,5 @@
     "ejs": "html"
   },
   "html.format.templating": true,
-  "cSpell.enableFiletypes": [
-    "!javascript"
-  ]
+  "cSpell.enableFiletypes": ["!javascript"]
 }
