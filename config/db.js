@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 require("dotenv").config();
-const createTables = require("../modules/createTables");
-const createProducts = require("../modules/createProducts");
+const createTables = require("../middlewares/createTables");
+const createProducts = require("../middlewares/createProducts");
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: process.env.DB_HOST,

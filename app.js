@@ -16,12 +16,19 @@ let // Modules
   winston = require("winston"),
   expressWinston = require("express-winston"),
   // Routes
-  mainRoutes = require("./routes/main"),
+  mainRoutes = require("./routes/route"),
+  // Middlewares
+  friendList = require("./middlewares/friendList"),
   // Config
   pool = require("./config/db"),
   port = process.env.PORT || 80;
 
 require("dotenv").config();
+
+async function getFriendList() {
+  const friends = await friendList(userSteamID); // вызываем функцию и ждем завершения
+  return await friends;
+}
 
 // Logger configuration
 const logger = winston.createLogger({
@@ -172,20 +179,6 @@ app.get(
     }
   }
 );
-let authVars = {
-  logo: process.env.LOGO,
-  currency: process.env.CURRENCY,
-  slide_1: process.env.SLIDE_1,
-  slide_2: process.env.SLIDE_2,
-  slide_3: process.env.SLIDE_3,
-  tg_channel: process.env.TG_CHANNEL,
-  discord_server_id: process.env.DISCORD_SERVER_ID,
-  name: process.env.NAME,
-  avatar: "",
-  balance: "",
-  userName: "",
-  steamLink: "",
-};
 
 // Error logging
 app.use(
@@ -193,6 +186,14 @@ app.use(
     winstonInstance: logger,
   })
 );
+
+getFriendList()
+  .then((friends) => {
+    console.log(friends);
+  })
+  .catch((error) => {
+    console.error(error.response.data);
+  });
 
 // Start the server
 app.listen(port, () => console.log("Server started on port " + port));
