@@ -12,22 +12,33 @@
           <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
               <div class="card-body">
+                <img src="<%= product.img %>" alt="" class="card-img-top" />
                 <h4><%= product.name %></h4>
                 <p class="fw-light"><%= product.description %></p>
                 <p><code><%= product.price %><%= currency %></code></p>
 
-                <div
-                  class="d-flex justify-content-between align-items-center"
-                  id="mainBuyBtn"
-                ></div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <% if (balance < product.price) { %>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    onclick="notEnoughBalance()"
+                  >
+                    Buy
+                  </button>
+                  <% } else { %>
+                  <button
+                    class="btn btn-sm btn-outline-secondary"
+                    id="buyBtn<%= product.id %>"
+                    data-id="<%= product.id %>"
+                  >
+                    Buy
+                  </button>
+                  <% } %>
+                </div>
               </div>
             </div>
           </div>
-          <script>
-            if (<%= balance %> < <%= product.price %>) {
-              document.getElementById("mainBuyBtn").innerHTML = '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="notEnoughBalance()">Buy</button>'
-            } else { document.getElementById("mainBuyBtn").innerHTML = '<button class="btn btn-sm btn-outline-secondary" id="buyBtn<%= product.id %>" data-id="<%= product.id %>">Buy</button>' }
-          </script>
           <script>
             document.addEventListener("DOMContentLoaded", function () {
               const buyBtn = document.querySelector("#buyBtn<%= product.id %>");
@@ -45,6 +56,10 @@
                 xhr.send();
               });
             });
+            function notEnoughBalance() {
+              alert("У вас недостаточно денег для списания");
+            }
+
             function notEnoughBalance() {
               alert("У вас недостаточно денег для списания");
             }

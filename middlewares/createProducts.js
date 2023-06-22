@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const fs = require("fs");
+const chokidar = require("chokidar");
 require("dotenv").config();
 
 const pool = mysql.createPool({
@@ -10,10 +11,8 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
-module.exports = function createProducts() {
-  // Загружаем данные из JSON-файла
-  const products = JSON.parse(fs.readFileSync("data/products.json"));
-
+// Функция для создания продуктов в базе данных
+function createProducts(products) {
   // Перебираем все продукты
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
@@ -24,9 +23,24 @@ module.exports = function createProducts() {
       (err, rows) => {
         if (err) throw err;
 
-        // Если продукт найден, то выводим сообщение в консоль
+        // Если продукт найден, то обновляем данные в базе данных
         if (rows.length > 0) {
-          console.log(`Продукт ${product.name} уже создан`);
+          pool.query(
+            "UPDATE products SET name = ?, price = ?, description = ?, givecmd = ?, img = ?, tags = ? WHERE id = ?",
+            [
+              product.name,
+              product.price,
+              product.description,
+              product.givecmd,
+              product.img,
+              product.tags,
+              product.id,
+            ],
+            (err, result) => {
+              if (err) throw err;
+              console.log(`Продукт ${product.name} успешно обновлен`);
+            }
+          );
         } else {
           // Иначе добавляем новый продукт в базу данных
           pool.query(
@@ -49,4 +63,18 @@ module.exports = function createProducts() {
       }
     );
   }
-};
+}
+// Экспортируем функцию createProducts
+module.exports = createProducts;
+
+// Отслеживаем изменения в файле
+chokidar.watch("data/products.json").on("change", () => {
+  // Загружаем данные из JSON-файла
+  const products = JSON.parse(fs.readFileSync("data/products.json"));
+  // Создаем или обновляем продукты в базе данных
+  createProducts(products);
+});
+
+// Создаем или обновляем продукты в базе данных при запуске приложения
+const products = JSON.parse(fs.readFileSync("data/products.json"));
+createProducts(products);

@@ -6,44 +6,36 @@
   <body class="container bg-slate-200">
     <header id="header"><%- include('../partials/nonAuth/header'); %></header>
     <main>
-      <% if (products.length) { %> <% products.forEach(product => { %>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-              <div class="card-body">
-                <img
-                  src="<%= product.img %>"
-                  alt=""
-                  class="card-img"
-                  height="210"
-                />
-                <h4><%= product.name %></h4>
-                <p class="fw-light"><%= product.description %></p>
-                <p><code><%= product.price %><%= currency %></code></p>
-
-                <div class="d-flex justify-content-between align-items-center">
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-secondary"
-                    onclick="nonAuth()"
-                  >
-                    Купить
-                  </button>
-                </div>
-              </div>
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        <% if (products.length) { %> <% products.forEach(product => { %>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="<%= product.img %>" alt="" class="card-img-top" />
+            <div class="card-body">
+              <h4 class="card-title"><%= product.name %></h4>
+              <p class="card-text"><%= product.description %></p>
+              <p class="card-text">
+                <code><%= product.price %><%= currency %></code>
+              </p>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-secondary"
+                onclick="nonAuth()"
+              >
+                Купить
+              </button>
             </div>
           </div>
-          <script>
-            function nonAuth() {
-              alert("Вы должны войти для покупки");
-            }
-          </script>
         </div>
+        <% }); %> <% } else { %>
+        <p>Нет доступных продуктов</p>
+        <% } %>
       </div>
-      <% }); %> <% } else { %>
-      <p>Нет доступных продуктов</p>
-      <% } %>
+      <script>
+        function nonAuth() {
+          alert("Вы должны войти для покупки");
+        }
+      </script>
     </main>
     <footer id="footer" class="text-center text-muted">
       <%- include('../partials/footer'); %>

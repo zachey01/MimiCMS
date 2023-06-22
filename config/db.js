@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const fs = require("fs");
 require("dotenv").config();
 const createTables = require("../middlewares/createTables");
 const createProducts = require("../middlewares/createProducts");
@@ -16,8 +17,12 @@ pool.getConnection((err) => {
     return;
   }
   console.log("Connection to the data base is successfully established");
-  createTables();
-  createProducts();
+
+  // Загружаем данные из JSON-файла
+  const products = JSON.parse(fs.readFileSync("data/products.json"));
+
+  // Создаем или обновляем продукты в базе данных
+  createProducts(products);
 });
 
 module.exports = pool;

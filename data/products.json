@@ -1,20 +1,317 @@
 [
   {
     "id": 1,
-    "name": "Invisible",
+    "name": "Адольф Гитлер",
     "price": 130,
-    "description": "You can invisible",
+    "description": "Модель для игрока в виде изветсного диктатора Гитлера.",
     "givecmd": "invisible",
-    "img": "img/logo.png",
-    "tags": "skin"
+    "img": "img/products/1.png",
+    "tags": "моделька"
   },
   {
     "id": 2,
-    "name": "Invisible",
+    "name": "Агент смит",
     "price": 130,
-    "description": "You can invisible",
+    "description": "Модель для игрока в виде Агента Смита из Матрицы.",
     "givecmd": "invisible",
-    "img": "img/logo.png",
-    "tags": "skin"
+    "img": "img/products/2.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 3,
+    "name": "Аcтронавт",
+    "price": 130,
+    "description": "Модель для игрока в виде минималистичного астронавта.",
+    "givecmd": "invisible",
+    "img": "img/products/3.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 4,
+    "name": "Солид Снейк",
+    "price": 130,
+    "description": "Модель для игрока ви виде Солида Снейка (Биг Босса) из Metal Gear Solid.",
+    "givecmd": "invisible",
+    "img": "img/products/4.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 5,
+    "name": "Бисмарк",
+    "price": 130,
+    "description": "Модель для игрока в виде тянки Бисмарка.",
+    "givecmd": "invisible",
+    "img": "img/products/5.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 6,
+    "name": "Стрелок с черной скалы",
+    "price": 130,
+    "description": "Модель для игрока в виде ГГ из Стрелка с чёрной скалы.",
+    "givecmd": "invisible",
+    "img": "img/products/6.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 7,
+    "name": "Комбайн",
+    "price": 130,
+    "description": "Модель для игрока в виде комбайна из Half-Life.",
+    "givecmd": "invisible",
+    "img": "img/products/7.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 8,
+    "name": "Cybernetic",
+    "price": 130,
+    "description": "Модель для игрока в виде Cybernetic из Closer Online.",
+    "givecmd": "invisible",
+    "img": "img/products/8.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 9,
+    "name": "Харука Томацу",
+    "price": 130,
+    "description": "Модель для игрока в виде Харука Томацу из Милый во франксе.",
+    "givecmd": "invisible",
+    "img": "img/products/9.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 10,
+    "name": "Дарт Вейдер",
+    "price": 130,
+    "description": "Модель для игрока в виде Дарта Вейдера из Зведных Воин.",
+    "givecmd": "invisible",
+    "img": "img/products/10.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 11,
+    "name": "Дио",
+    "price": 130,
+    "description": "Модель для игрока в виде Дио из Jo-Jo.",
+    "givecmd": "invisible",
+    "img": "img/products/11.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 12,
+    "name": "Дональд Трамп",
+    "price": 130,
+    "description": "Модель для игрока в виде Дональда Трампа.",
+    "givecmd": "invisible",
+    "img": "img/products/12.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 13,
+    "name": "Палач Рока",
+    "price": 130,
+    "description": "Модель для игрока в виде Палача Рока (Doom Slayer) из Doom Eternal.",
+    "givecmd": "invisible",
+    "img": "img/products/13.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 14,
+    "name": "Феликс",
+    "price": 9999,
+    "description": "Модель для игрока в виде легендарного и самого няшного трапа Феликса из Re zero.",
+    "givecmd": "invisible",
+    "img": "img/products/14.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 15,
+    "name": "G-Man",
+    "price": 130,
+    "description": "Модель для игрока в виде G-Man`а из Half-Life.",
+    "givecmd": "invisible",
+    "img": "img/products/15.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 16,
+    "name": "Hazmat",
+    "price": 130,
+    "description": "Модель для игрока в виде Hazmata`а из Half-Life.",
+    "givecmd": "invisible",
+    "img": "img/products/16.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 17,
+    "name": "Hunk",
+    "price": 130,
+    "description": "Модель для игрока в виде Hunk`а из Half-Life.",
+    "givecmd": "invisible",
+    "img": "img/products/17.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 18,
+    "name": "Снеговик",
+    "price": 130,
+    "description": "Модель для игрока в виде Снеговика из Killing Floor 1.",
+    "givecmd": "invisible",
+    "img": "img/products/18.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 19,
+    "name": "Пила",
+    "price": 130,
+    "description": "Модель для игрока в виде Пилы (JigSaw).",
+    "givecmd": "invisible",
+    "img": "img/products/19.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 20,
+    "name": "Ким Чен Ын",
+    "price": 130,
+    "description": "Модель для игрока в виде Ким Чен Ына.",
+    "givecmd": "invisible",
+    "img": "img/products/20.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 21,
+    "name": "Кирито",
+    "price": 130,
+    "description": "Модель для игрока в виде Кирито из Sword Art Online.",
+    "givecmd": "invisible",
+    "img": "img/products/21.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 22,
+    "name": "Курт Кобейн",
+    "price": 130,
+    "description": "Модель для игрока в виде Курта Кобейна (P.S: «Ремингтон Модель 11» 20-го калибра в комплект не входит)",
+    "givecmd": "invisible",
+    "img": "img/products/22.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 23,
+    "name": "Леон Кеннеди",
+    "price": 130,
+    "description": "Модель для игрока в виде Леона Кеннеди из RE4.",
+    "givecmd": "invisible",
+    "img": "img/products/23.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 24,
+    "name": "Мастер Чиф",
+    "price": 130,
+    "description": "Модель для игрока в виде Мастера Чифа из Halo.",
+    "givecmd": "invisible",
+    "img": "img/products/24.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 25,
+    "name": "Мэверик",
+    "price": 130,
+    "description": "Модель для игрока в виде Мэверик из Fortnite.",
+    "givecmd": "invisible",
+    "img": "img/products/25.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 26,
+    "name": "Майк Майерс",
+    "price": 130,
+    "description": "Модель для игрока в виде Майкла Майерса.",
+    "givecmd": "invisible",
+    "img": "img/products/26.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 27,
+    "name": "Nanosuit",
+    "price": 130,
+    "description": "Модель для игрока в виде Nanosuit из Crysis.",
+    "givecmd": "invisible",
+    "img": "img/products/27.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 28,
+    "name": "Сайтама",
+    "price": 130,
+    "description": "Модель для игрока в виде Сайтамы из Ванпачмена.",
+    "givecmd": "invisible",
+    "img": "img/products/28.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 29,
+    "name": "Сон Гоку",
+    "price": 130,
+    "description": "Модель для игрока в виде Сон Гоку из Dragon Ball.",
+    "givecmd": "invisible",
+    "img": "img/products/29.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 30,
+    "name": "Скафандр",
+    "price": 130,
+    "description": "Модель для игрока в виде Скафандра.",
+    "givecmd": "invisible",
+    "img": "img/products/30.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 31,
+    "name": "Ебанутый фрик",
+    "price": 130,
+    "description": "Модель для игрока в виде Ебанутого фрика.",
+    "givecmd": "invisible",
+    "img": "img/products/31.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 32,
+    "name": "Сладкоежка-Говноежка",
+    "price": 130,
+    "description": "Модель для игрока в виде Сладкоежки-Говноежки.",
+    "givecmd": "invisible",
+    "img": "img/products/32.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 33,
+    "name": "Танос",
+    "price": 130,
+    "description": "Модель для игрока в виде Таноса.",
+    "givecmd": "invisible",
+    "img": "img/products/33.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 34,
+    "name": "Umaru Chan",
+    "price": 9999,
+    "description": "Модель для игрока в виде гуманоида Umaru Chan.",
+    "givecmd": "invisible",
+    "img": "img/products/34.png",
+    "tags": "моделька"
+  },
+  {
+    "id": 35,
+    "name": "Путин",
+    "price": 130,
+    "description": "Модель для игрока в виде Путина.",
+    "givecmd": "invisible",
+    "img": "img/products/35.png",
+    "tags": "моделька"
   }
 ]
