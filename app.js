@@ -216,5 +216,13 @@ app.use(
   })
 );
 
+app.get(
+  "*",
+
+  (req, res) => {
+    res.render;
+  }
+);
+
 // Start the server
 app.listen(port, () => console.log("Server started on port " + port));
