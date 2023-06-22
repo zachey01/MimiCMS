@@ -6,17 +6,13 @@ let // Modules
   mysql = require("mysql"),
   session = require("express-session"),
   app = express(),
-  router = express.Router();
-(moment = require("moment")),
-  (path = require("path")),
-  (ejs = require("ejs")),
-  ({
-    Server,
-    RCON,
-    MasterServer,
-  } = require("@fabricio-191/valve-server-query")),
-  (winston = require("winston")),
-  (expressWinston = require("express-winston"));
+  router = express.Router(),
+  moment = require("moment"),
+  path = require("path"),
+  ejs = require("ejs"),
+  { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
+  winston = require("winston"),
+  expressWinston = require("express-winston");
 require("dotenv").config();
 
 const pool = require("../config/db");
