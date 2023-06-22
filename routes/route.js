@@ -143,6 +143,16 @@ router.get("/shop", function (req, res) {
   renderPage(req, res, userSteamID, "products", "nonAuthproducts");
 });
 
+router.get("/shop:models", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "products", "nonAuthproducts");
+});
+
+router.get("/shop:privilege", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "products", "nonAuthproducts");
+});
+
 router.get("/profile", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "user-profile", "nonAuthErr");

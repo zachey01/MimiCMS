@@ -30,7 +30,7 @@
     "id": 4,
     "name": "Солид Снейк",
     "price": 130,
-    "description": "Модель для игрока ви виде Солида Снейка (Биг Босса) из Metal Gear Solid.",
+    "description": "Модель для игрока в виде Солида Снейка (Биг Босса) из Metal Gear Solid.",
     "givecmd": "invisible",
     "img": "img/products/4.png",
     "tags": "моделька"

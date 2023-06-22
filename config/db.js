@@ -17,7 +17,7 @@ pool.getConnection((err) => {
     return;
   }
   console.log("Connection to the data base is successfully established");
-
+  createTables();
   // Загружаем данные из JSON-файла
   const products = JSON.parse(fs.readFileSync("data/products.json"));
 
