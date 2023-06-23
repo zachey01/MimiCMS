@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Work+Sans:wght@300&display=swap");
 
+header {
+  margin-bottom: 30px;
+}
+
 header,
 footer,
 h1,
