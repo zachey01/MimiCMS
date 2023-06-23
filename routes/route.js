@@ -139,14 +139,14 @@ router.get("/shop", function (req, res) {
   renderPage(req, res, userSteamID, "products", "nonAuthproducts");
 });
 
-router.get("/shop:models", function (req, res) {
+router.get("/shopModels", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "products", "nonAuthproducts");
+  renderPage(req, res, userSteamID, "productsModels", "nonAuthErr");
 });
 
-router.get("/shop:privilege", function (req, res) {
+router.get("/shopPrivilege", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "products", "nonAuthproducts");
+  renderPage(req, res, userSteamID, "productsPrivilege", "nonAuthErr");
 });
 
 router.get("/profile", function (req, res) {
