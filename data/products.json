@@ -119,7 +119,7 @@
   {
     "id": 14,
     "name": "Феликс",
-    "price": 9999,
+    "price": 500,
     "description": "Модель для игрока в виде легендарного и самого няшного трапа Феликса из Re zero.",
     "givecmd": "invisible",
     "img": "img/products/14.png",
@@ -299,7 +299,7 @@
   {
     "id": 34,
     "name": "Umaru Chan",
-    "price": 9999,
+    "price": 500,
     "description": "Модель для игрока в виде гуманоида Umaru Chan.",
     "givecmd": "invisible",
     "img": "img/products/34.png",
