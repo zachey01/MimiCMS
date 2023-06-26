@@ -1,0 +1,15 @@
+.navbar .navbar-nav .nav-link {
+  color: #ffffff;
+}
+.sm-icons {
+  flex-direction: row;
+}
+.sm-icons .nav-link {
+  padding-right: 1em;
+}
+main {
+  padding: 20px;
+}
+.nav-item {
+  margin-left: 10px;
+}

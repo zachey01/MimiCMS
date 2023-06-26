@@ -134,6 +134,11 @@ router.get("/", async function (req, res) {
   renderPage(req, res, userSteamID, "index", "nonAuthIndex");
 });
 
+router.get("/admin", function (req, res) {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "admin-main", "nonAuthErr");
+});
+
 router.get("/shop", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "products", "nonAuthproducts");
