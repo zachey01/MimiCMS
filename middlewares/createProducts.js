@@ -38,7 +38,6 @@ function createProducts(products) {
             ],
             (err, result) => {
               if (err) throw err;
-              console.log(`Продукт ${product.name} успешно обновлен`);
             }
           );
         } else {
@@ -56,7 +55,6 @@ function createProducts(products) {
             ],
             (err, result) => {
               if (err) throw err;
-              console.log(`Продукт ${product.name} успешно создан`);
             }
           );
         }
