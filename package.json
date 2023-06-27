@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "nodemon",
     "prettier": "prettier ./ --write",
-    "backup": "node scripts/backup.js",
-    "build": "node build"
+    "backup": "node scripts/backup",
+    "build": "node build",
+    "start": "node dist/index"
   },
   "keywords": [
     "CMS",
