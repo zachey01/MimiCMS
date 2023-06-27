@@ -18,6 +18,7 @@ let // Modules
   { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
   winston = require("winston"),
   expressWinston = require("express-winston"),
+  compress = require("compression"),
   // Routes
   mainRoutes = require("./routes/route"),
   // Middlewares
@@ -77,6 +78,7 @@ const logger = winston.createLogger({
 });
 
 // ExpressJS configuration
+app.use(compress());
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.static("./public"));

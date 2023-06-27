@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /img/
+Disallow: /css/
+Disallow: /libs/
+Host: shadowseek.ru
+Sitemap: http://shadowseek.ru/sitemap.xml
