@@ -2,13 +2,12 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
-const envFilePath = path.resolve(__dirname, ".env");
+const envFilePath = path.resolve(__dirname, "../.env");
 
 // read .env file & convert to array
 const readEnvVars = () => fs.readFileSync(envFilePath, "utf-8").split(os.EOL);
 
 /**
- * Finds the key in .env files and returns the corresponding value
  *
  * @param {string} key Key to find
  * @returns {string|null} Value of the key
@@ -21,9 +20,6 @@ const getEnvValue = (key) => {
 };
 
 /**
- * Updates value for existing key or creates a new key=value line
- *
- * This function is a modified version of https://stackoverflow.com/a/65001580/3153583
  *
  * @param {string} key Key to update/insert
  * @param {string} value Value to update/insert
@@ -44,6 +40,10 @@ const setEnvValue = (key, value) => {
   fs.writeFileSync(envFilePath, envVars.join(os.EOL));
 };
 
-// examples
-console.log(getEnvValue("KEY_1"));
-setEnvValue("KEY_1", "value 12");
+const envMiddleware = (req, res, next) => {
+  req.getEnvValue = getEnvValue;
+  req.setEnvValue = setEnvValue;
+  next();
+};
+
+module.exports = envMiddleware;

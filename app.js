@@ -76,8 +76,9 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: "combined.log" }),
   ],
 });
-
+const envMiddleware = require("./middlewares/env");
 // ExpressJS configuration
+app.use(envMiddleware);
 app.use(compress());
 app.use(express.json());
 app.set("view engine", "ejs");
