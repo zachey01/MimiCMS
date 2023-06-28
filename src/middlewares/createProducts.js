@@ -74,5 +74,5 @@ chokidar.watch("data/products.json").on("change", () => {
 });
 
 // Создаем или обновляем продукты в базе данных при запуске приложения
-const products = JSON.parse(fs.readFileSync("data/products.json"));
+const products = JSON.parse(fs.readFileSync("./src/data/products.json"));
 createProducts(products);

@@ -20,12 +20,12 @@ let // Modules
   expressWinston = require("express-winston"),
   compress = require("compression"),
   // Routes
-  mainRoutes = require("./routes/route"),
+  mainRoutes = require("./src/routes/route"),
   // Middlewares
-  friendList = require("./middlewares/friendList"),
-  getBonus = require("./middlewares/getBonus"),
+  friendList = require("./src/middlewares/friendList"),
+  getBonus = require("./src/middlewares/getBonus"),
   // Config
-  pool = require("./config/db"),
+  pool = require("./src/config/db"),
   port = process.env.PORT || 80;
 
 require("dotenv").config();
@@ -76,13 +76,13 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: "combined.log" }),
   ],
 });
-const envMiddleware = require("./middlewares/env");
+const envMiddleware = require("./src/middlewares/env");
 // ExpressJS configuration
 app.use(envMiddleware);
 app.use(compress());
 app.use(express.json());
 app.set("view engine", "ejs");
-app.use(express.static("./public"));
+app.use(express.static("./src/public"));
 app.use(
   session({
     secret: process.env.SECRET,

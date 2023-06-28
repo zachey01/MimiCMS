@@ -58,7 +58,11 @@ const logger = winston.createLogger({
         winston.format.simple()
       ),
     }),
-    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({
+      filename: "error.log",
+      level: "error",
+      defaultMeta: { time: `${moment().format("YYYY-MM-DD-HH-mm-ss")}` },
+    }),
     new winston.transports.File({ filename: "combined.log" }),
   ],
 });
