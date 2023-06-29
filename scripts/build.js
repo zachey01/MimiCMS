@@ -15,7 +15,7 @@ exec(
 
 const fse = require("fs-extra");
 
-const partials = `partials`;
+const partials = `src/partials`;
 const partialsDist = `dist/partials`;
 
 // To copy a folder or file, select overwrite accordingly
@@ -26,7 +26,7 @@ try {
   console.error(err);
 }
 
-const public = `public`;
+const public = `src/public`;
 const publicDist = `dist/public`;
 
 // To copy a folder or file, select overwrite accordingly
