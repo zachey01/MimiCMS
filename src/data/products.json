@@ -4,7 +4,7 @@
     "name": "Адольф Гитлер",
     "price": 130,
     "description": "Модель для игрока в виде изветсного диктатора Гитлера.",
-    "givecmd": "invisible",
+    "givecmd": "invisible steam_id",
     "img": "img/products/1.webp",
     "tags": "моделька"
   },

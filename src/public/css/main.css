@@ -31,7 +31,7 @@ h6 {
 }
 
 .header-icon {
-  margin-left: 25px;
+  padding-left: 25px;
   opacity: 1;
 }
 
@@ -40,12 +40,16 @@ h6 {
 }
 
 .header-icon:hover {
-  opacity: 0.5;
+  animation: bouncing 0.5s 0.3s;
 }
 
 .profile-icon {
   margin-left: 5px;
   opacity: 1;
+}
+
+.me-4 {
+  text-decoration: none;
 }
 
 a.nav-link {
@@ -174,4 +178,25 @@ textarea.form-control {
 
 .shop-menu-container {
   max-width: 150px;
+}
+model-viewer {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+}
+
+@keyframes bouncing {
+  from,
+  to {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(0.9, 1.1);
+  }
+  50% {
+    transform: scale(1.1, 0.9);
+  }
+  75% {
+    transform: scale(0.95, 1.05);
+  }
 }

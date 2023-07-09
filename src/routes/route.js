@@ -12,6 +12,7 @@ let // Modules
   ejs = require("ejs"),
   { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
   winston = require("winston"),
+  fs = require("fs"),
   expressWinston = require("express-winston");
 require("dotenv").config();
 
@@ -118,34 +119,40 @@ function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
     });
   }
 }
-
 router.get("/", async function (req, res) {
-  userSteamID = req.session.steamid;
+  try {
+    userSteamID = req.session.steamid;
 
-  const server = await Server({
-    ip: process.env.SERVER_IP,
-    port: parseInt(process.env.SERVER_PORT, 10),
-    timeout: 5000,
-  });
-  const infoServer = await server.getInfo();
-  authVars.serverPing = infoServer.ping;
-  authVars.serverPlayerCountOnline = await infoServer.players.online;
-  authVars.serverPlayerCountMax = await infoServer.players.max;
-  authVars.serverMap = infoServer.map;
-  authVars.serverName = infoServer.name;
-  authVars.serverDescription = process.env.SERVER_DESCRIPTION;
+    const server = await Server({
+      ip: process.env.SERVER_IP,
+      port: parseInt(process.env.SERVER_PORT, 10),
+      timeout: 5000,
+    });
+    const infoServer = await server.getInfo();
+    authVars.serverPing = infoServer.ping;
+    authVars.serverPlayerCountOnline = await infoServer.players.online;
+    authVars.serverPlayerCountMax = await infoServer.players.max;
+    authVars.serverMap = infoServer.map;
+    authVars.serverName = infoServer.name;
+    authVars.serverDescription = process.env.SERVER_DESCRIPTION;
 
-  renderPage(req, res, userSteamID, "index", "nonAuthIndex");
+    renderPage(req, res, userSteamID, "index", "nonAuthIndex");
+  } catch (error) {
+    // Обработка ошибки и присвоение переменным значение null
+    authVars.serverPing = null;
+    authVars.serverPlayerCountOnline = null;
+    authVars.serverPlayerCountMax = null;
+    authVars.serverMap = null;
+    authVars.serverName = null;
+    authVars.serverDescription = null;
+
+    renderPage(req, res, userSteamID, "index", "nonAuthIndex");
+  }
 });
 
 router.get("/admin", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "admin-main", "nonAuthErr");
-});
-
-router.get("/oferts", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "oferts", "oferts");
 });
 
 router.get("/shop", function (req, res) {
@@ -189,9 +196,42 @@ router.get("/rules", function (req, res) {
 });
 
 router.get("/privacy", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "privacy", "privacy");
+  res.sendFile(path.join(__dirname, "../public/other/privacy.pdf"));
 });
+
+router.get("/oferts", function (req, res) {
+  res.sendFile(path.join(__dirname, "../public/other/oferts.pdf"));
+});
+
+router.post("/send", (req, res) => {
+  const steamid = req.session.steamid;
+  const chatid = process.env.TG_GROUP_ID;
+  const tg_token = process.env.TG_BOT_TOKEN;
+  const text = req.body.text + ` | Отправлен - (${steamid})`;
+
+  otpravka(tg_token, text, chatid);
+
+  res.sendStatus(200);
+});
+
+function otpravka(token, text, chatid) {
+  const axios = require("axios");
+
+  axios
+    .post(
+      `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatid}`,
+      {
+        parse_mode: "HTML",
+        text: text,
+      }
+    )
+    .then((response) => {
+      console.log("Message sent successfully");
+    })
+    .catch((error) => {
+      console.error("Failed to send message:", error);
+    });
+}
 
 router.get("/contacts", function (req, res) {
   userSteamID = req.session.steamid;
@@ -202,12 +242,6 @@ router.get("/mapViewer", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "mapViewer", "mapViewerNonAuth");
 });
-
-// 404 page
-// router.get("*", function (req, res) {
-//   userSteamID = req.session.steamid;
-//   renderPage(req, res, userSteamID, "404", "nonAuth404");
-// });
 
 router.post("/debit/:amount/:productId", (req, res) => {
   userSteamID = req.session.steamid;
@@ -239,6 +273,23 @@ router.post("/debit/:amount/:productId", (req, res) => {
             logger.error("Error updating user balance", { error });
             throw error;
           }
+          pool.query(
+            `SELECT givecmd FROM products WHERE id = ${productId}`,
+            (err, result) => {
+              if (err) {
+                logger.error("Error getting givecmd for product", {
+                  error: err,
+                });
+                throw err;
+              }
+              const givecmd = result[0].givecmd.replace(
+                "steam_id",
+                userSteamID
+              );
+              console.log("givecmd:", givecmd);
+            }
+          );
+
           res.send("Success");
           logger.info(
             `User with steamid ${userSteamID} debited ${amount} and purchased product ${productId}`

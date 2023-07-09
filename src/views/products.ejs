@@ -50,16 +50,13 @@
                 );
                 xhr.onload = function () {
                   if (xhr.status === 200) {
+                    console.log("123"); // Print "123" to the console upon successful purchase
                     window.location.reload();
                   }
                 };
                 xhr.send();
               });
             });
-            function notEnoughBalance() {
-              alert("У вас недостаточно денег для списания");
-            }
-
             function notEnoughBalance() {
               alert("У вас недостаточно денег для списания");
             }

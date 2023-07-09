@@ -21,6 +21,7 @@ let // Modules
   compress = require("compression"),
   // Routes
   mainRoutes = require("./src/routes/route"),
+  linkRoute = require("./src/routes/links"),
   // Middlewares
   friendList = require("./src/middlewares/friendList"),
   getBonus = require("./src/middlewares/getBonus"),
@@ -80,6 +81,7 @@ const envMiddleware = require("./src/middlewares/env");
 // ExpressJS configuration
 app.use(envMiddleware);
 app.use(compress());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.static("./src/public"));
@@ -108,6 +110,7 @@ app.use(
 
 // Routes
 app.use("/", mainRoutes);
+app.use("/links", linkRoute);
 
 let userSteamID, userAvatar, userName;
 
@@ -219,13 +222,8 @@ app.use(
   })
 );
 
-app.get(
-  "*",
-
-  (req, res) => {
-    res.render;
-  }
-);
-
+app.get("*", function (req, res) {
+  res.send("123");
+});
 // Start the server
 app.listen(port, () => console.log("Server started on port " + port));
