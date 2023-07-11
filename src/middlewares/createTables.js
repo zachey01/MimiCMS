@@ -29,7 +29,6 @@ module.exports = function createTables() {
           console.log("Table products created ✅");
         });
       } else {
-        console.log(`Table products exists ✅`);
       }
       connection.release();
     });
@@ -45,7 +44,7 @@ module.exports = function createTables() {
           name VARCHAR(255) NOT NULL,
           avatar VARCHAR(255),
           purchases VARCHAR(255) NOT NULL,
-          balance INT NOT NULL DEFAULT 10,
+          balance INT NOT NULL DEFAULT 0,
           PRIMARY KEY (steamid)
         )`;
         connection.query(users, (err, result) => {
@@ -53,7 +52,6 @@ module.exports = function createTables() {
           console.log("Table users created ✅");
         });
       } else {
-        console.log(`Table users exists ✅`);
       }
       connection.release();
     });

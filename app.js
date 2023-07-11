@@ -1,90 +1,112 @@
-/*!
- * MimiCMS v1.0 (https://github.com/zachey01/MimiCMS)
- */
-
-const { getgroups } = require("process");
-
-let // Modules
-  express = require("express"),
-  passport = require("passport"),
-  SteamStrategy = require("passport-steam").Strategy,
-  SteamWebAPI = require("steam-web"),
-  mysql = require("mysql"),
-  session = require("express-session"),
-  app = express(),
-  moment = require("moment"),
-  path = require("path"),
-  ejs = require("ejs"),
-  { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
-  winston = require("winston"),
-  expressWinston = require("express-winston"),
-  compress = require("compression"),
-  // Routes
-  mainRoutes = require("./src/routes/route"),
-  linkRoute = require("./src/routes/links"),
-  // Middlewares
-  friendList = require("./src/middlewares/friendList"),
-  getBonus = require("./src/middlewares/getBonus"),
-  // Config
-  pool = require("./src/config/db"),
-  port = process.env.PORT || 80;
-
+const express = require("express");
+const passport = require("passport");
+const SteamStrategy = require("passport-steam").Strategy;
+const SteamWebAPI = require("steam-web");
+const session = require("express-session");
+const app = express();
+const {
+  Server,
+  RCON,
+  MasterServer,
+} = require("@fabricio-191/valve-server-query");
+const expressWinston = require("express-winston");
+const compress = require("compression");
+const pool = require("./src/config/db");
+const port = process.env.PORT || 3000;
+const logger = require("./src/middlewares/logger");
 require("dotenv").config();
 
-// Получение списка друзей
-// TODO: добавить их в профиль и отображать тех, кто есть в бд
-/*
-async function getFriendList() {
-  const friends = await friendList(userSteamID); // вызываем функцию и ждем завершения
-  return await friends;
-}
+const mainRoutes = require("./src/routes/route");
+const linkRoute = require("./src/routes/links");
+const authRoutes = require("./src/routes/auth");
+const errorRoutes = require("./src/routes/error");
+const ticketRoutes = require("./src/routes/tickets");
+const shopRoute = require("./src/routes/shop");
+const adminRoute = require("./src/routes/admin");
 
-getFriendList()
-  .then((friends) => {
-    console.log(friends);
-  })
-  .catch((error) => {
-    console.error(error.response.data);
+// Passport configuration
+passport.use(
+  new SteamStrategy(
+    {
+      returnURL: `http://${
+        process.env.DOMAIN || "localhost"
+      }:${port}/auth/steam/return`,
+      realm: `http://${process.env.DOMAIN || "localhost"}:${port}/`,
+      apiKey: process.env.STEAM_API_KEY,
+    },
+    (identifier, profile, done) => {
+      const steam = new SteamWebAPI({ apiKey: process.env.STEAM_API_KEY });
+      steam.getPlayerSummaries({
+        steamids: profile.id,
+        callback: (err, data) => {
+          if (err) {
+            logger.error("Failed to retrieve user data:" + err.stack);
+            return done(err);
+          }
+          pool.query(
+            "INSERT IGNORE INTO users SET ?",
+            {
+              steamid: profile.id,
+              name: profile.displayName,
+              avatar: data.response.players[0].avatarfull,
+            },
+            (err, result) => {
+              if (err) {
+                logger.error(
+                  "Error writing data about the user to the database:" +
+                    err.stack
+                );
+                return done(err);
+              }
+              logger.info(
+                "Data about " +
+                  profile.displayName +
+                  " successfully written to the database"
+              );
+              userSteamID = profile.id;
+              userName = profile.displayName;
+              return done(null, profile);
+            }
+          );
+        },
+      });
+    }
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((id, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((id, done) => {
+  pool.query("SELECT * FROM users WHERE steamid = ?", [id], (err, results) => {
+    if (err) {
+      logger.error("User search error in the database: " + err.stack);
+      return done(err);
+    }
+    if (results.length === 0) {
+      return done(null, null);
+    }
+    return done(null, results[0]);
   });
-*/
-
-// Получение списка подписок пользователя
-// TODO: сделать старницу задания для получения бонусов за подписку игру и т.д.
-/*
-async function getGroupList() {
-  const groups = await getBonus(userSteamID); // вызываем функцию и ждем завершения
-  return await groups;
-}
-
- getGroupList().then((groups) => {
-  console.log(groups);
 });
-*/
 
-// Logger configuration
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  defaultMeta: { time: `${moment().format("YYYY-MM-DD-HH-mm-ss")}` },
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
-    }),
-    new winston.transports.File({ filename: "error.log", level: "error" }),
-    new winston.transports.File({ filename: "combined.log" }),
-  ],
-});
-const envMiddleware = require("./src/middlewares/env");
 // ExpressJS configuration
-app.use(envMiddleware);
 app.use(compress());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.static("./src/public"));
+app.set("view engine", "ejs");
+app.use(express.static("./src/public"));
+app.use(
+  expressWinston.errorLogger({
+    winstonInstance: logger,
+  })
+);
 app.use(
   session({
     secret: process.env.SECRET,
@@ -92,8 +114,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
-// Request logging
 app.use(
   expressWinston.logger({
     winstonInstance: logger,
@@ -111,119 +131,10 @@ app.use(
 // Routes
 app.use("/", mainRoutes);
 app.use("/links", linkRoute);
+app.use("/auth", authRoutes);
+app.use("/tickets", ticketRoutes);
+app.use("/shop", shopRoute);
+app.use("/admin", adminRoute);
+app.use("*", errorRoutes);
 
-let userSteamID, userAvatar, userName;
-
-passport.use(
-  new SteamStrategy(
-    {
-      returnURL: `http://${
-        process.env.DOMAIN || "localhost"
-      }:${port}/auth/steam/return`,
-      realm: `http://${process.env.DOMAIN || "localhost"}:${port}/`,
-      apiKey: process.env.STEAM_API_KEY,
-    },
-    (identifier, profile, done) => {
-      const steam = new SteamWebAPI({ apiKey: process.env.STEAM_API_KEY });
-      steam.getPlayerSummaries({
-        steamids: profile.id,
-        callback: (err, data) => {
-          if (err) {
-            logger.error(`Failed to retrieve user data: ` + err.stack);
-            return done(err);
-          }
-          pool.query(
-            "INSERT IGNORE INTO users SET ?",
-            {
-              steamid: profile.id,
-              name: profile.displayName,
-              avatar: data.response.players[0].avatarfull,
-            },
-            (err, result) => {
-              if (err) {
-                logger.error(
-                  `Error writing data about the user to the database: ` +
-                    err.stack
-                );
-                return done(err);
-              }
-              logger.info(
-                "Data about " +
-                  profile.displayName +
-                  " successfully written to the database"
-              );
-              // Сохраняем steam id пользователя
-              userSteamID = profile.id;
-              userName = profile.displayName;
-              // Return outside of query callback
-              return done(null, profile);
-            }
-          );
-        },
-      });
-    }
-  )
-);
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((id, done) => {
-  pool.query("SELECT * FROM users WHERE steamid = ?", [id], (err, results) => {
-    if (err) {
-      console.error("User search error in the database: " + err.stack);
-      return done(err);
-    }
-    if (results.length === 0) {
-      // Пользователь не найден
-      return done(null, null);
-    }
-    // Пользователь найден, возвращаем его данные
-    return done(null, results[0]);
-  });
-});
-
-app.get(
-  "/auth/steam",
-  passport.authenticate("steam", { failureRedirect: "/login" }),
-  (req, res) => {
-    if (req.isAuthenticated()) {
-      res.redirect("/");
-    } else {
-      passport.authenticate("steam", { failureRedirect: "/login" })(req, res);
-    }
-  }
-);
-
-app.get("/logout", (req, res) => {
-  userSteamID = null; // Сбрасываем steam id пользователя
-  req.session.steamid = null;
-  res.redirect("/"); // Перенаправляем на главную страницу
-});
-
-app.get(
-  "/auth/steam/return",
-  passport.authenticate("steam", { failureRedirect: "/login" }),
-  (req, res) => {
-    if (req.isAuthenticated()) {
-      req.session.steamid = userSteamID;
-      res.redirect("/");
-    } else {
-      passport.authenticate("steam", { failureRedirect: "/login" })(req, res);
-    }
-  }
-);
-
-// Error logging
-app.use(
-  expressWinston.errorLogger({
-    winstonInstance: logger,
-  })
-);
-
-app.get("*", function (req, res) {
-  res.send("123");
-});
-// Start the server
-app.listen(port, () => console.log("Server started on port " + port));
+app.listen(port, () => logger.info("Server started on port " + port));

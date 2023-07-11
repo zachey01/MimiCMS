@@ -46,7 +46,7 @@
                 const xhr = new XMLHttpRequest();
                 xhr.open(
                   "POST",
-                  `/debit/<%= product.price %>/<%= product.id %>`
+                  `/shop/debit/<%= product.price %>/<%= product.id %>`
                 );
                 xhr.onload = function () {
                   if (xhr.status === 200) {

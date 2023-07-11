@@ -12,7 +12,7 @@
             <div class="card mt-5">
               <div class="card-body">
                 <h3 class="card-title text-center mb-4">Написать тикет</h3>
-                <form action="/ticket/send" method="POST" id="telegram-form">
+                <form id="telegram-form">
                   <div class="form-group">
                     <label for="message"
                       >Опишите вашу проблему/Нововведение</label
@@ -25,7 +25,11 @@
                       required
                     ></textarea>
                   </div>
-                  <button type="submit" class="btn btn-primary btn-block mt-4">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-block mt-4"
+                    onclick="submitForm(event)"
+                  >
                     Отправить
                   </button>
                 </form>
@@ -76,29 +80,22 @@
           </div>
         </div>
       </div>
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script>
-        document
-          .getElementById("telegram-form")
-          .addEventListener("submit", function (event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-
-            fetch("/send", {
-              method: "POST",
-              body: formData,
-            })
-              .then((response) => {
-                if (response.ok) {
-                  $("#successModal").modal("show");
-                } else {
-                  // Handle error
-                }
-              })
-              .catch((error) => {
-                // Handle error
-              });
+        function submitForm(event) {
+          event.preventDefault();
+          let data = $("#text").val();
+          $.ajax({
+            url: "/tickets/send",
+            type: "POST",
+            data: data,
+            success: function (response) {
+              $("#successModal").modal("show");
+            },
+            error: function (error) {
+              console.error("error", error);
+            },
           });
+        }
       </script>
     </main>
 

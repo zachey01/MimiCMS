@@ -15,110 +15,10 @@ let // Modules
   fs = require("fs"),
   expressWinston = require("express-winston");
 require("dotenv").config();
-
+const logger = require("../middlewares/logger");
 const pool = require("../config/db");
+const { renderPage, authVars } = require("../middlewares/renderPage");
 
-let authVars = {
-  logo: process.env.LOGO,
-  currency: process.env.CURRENCY || "$",
-  slide_1: process.env.SLIDE_1 || "https://dummyimage.com/1920x720/000/fff",
-  slide_2: process.env.SLIDE_2 || "https://dummyimage.com/1920x720/000/fff",
-  slide_3: process.env.SLIDE_3 || "https://dummyimage.com/1920x720/000/fff",
-  tgChannelLink: process.env.TG_LINK || "#",
-  discordServerLink: process.env.DISCORD_LINK || "#",
-  name: process.env.NAME || "MimiCMS",
-  tg_token: process.env.TG_BOT_TOKEN,
-  tg_group: process.env.TG_GROUP_ID,
-  serverIP: process.env.SERVER_IP,
-  serverPort: process.env.SERVER_PORT,
-  steamid: null,
-  avatar: null,
-  balance: null,
-  userName: null,
-  steamLink: null,
-  products: null,
-  // Server information
-  serverPing: null,
-  serverPlayerCountOnline: null,
-  serverPlayerCountMax: null,
-  serverPlayers: null,
-  serverMap: null,
-  serverName: null,
-  serverDescription: null,
-};
-
-// Logger configuration
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  defaultMeta: { time: `${moment().format("YYYY-MM-DD-HH-mm-ss")}` },
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
-    }),
-    new winston.transports.File({
-      filename: "error.log",
-      level: "error",
-      defaultMeta: { time: `${moment().format("YYYY-MM-DD-HH-mm-ss")}` },
-    }),
-    new winston.transports.File({ filename: "combined.log" }),
-  ],
-});
-
-function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
-  if (userSteamID) {
-    logger.info(`User with steamid ${userSteamID} is authenticated`);
-    pool.query(
-      `SELECT * FROM users WHERE steamid = '${userSteamID}'`,
-      (error, results, fields) => {
-        if (error) {
-          logger.error("Error getting user info", { error });
-          throw error;
-        }
-        const avatar = results[0].avatar;
-        const balance = results[0].balance;
-        const userName = results[0].name;
-        authVars.avatar = avatar;
-        authVars.balance = balance;
-        authVars.steamid = userSteamID;
-        authVars.userName = userName;
-        authVars.steamLink = `https://steamcommunity.com/profiles/${userSteamID}`;
-        pool.query("SELECT * FROM products", (error, results) => {
-          if (error) {
-            logger.error("Error getting products", { error });
-            throw error;
-          }
-          authVars.products = results;
-          res.render(
-            path.join(__dirname, "../views", `./${fileName}.ejs`),
-            authVars
-          );
-          logger.info(
-            `Rendered ${fileName} page for user with steamid ${userSteamID}`
-          );
-        });
-      }
-    );
-  } else {
-    pool.query("SELECT * FROM products", (error, results) => {
-      if (error) {
-        logger.error("Error getting products", { error });
-        throw error;
-      }
-      authVars.products = results;
-      res.render(
-        path.join(__dirname, "../views", `./${nonAuthFileName}.ejs`),
-        authVars
-      );
-      logger.info(
-        `Rendered ${nonAuthFileName} page for non-authenticated user`
-      );
-    });
-  }
-}
 router.get("/", async function (req, res) {
   try {
     userSteamID = req.session.steamid;
@@ -143,31 +43,11 @@ router.get("/", async function (req, res) {
     authVars.serverPlayerCountOnline = null;
     authVars.serverPlayerCountMax = null;
     authVars.serverMap = null;
-    authVars.serverName = null;
+    authVars.serverName = "server is offline";
     authVars.serverDescription = null;
 
     renderPage(req, res, userSteamID, "index", "nonAuthIndex");
   }
-});
-
-router.get("/admin", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "admin-main", "nonAuthErr");
-});
-
-router.get("/shop", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "products", "nonAuthproducts");
-});
-
-router.get("/shopModels", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "productsModels", "nonAuthErr");
-});
-
-router.get("/shopPrivilege", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "productsPrivilege", "nonAuthErr");
 });
 
 router.get("/profile", function (req, res) {
@@ -177,17 +57,12 @@ router.get("/profile", function (req, res) {
 
 router.get("/purchases", function (req, res) {
   userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "contacts", "nonAuthErr");
+  renderPage(req, res, userSteamID, "404", "nonAuthErr");
 });
 
 router.get("/balance", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "balance", "nonAuthErr");
-});
-
-router.get("/tickets", function (req, res) {
-  userSteamID = req.session.steamid;
-  renderPage(req, res, userSteamID, "tickets", "nonAuthErr");
 });
 
 router.get("/rules", function (req, res) {
@@ -203,36 +78,6 @@ router.get("/oferts", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/other/oferts.pdf"));
 });
 
-router.post("/send", (req, res) => {
-  const steamid = req.session.steamid;
-  const chatid = process.env.TG_GROUP_ID;
-  const tg_token = process.env.TG_BOT_TOKEN;
-  const text = req.body.text + ` | Отправлен - (${steamid})`;
-
-  otpravka(tg_token, text, chatid);
-
-  res.sendStatus(200);
-});
-
-function otpravka(token, text, chatid) {
-  const axios = require("axios");
-
-  axios
-    .post(
-      `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatid}`,
-      {
-        parse_mode: "HTML",
-        text: text,
-      }
-    )
-    .then((response) => {
-      console.log("Message sent successfully");
-    })
-    .catch((error) => {
-      console.error("Failed to send message:", error);
-    });
-}
-
 router.get("/contacts", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "contacts", "nonAuthcontacts");
@@ -241,63 +86,6 @@ router.get("/contacts", function (req, res) {
 router.get("/mapViewer", function (req, res) {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "mapViewer", "mapViewerNonAuth");
-});
-
-router.post("/debit/:amount/:productId", (req, res) => {
-  userSteamID = req.session.steamid;
-  const amount = parseInt(req.params.amount);
-  const productId = parseInt(req.params.productId);
-  if (isNaN(amount)) {
-    res.status(400).send("Invalid amount");
-    return;
-  }
-  pool.query(
-    `SELECT balance FROM users WHERE steamid = ${userSteamID}`,
-    (err, result) => {
-      if (err) {
-        logger.error("Error getting user balance", { error: err });
-        throw err;
-      }
-      const balance = result[0].balance;
-      if (balance < amount) {
-        logger.warn(
-          `User with steamid ${userSteamID} tried to debit ${amount} but has only ${balance} in balance`
-        );
-        res.status(400).send("Not enough balance");
-        return;
-      }
-      pool.query(
-        `UPDATE users SET balance = balance - ${amount}, purchases = CONCAT(purchases, ${productId}, ',') WHERE steamid = ${userSteamID}`,
-        (error, results) => {
-          if (error) {
-            logger.error("Error updating user balance", { error });
-            throw error;
-          }
-          pool.query(
-            `SELECT givecmd FROM products WHERE id = ${productId}`,
-            (err, result) => {
-              if (err) {
-                logger.error("Error getting givecmd for product", {
-                  error: err,
-                });
-                throw err;
-              }
-              const givecmd = result[0].givecmd.replace(
-                "steam_id",
-                userSteamID
-              );
-              console.log("givecmd:", givecmd);
-            }
-          );
-
-          res.send("Success");
-          logger.info(
-            `User with steamid ${userSteamID} debited ${amount} and purchased product ${productId}`
-          );
-        }
-      );
-    }
-  );
 });
 
 module.exports = router;

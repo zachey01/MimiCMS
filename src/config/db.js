@@ -16,12 +16,8 @@ pool.getConnection((err) => {
     console.error("Database connection error: " + err.stack);
     return;
   }
-  console.log("Connection to the data base is successfully established");
   createTables();
-  // Загружаем данные из JSON-файла
   const products = JSON.parse(fs.readFileSync("./src/data/products.json"));
-
-  // Создаем или обновляем продукты в базе данных
   createProducts(products);
 });
 

@@ -4,16 +4,7 @@ header {
   margin-bottom: 30px;
 }
 
-header,
-footer,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.title404,
-code {
+.title404 {
   user-select: none;
 }
 
@@ -33,13 +24,14 @@ h6 {
 .header-icon {
   padding-left: 25px;
   opacity: 1;
+  color: gray;
 }
 
 .navbar-brand {
   font-family: "Work Sans", sans-serif;
 }
 
-.header-icon:hover {
+.hover-bounce-animation:hover {
   animation: bouncing 0.5s 0.3s;
 }
 

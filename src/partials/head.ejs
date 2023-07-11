@@ -4,14 +4,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
-<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="/css/main.css" />
 <title>ShadowSeek</title>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-  integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+  integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
   crossorigin="anonymous"
-/>
+  referrerpolicy="no-referrer"
+></script>
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -20,9 +20,11 @@
   referrerpolicy="no-referrer"
 />
 <script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
+  integrity="sha512-VK2zcvntEufaimc+efOYi622VN5ZacdnufnmX7zIhCPmjhKnOi9ZDMtg1/ug5l183f19gG1/cBstPO4D8N/Img=="
   crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  async
 ></script>
 <meta name="designer" content="Zachey" />
 <meta name="developer" content="Zachey" />
@@ -36,3 +38,80 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="description" content="Один из лучших HNS серверов CS:GO!" />
+<script>
+  var themes = {
+    default:
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css",
+    dark: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-dark-mode/1.0.2/bootstrap-dark-mode.dark.min.css",
+  };
+
+  $(function () {
+    var themesheet = $('<link rel="stylesheet" />');
+    var theme = getCookie("theme");
+
+    if (theme && theme in themes) {
+      themesheet.attr("href", themes[theme]);
+      $("#themeSwitch").prop("checked", theme === "dark");
+    } else {
+      themesheet.attr("href", themes["default"]);
+    }
+
+    themesheet.appendTo("head");
+
+    $("#themeSwitch").change(function () {
+      var isChecked = $(this).is(":checked");
+      var theme = isChecked ? "dark" : "default";
+      themesheet.attr("href", themes[theme]);
+      setCookie("theme", theme, 365);
+    });
+
+    $(".theme-link").click(function (e) {
+      e.preventDefault();
+      var theme = $(this).data("theme");
+      themesheet.attr("href", themes[theme]);
+      setCookie("theme", theme, 365);
+      $("#themeSwitch").prop("checked", theme === "dark");
+    });
+  });
+
+  function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toGMTString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+  }
+
+  function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  $(document).ready(function () {
+    // При изменении состояния свитчера
+    $("#themeSwitch").change(function () {
+      var isChecked = $(this).is(":checked"); // Проверить, включен ли свитчер
+    });
+
+    // При клике на ссылку с классом "theme-link"
+    $(".theme-link").click(function (e) {
+      e.preventDefault(); // Отменить переход по ссылке
+
+      var theme = $(this).data("theme"); // Получить значение атрибута "data-theme"
+
+      // Установить состояние свитчера в зависимости от выбранной темы
+      $("#themeSwitch").prop("checked", theme === "dark");
+
+      // Добавить или удалить класс "dark" на элементе <body> в зависимости от выбранной темы
+      $("body").toggleClass("dark", theme === "dark");
+    });
+  });
+</script>
