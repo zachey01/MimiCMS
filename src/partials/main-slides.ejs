@@ -36,10 +36,10 @@
         <div class="carousel-item rounded">
           <img src="<%= slide_2 %>" class="d-block w-100" alt="..." /></div
       ></a>
-      <!-- <a href="/mapViewer">
+      <a href="/mapViewer">
         <div class="carousel-item rounded">
           <img src="<%= slide_3 %>" class="d-block w-100" alt="..." /></div
-      ></a> -->
+      ></a>
     </div>
     <button
       class="carousel-control-prev"
@@ -48,7 +48,7 @@
       data-bs-slide="prev"
     >
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Назад</span>
+      <span class="visually-hidden">Back</span>
     </button>
     <button
       class="carousel-control-next"
@@ -57,9 +57,9 @@
       data-bs-slide="next"
     >
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Далее</span>
+      <span class="visually-hidden">Next</span>
     </button>
   </div>
 
-  <h2><kbd><%= name %></kbd> - это один из лучших HNS CS:GO серверов.</h2>
+  <h2><kbd><%= name %></kbd> - <%= env.SLOGAN %></h2>
 </div>

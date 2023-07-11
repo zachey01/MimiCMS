@@ -24,7 +24,7 @@
                     class="btn btn-sm btn-outline-secondary"
                     onclick="notEnoughBalance()"
                   >
-                    Купить
+                    Buy
                   </button>
                   <% } else { %>
                   <button
@@ -32,7 +32,7 @@
                     id="buyBtn<%= product.id %>"
                     data-id="<%= product.id %>"
                   >
-                    Купить
+                    Buy
                   </button>
                   <% } %>
                 </div>
@@ -50,7 +50,6 @@
                 );
                 xhr.onload = function () {
                   if (xhr.status === 200) {
-                    console.log("123"); // Print "123" to the console upon successful purchase
                     window.location.reload();
                   }
                 };
@@ -58,7 +57,7 @@
               });
             });
             function notEnoughBalance() {
-              alert("У вас недостаточно денег для списания");
+              alert("You don't have enough money to charge");
             }
           </script>
           <% }); %>

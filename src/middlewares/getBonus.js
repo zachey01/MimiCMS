@@ -1,4 +1,5 @@
 const axios = require("axios");
+require("dotenv").config;
 
 module.exports = async function (userSteamID) {
   const apiKey = process.env.STEAM_API_KEY;
@@ -8,11 +9,10 @@ module.exports = async function (userSteamID) {
     const response = await axios.get(url);
     const groupList = response.data.response.groups;
 
-    // Проверяем наличие значения 43827492 в groupList
     let hasValue = false;
     for (let i = 0; i < groupList.length; i++) {
       const group = groupList[i];
-      if (group.gid === "43827492") {
+      if (group.gid === process.env.STEAM_GROUP_ID) {
         hasValue = true;
         break;
       }

@@ -36,14 +36,14 @@
     "passport": "^0.6.0",
     "passport-steam": "^1.0.18",
     "request": "^2.88.2",
-    "steam-webapi": "^0.6.5"
+    "steam-webapi": "^0.5.2"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.36.1",
     "child_process": "^1.0.2",
     "express-winston": "^4.2.0",
     "fs-extra": "^11.1.1",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.0.1",
     "prettier": "^2.8.8",
     "winston": "^3.9.0"
   }

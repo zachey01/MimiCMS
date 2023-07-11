@@ -1,25 +1,14 @@
-let // Modules
-  express = require("express"),
-  passport = require("passport"),
-  SteamStrategy = require("passport-steam").Strategy,
-  SteamWebAPI = require("steam-web"),
-  mysql = require("mysql"),
-  session = require("express-session"),
-  app = express(),
-  router = express.Router(),
-  moment = require("moment"),
-  path = require("path"),
-  ejs = require("ejs"),
-  { Server, RCON, MasterServer } = require("@fabricio-191/valve-server-query"),
-  winston = require("winston"),
-  fs = require("fs"),
-  expressWinston = require("express-winston");
+const express = require("express");
+const passport = require("passport");
 require("dotenv").config();
 const logger = require("../middlewares/logger");
 const pool = require("../config/db");
+const path = require("path");
 
 let authVars = {
-  logo: process.env.LOGO,
+  logo:
+    process.env.LOGO ||
+    "https://cdn.jsdelivr.net/gh/zachey01/MimiCMS/images/logo.png",
   currency: process.env.CURRENCY || "$",
   slide_1: process.env.SLIDE_1 || "https://dummyimage.com/1920x720/000/fff",
   slide_2: process.env.SLIDE_2 || "https://dummyimage.com/1920x720/000/fff",

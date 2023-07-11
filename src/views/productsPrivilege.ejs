@@ -27,7 +27,7 @@
                       class="btn btn-sm btn-outline-secondary"
                       onclick="notEnoughBalance()"
                     >
-                      Купить
+                      Buy
                     </button>
                     <% } else { %>
                     <button
@@ -35,7 +35,7 @@
                       id="buyBtn<%= product.id %>"
                       data-id="<%= product.id %>"
                     >
-                      Купить
+                      Buy
                     </button>
                     <% } %>
                   </div>
@@ -62,11 +62,11 @@
                 });
               });
               function notEnoughBalance() {
-                alert("У вас недостаточно денег для списания");
+                alert("You don't have enough money to charge");
               }
 
               function notEnoughBalance() {
-                alert("У вас недостаточно денег для списания");
+                alert("You don't have enough money to charge");
               }
             </script>
             <% } %> <% }); %>

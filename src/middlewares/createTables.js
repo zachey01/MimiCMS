@@ -1,14 +1,27 @@
 const mysql = require("mysql");
 require("dotenv").config();
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
+const pool = require("../config/db");
 module.exports = function createTables() {
+  // Settings table
+  pool.getConnection((err, connection) => {
+    if (err) throw err;
+    connection.query("SELECT 1 FROM products LIMIT 1", (err, result) => {
+      if (err) {
+        const products = `CREATE TABLE settings (
+          name VARCHAR(255) NOT NULL,
+          value DECIMAL(10, 2) NOT NULL,
+          PRIMARY KEY (name)
+        )`;
+        connection.query(products, (err, result) => {
+          if (err) throw err;
+          console.log("Table products created ✅");
+        });
+      } else {
+      }
+      connection.release();
+    });
+  });
+
   // Products table
   pool.getConnection((err, connection) => {
     if (err) throw err;
