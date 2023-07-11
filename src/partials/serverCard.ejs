@@ -1,0 +1,39 @@
+<center>
+  <div class="col-md-6 container">
+    <div class="card mb-3">
+      <div class="row no-gutters align-items-center">
+        <div class="col-md-4">
+          <img
+            src="https://dummyimage.com/400x300/000/fff"
+            class="card-img server-map-img"
+            alt="..."
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title" style="color: gray">
+              <b><%= serverName %></b>
+            </h5>
+            <p class="card-text">
+              <small class="text-muted"
+                >Текущая карта: <code><%= serverMap %></code></small
+              ><br />
+              <small class="text-muted"
+                >Онлайн:
+                <code
+                  ><%= serverPlayerCountOnline %>/<%= serverPlayerCountMax
+                  %></code
+                ></small
+              >
+            </p>
+            <a href="steam://connect/<%= serverIP %>:<%= serverPort %>">
+              <button type="button" class="btn btn-outline-primary">
+                Присоединиться
+              </button></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</center>

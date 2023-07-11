@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container bg-slate-200">
+    <header id="header"><%- include('../partials/header'); %></header>
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <div class="card mt-5">
+              <div class="card-body">
+                <h3 class="card-title text-center mb-4">Write a ticket</h3>
+                <form id="telegram-form">
+                  <div class="form-group">
+                    <label for="message"
+                      >Describe your problem/Innovation</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="text"
+                      name="text"
+                      rows="5"
+                      required
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-block mt-4"
+                    onclick="submitForm(event)"
+                  >
+                    Send
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal fade"
+        id="successModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="successModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="successModalLabel">
+                Successfully shipped!
+              </h5>
+              <a href="">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-x-lg"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                    />
+                  </svg>
+                </button>
+              </a>
+            </div>
+            <div class="modal-body">
+              <p>Your message has been successfully sent</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        function submitForm(event) {
+          event.preventDefault();
+          let data = $("#text").val();
+          $.ajax({
+            url: "/tickets/send",
+            type: "POST",
+            data: data,
+            success: function (response) {
+              $("#successModal").modal("show");
+            },
+            error: function (error) {
+              console.error("error", error);
+            },
+          });
+        }
+      </script>
+    </main>
+
+    <footer id="footer" class="text-center text-muted">
+      <%- include('../partials/footer'); %>
+    </footer>
+  </body>
+</html>

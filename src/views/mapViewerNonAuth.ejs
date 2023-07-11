@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container bg-slate-200">
+    <header id="header">
+      <%- include('../partials/nonAuth/header.ejs'); %>
+    </header>
+    <main>
+      <div class="container-xxl text-center" align="center">
+        <div id="renderModel">
+          <p class="text-center">
+            Left/Right mouse - inspection <br />Wheel mouse - scale
+          </p>
+        </div>
+      </div>
+      <div class="container">
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          onclick="renderMap('https://dl.dropboxusercontent.com/s/62eei8kqkmtj1m9/seek_bank.glb')"
+        >
+          Seek Bank
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          onclick="renderMap('https://dl.dropboxusercontent.com/s/ly5g17pivh6o8p6/seek_hotel.glb')"
+        >
+          Seek Hotel
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          onclick="renderMap('https://dl.dropboxusercontent.com/s/ngrmeintded0zkh/winterday.glb')"
+        >
+          Winter Day
+        </button>
+      </div>
+
+      <script>
+        function renderMap(modelUrl) {
+          document.getElementById("renderModel").innerHTML = `<iframe
+          width="100%"
+          height="750px"
+          style="border: 1px solid #eeeeee"
+          src=https://3dviewer.net/embed.html#model=${modelUrl}$camera=18.16176,7.50412,-12.00182,-10.38538,6.67265,10.65272,0.00000,1.00000,0.00000,45.00000$cameramode=perspective$envsettings=fishermans_bastion,off$backgroundcolor=255,255,255,255$defaultcolor=200,200,200$edgesettings=off,0,0,0,1></iframe>`;
+        }
+      </script>
+    </main>
+    <footer id="footer" class="text-center text-muted">
+      <%- include('../partials/footer'); %>
+    </footer>
+  </body>
+</html>

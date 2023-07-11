@@ -1,0 +1,103 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <%- include('./modules/headerLogo.ejs'); %>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <%- include('./modules/headerBtn.ejs'); %>
+      <div class="d-flex">
+        <div class="dropdown">
+          <button
+            class="btn btn-light toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              src="<%= avatar %>"
+              class="rounded-circle avatar"
+              width="50"
+              height="50"
+            />
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="profile"
+                >Профиль <i class="fa-solid fa-user"></i
+              ></a>
+            </li>
+
+            <li>
+              <a
+                class="dropdown-item"
+                href="#"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                >Выйти <i class="fa-solid fa-right-from-bracket"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="/balance"
+              role="button"
+              aria-expanded="false"
+              title="Shop"
+              ><%= balance %><%= currency %>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Exit window -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Подтверждение</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Вы уверены, что хотите выйти из своей учетной записи?
+          </div>
+          <div class="modal-footer">
+            <a href="/logout"
+              ><button type="button" class="btn btn-secondary">Выйти</button></a
+            >
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Отмена
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

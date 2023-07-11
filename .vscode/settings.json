@@ -6,5 +6,6 @@
   "emmet.includeLanguages": {
     "ejs": "html"
   },
-  "html.format.templating": true
+  "html.format.templating": true,
+  "cSpell.enableFiletypes": ["!javascript"]
 }
