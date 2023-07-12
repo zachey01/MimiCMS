@@ -88,4 +88,34 @@ router.get("/mapViewer", function (req, res) {
   renderPage(req, res, userSteamID, "mapViewer", "mapViewerNonAuth");
 });
 
+const CryptoJS = require("crypto-js");
+
+router.post("/submit", (req, res) => {
+  const { encryptedValue } = req.body;
+
+  // Decrypt the value using AES decryption
+  const decryptedValue = CryptoJS.AES.decrypt(
+    encryptedValue,
+    "secret-key"
+  ).toString(CryptoJS.enc.Utf8);
+
+  const value = JSON.parse(decryptedValue);
+  console.log("Value:", value);
+
+  async function write() {
+    await fs.promises.writeFile(
+      "./src/config/config.js",
+      `module.exports = ${JSON.stringify(value)}`
+    );
+  }
+
+  write();
+  res.sendStatus(200);
+});
+
+router.get("/test", (req, res) => {
+  userSteamID = req.session.steamid;
+  renderPage(req, res, userSteamID, "test-admin", "test-admin");
+});
+
 module.exports = router;

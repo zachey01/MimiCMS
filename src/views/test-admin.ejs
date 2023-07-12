@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic JSON Editor Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+  </head>
+  <body>
+    <h1>Basic JSON Editor Example</h1>
+
+    <div id="editor_holder"></div>
+    <button id="submit">Submit</button>
+
+    <script>
+      // Initialize the editor with a JSON schema
+      var editor = new JSONEditor(document.getElementById("editor_holder"), {
+        schema: {
+          type: "object",
+          title: "Car",
+          properties: {
+            make: {
+              type: "string",
+              enum: ["Toyota", "BMW", "Honda", "Ford", "Chevy", "VW"],
+            },
+            model: {
+              type: "string",
+            },
+            year: {
+              type: "integer",
+              enum: [
+                1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
+                2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014,
+              ],
+              default: 2008,
+            },
+            safety: {
+              type: "integer",
+              format: "rating",
+              maximum: "5",
+              exclusiveMaximum: false,
+              readonly: false,
+            },
+          },
+        },
+      });
+
+      // Hook up the submit button to send the value to the server
+      document.getElementById("submit").addEventListener("click", function () {
+        // Get the value from the editor
+        var value = editor.getValue();
+
+        // Encrypt the value using AES encryption
+        var encryptedValue = CryptoJS.AES.encrypt(
+          JSON.stringify(value),
+          "secret-key"
+        ).toString();
+
+        // Send the encrypted value to the server using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/submit");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            console.log("Value sent successfully");
+          }
+        };
+        xhr.send(JSON.stringify({ encryptedValue: encryptedValue }));
+      });
+    </script>
+  </body>
+</html>

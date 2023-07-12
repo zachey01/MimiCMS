@@ -1,5 +1,8 @@
 const express = require("express");
 const session = require("express-session");
+const bodyParser = require("body-parser");
+const https = require("https");
+const fs = require("fs");
 const app = express();
 const expressWinston = require("express-winston");
 const compress = require("compression");
@@ -20,6 +23,7 @@ const adminRoute = require("./src/routes/admin");
 
 // ExpressJS configuration
 app.use(compress());
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("./src/public"));
