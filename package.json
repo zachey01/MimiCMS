@@ -1,50 +1,54 @@
 {
-  "name": "MimiCMS",
-  "version": "1.0.0",
-  "description": "MimiCMS is a CMS for game servers (only CS:GO and CS:2 at the moment) of the new level.",
-  "main": "app.js",
-  "scripts": {
-    "dev": "nodemon",
-    "prettier": "prettier ./ --write",
-    "backup": "node scripts/backup"
-  },
-  "keywords": [
-    "CMS",
-    "CS:GO",
-    "csgo",
-    "game server panel",
-    "site for csgo",
-    "panel for csgo"
-  ],
-  "author": "Zachey",
-  "license": "MIT",
-  "dependencies": {
-    "@fabricio-191/valve-server-query": "^4.1.9",
-    "axios": "^1.4.0",
-    "body-parser": "^1.20.2",
-    "chokidar": "^3.5.3",
-    "compression": "^1.7.4",
-    "crypto-js": "^4.1.1",
-    "dotenv": "^16.3.1",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "jsonwebtoken": "^9.0.1",
-    "moment": "^2.29.4",
-    "mysql": "^2.18.1",
-    "mysqldump": "^3.2.0",
-    "passport": "^0.6.0",
-    "passport-steam": "^1.0.18",
-    "request": "^2.88.2",
-    "steam-webapi": "^0.5.2"
-  },
-  "devDependencies": {
-    "@vercel/ncc": "^0.36.1",
-    "child_process": "^1.0.2",
-    "express-winston": "^4.2.0",
-    "fs-extra": "^11.1.1",
-    "nodemon": "^3.0.1",
-    "prettier": "^3.0.0",
-    "winston": "^3.9.0"
-  }
+	"name": "mimicms",
+	"version": "1.0.0",
+	"description": "MimiCMS is a CMS for game servers (only CS:GO and CS:2 at the moment) of the new level.",
+	"main": "app.js",
+	"scripts": {
+		"dev": "nodemon",
+		"format": "prettier ./ --write",
+		"backup": "node scripts/backup"
+	},
+	"keywords": [
+		"CMS",
+		"CS:GO",
+		"csgo",
+		"game server panel",
+		"site for csgo",
+		"panel for csgo"
+	],
+	"author": {
+		"name": "Zachey",
+		"email": "zachey@bk.ru",
+		"url": "https://github.com/zachey01"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"@fabricio-191/valve-server-query": "^4.1.9",
+		"axios": "^1.4.0",
+		"body-parser": "^1.20.2",
+		"chokidar": "^3.5.3",
+		"compression": "^1.7.4",
+		"crypto-js": "^4.1.1",
+		"dotenv": "^16.3.1",
+		"ejs": "^3.1.9",
+		"express": "^4.18.2",
+		"express-session": "^1.17.3",
+		"jsonwebtoken": "^9.0.1",
+		"moment": "^2.29.4",
+		"mysql": "^2.18.1",
+		"mysqldump": "^3.2.0",
+		"passport": "^0.6.0",
+		"passport-steam": "^1.0.18",
+		"request": "^2.88.2",
+		"steam-webapi": "^0.5.2"
+	},
+	"devDependencies": {
+		"@vercel/ncc": "^0.36.1",
+		"child_process": "^1.0.2",
+		"express-winston": "^4.2.0",
+		"fs-extra": "^11.1.1",
+		"nodemon": "^3.0.1",
+		"prettier": "^3.0.0",
+		"winston": "^3.9.0"
+	}
 }
