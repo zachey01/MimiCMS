@@ -1,0 +1,38 @@
+{
+	"name": "MimiCMSinstaller",
+	"description": "Installer for MimiCMS",
+	"version": "0.0.1",
+	"license": "MIT",
+	"bin": {
+		"MimiCMS-installer": "index.js",
+		"mimicms": "index.js"
+	},
+	"author": {
+		"name": "Zachey",
+		"email": "zachey@bk.ru",
+		"url": "https://github.com/zachey01"
+	},
+	"keywords": [
+		"MimiCMS-installer",
+		"Zachey"
+	],
+	"files": [
+		"index.js",
+		"utils"
+	],
+	"scripts": {
+		"format": "prettier --write \"./**/*.{js,json}\""
+	},
+	"dependencies": {
+		"chalk": "^4.1.2",
+		"cli-alerts": "^1.2.2",
+		"cli-handle-error": "^4.4.0",
+		"cli-handle-unhandled": "^1.1.1",
+		"cli-meow-help": "^3.1.0",
+		"cli-welcome": "^2.2.2",
+		"meow": "^9.0.0"
+	},
+	"devDependencies": {
+		"prettier": "^3.0.0"
+	}
+}

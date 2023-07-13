@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "prettier": "prettier ./ --write",
-    "backup": "node scripts/backup",
-    "build": "node scripts/build",
-    "start": "node dist/index"
+    "backup": "node scripts/backup"
   },
   "keywords": [
     "CMS",
@@ -26,10 +24,12 @@
     "body-parser": "^1.20.2",
     "chokidar": "^3.5.3",
     "compression": "^1.7.4",
+    "crypto-js": "^4.1.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.1",
     "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "mysqldump": "^3.2.0",

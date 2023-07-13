@@ -1,1 +1,1 @@
-module.exports = {"make":"Toyota","model":"sdf","year":2008}
+module.exports = {"DB_HOST":"","DB_USER":"sdf","DB_PASSWORD":"","DB_NAME":""}

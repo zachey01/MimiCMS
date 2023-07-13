@@ -90,25 +90,64 @@ router.get("/mapViewer", function (req, res) {
 
 const CryptoJS = require("crypto-js");
 
+// Генерируем пароль из 128 символов
+function generatePassword() {
+  const passwordLength = 128;
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
+
+  for (let i = 0; i < passwordLength; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+
+  return password;
+}
+
+const pass = generatePassword();
+
+const jwt = require("jsonwebtoken");
+
+router.get("/api/token", (req, res) => {
+  // Создание токена
+  const token = jwt.sign({ userId: "123" }, "секретный_ключ");
+
+  // Отправка токена в ответе
+  res.json({ token });
+});
+
+router.get("/api/protected", (req, res) => {
+  const token = req.headers.authorization;
+
+  // Проверка токена и расшифровка
+  jwt.verify(token, "секретный_ключ", (err, decoded) => {
+    if (err) {
+      // Обработка ошибки аутентификации
+      return res.status(401).json({ error: "Неверный токен" });
+    }
+
+    // Токен действительный, выполняйте действия с данными пользователя
+    const userId = decoded.userId;
+    // Дальнейшая обработка
+
+    res.json({ message: "Доступ разрешен" });
+  });
+});
 router.post("/submit", (req, res) => {
   const { encryptedValue } = req.body;
-
   // Decrypt the value using AES decryption
-  const decryptedValue = CryptoJS.AES.decrypt(
-    encryptedValue,
-    "secret-key"
-  ).toString(CryptoJS.enc.Utf8);
-
+  const decryptedValue = CryptoJS.AES.decrypt(encryptedValue, "123").toString(
+    CryptoJS.enc.Utf8
+  );
   const value = JSON.parse(decryptedValue);
   console.log("Value:", value);
-
   async function write() {
     await fs.promises.writeFile(
       "./src/config/config.js",
       `module.exports = ${JSON.stringify(value)}`
     );
   }
-
   write();
   res.sendStatus(200);
 });
@@ -116,6 +155,9 @@ router.post("/submit", (req, res) => {
 router.get("/test", (req, res) => {
   userSteamID = req.session.steamid;
   renderPage(req, res, userSteamID, "test-admin", "test-admin");
+
+  const cfg = require("../config/config");
+  console.log(cfg.make);
 });
 
 module.exports = router;
