@@ -1,6 +1,6 @@
 {
-  "recommendations": [
-    "DigitalBrainstem.javascript-ejs-support",
-    "dirt-lxiv.language-csgo-cfg"
-  ]
+	"recommendations": [
+		"DigitalBrainstem.javascript-ejs-support",
+		"dirt-lxiv.language-csgo-cfg"
+	]
 }

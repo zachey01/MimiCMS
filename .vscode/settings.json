@@ -1,11 +1,11 @@
 {
-  "files.associations": {
-    "*.ejs": "html",
-    "*.cfg": "CSGO cfg"
-  },
-  "emmet.includeLanguages": {
-    "ejs": "html"
-  },
-  "html.format.templating": true,
-  "cSpell.enableFiletypes": ["!javascript"]
+	"files.associations": {
+		"*.ejs": "html",
+		"*.cfg": "CSGO cfg"
+	},
+	"emmet.includeLanguages": {
+		"ejs": "html"
+	},
+	"html.format.templating": true,
+	"cSpell.enableFiletypes": ["!javascript"]
 }

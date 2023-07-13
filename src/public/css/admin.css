@@ -1,74 +1,74 @@
 nav,
 header {
-  position: sticky;
-  top: 0;
+	position: sticky;
+	top: 0;
 }
 .mx-2 {
-  text-decoration: none;
+	text-decoration: none;
 }
 .navbar .navbar-nav .nav-link {
-  color: #ffffff;
+	color: #ffffff;
 }
 .sm-icons {
-  flex-direction: row;
+	flex-direction: row;
 }
 .sm-icons .nav-link {
-  padding-right: 1em;
+	padding-right: 1em;
 }
 main {
-  padding: 20px;
+	padding: 20px;
 }
 .nav-item {
-  margin-left: 10px;
+	margin-left: 10px;
 }
 .pay-card {
-  margin-left: 10px;
-  width: 18rem;
+	margin-left: 10px;
+	width: 18rem;
 }
 .header-icon {
-  padding-left: 10px;
-  opacity: 1;
-  color: gray;
+	padding-left: 10px;
+	opacity: 1;
+	color: gray;
 }
 .side-navbar {
-  padding-top: 30px;
-  height: 100%;
-  position: fixed;
-  margin-left: -300px;
+	padding-top: 30px;
+	height: 100%;
+	position: fixed;
+	margin-left: -300px;
 }
 
 .nav-link:active,
 .nav-link:focus,
 .nav-link:hover {
-  background-color: #ffffff26;
-  text-decoration: none;
+	background-color: #ffffff26;
+	text-decoration: none;
 }
 
 .my-container {
-  transition: 0.4s;
+	transition: 0.4s;
 }
 
 .active-nav {
-  margin-left: 0;
+	margin-left: 0;
 }
 
 /* for main section */
 .active-cont {
-  margin-left: 250px;
+	margin-left: 250px;
 }
 
 #menu-btn {
-  background-color: #100901;
-  color: #fff;
-  margin-left: -62px;
+	background-color: #100901;
+	color: #fff;
+	margin-left: -62px;
 }
 
 .my-container input {
-  max-width: 20rem;
+	max-width: 20rem;
 }
 .input-inline div {
-  margin-left: 2em;
+	margin-left: 2em;
 }
 .input-inline:last-child {
-  margin-left: 0;
+	margin-left: 0;
 }
