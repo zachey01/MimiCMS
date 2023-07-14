@@ -4,7 +4,7 @@ require('dotenv').config();
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
 const path = require('path');
-
+const cfg = require('../config/config');
 let authVars = {
 	logo:
 		process.env.LOGO ||
@@ -35,7 +35,7 @@ let authVars = {
 	serverName: null,
 	serverDescription: null,
 	cmsVersion: '1.0',
-	env: process.env
+	cfg: cfg
 };
 
 function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {

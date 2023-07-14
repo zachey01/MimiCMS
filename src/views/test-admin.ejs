@@ -1,25 +1,157 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Basic JSON Editor Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <div class="container-sm">
-      <div id="DBcfg-wrapper"></div>
-      <button type="button" class="btn btn-outline-primary" id="submit">
-        Save changes
-      </button>
-    </div>
+	<head>
+		<meta charset="utf-8" />
+		<title>Basic JSON Editor Example</title>
+		<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+			crossorigin="anonymous"
+		/>
+	</head>
+	<body>
+		<div class="container-sm">
+			<div id="DBcfg-wrapper"></div>
+			<button type="button" class="btn btn-outline-primary" id="submit">
+				Save changes
+			</button>
+		</div>
 
-    <script src="/js/adminCfg.js"></script>
-  </body>
+		<script>
+			const DBcfg = document.getElementById('DBcfg-wrapper');
+
+			JSONEditor.defaults.options.theme = 'bootstrap5';
+			JSONEditor.defaults.options.disable_edit_json = 'true';
+			JSONEditor.defaults.options.disable_properties = 'true';
+			JSONEditor.defaults.options.disable_collapse = 'true';
+
+			const editor = new JSONEditor(DBcfg, {
+				schema: {
+					type: 'object',
+					title: 'Main configuration',
+					properties: {
+						name: {
+							type: 'number',
+							default: '<%- cfg.port %>',
+							description:
+								'if the port is 80, it will be like this: <%- cfg.domain %>'
+						},
+						logo: {
+							type: 'string',
+							default: '<%- cfg.domain %>'
+						}
+					}
+				}
+			});
+
+			const webEditor = new JSONEditor(DBcfg, {
+				schema: {
+					type: 'object',
+					title: 'Web server configuration',
+					properties: {
+						port: {
+							type: 'number',
+							default: '<%- cfg.port %>',
+							description:
+								'if the port is 80, it will be like this: <%- cfg.domain %>'
+						},
+						domain: {
+							type: 'string',
+							default: '<%- cfg.domain %>'
+						}
+					}
+				}
+			});
+
+			const DBeditor = new JSONEditor(DBcfg, {
+				schema: {
+					type: 'object',
+					title: 'MYSQL database configuration',
+					properties: {
+						DB_HOST: {
+							type: 'string',
+							default: '<%- cfg.DB_HOST %>'
+						},
+						DB_USER: {
+							type: 'string',
+							default: '<%- cfg.DB_USER %>'
+						},
+						DB_PASSWORD: {
+							type: 'string',
+							default: '<%- cfg.DB_PASSWORD %>'
+						},
+						DB_NAME: {
+							type: 'string',
+							default: '<%- cfg.DB_NAME %>'
+						}
+					}
+				}
+			});
+
+			fetch('/api/token')
+				.then(response => response.json())
+				.then(data => {
+					const token = data.token;
+					// Отправка токена в запросе к защищенному ресурсу
+					fetch('/api/protected', {
+						headers: {
+							Authorization: token
+						}
+					})
+						.then(response => response.json())
+						.then(data => {
+							console.log(data.message); // Вывод сообщения доступа разрешен
+
+							document
+								.getElementById('submit')
+								.addEventListener('click', function () {
+									// Get the value from the editor
+									let mergedValue = Object.assign(
+										{},
+										editor.getValue(),
+										DBeditor.getValue(),
+										webEditor.getValue()
+									);
+
+									// Encrypt the value using AES encryption
+									var encryptedValue = CryptoJS.AES.encrypt(
+										JSON.stringify(mergedValue),
+										'123'
+									).toString();
+
+									// Send the encrypted value to the server using AJAX
+									var xhr = new XMLHttpRequest();
+									xhr.open('POST', '/submit');
+									xhr.setRequestHeader(
+										'Content-Type',
+										'application/json'
+									);
+									xhr.onreadystatechange = function () {
+										if (
+											xhr.readyState ===
+												XMLHttpRequest.DONE &&
+											xhr.status === 200
+										) {
+											window.location.reload(false);
+										}
+									};
+									xhr.send(
+										JSON.stringify({
+											encryptedValue: encryptedValue
+										})
+									);
+								});
+						})
+						.catch(error => {
+							console.error(error); // Обработка ошибки
+						});
+				})
+				.catch(error => {
+					console.error(error); // Обработка ошибки
+				});
+		</script>
+	</body>
 </html>

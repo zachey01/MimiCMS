@@ -1,7 +1,7 @@
 {
 	"name": "mimicms",
-	"version": "0.0.1",
-	"description": "MimiCMS is a CMS for game servers (only CS:GO and CS:2 at the moment) of the new level.",
+	"version": "0.0.2",
+	"description": "MimiCMS is a CMS for Valve games servers of the new level.",
 	"main": "app.js",
 	"scripts": {
 		"dev": "nodemon",

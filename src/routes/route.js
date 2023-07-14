@@ -122,6 +122,13 @@ router.get('/api/token', (req, res) => {
 });
 
 router.get('/api/protected', (req, res) => {
+	const referer = req.headers.referer;
+
+	// Проверка URL-адреса
+	if (referer !== 'http://localhost:3000/test') {
+		return res.status(403).json({ message: 'Доступ запрещен' });
+	}
+
 	const token = req.headers.authorization;
 
 	// Проверка токена и расшифровка
@@ -138,6 +145,7 @@ router.get('/api/protected', (req, res) => {
 		res.json({ message: 'Доступ разрешен' });
 	});
 });
+
 router.post('/submit', (req, res) => {
 	const { encryptedValue } = req.body;
 	// Decrypt the value using AES decryption
