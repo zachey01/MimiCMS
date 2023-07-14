@@ -3,3 +3,4 @@ backup/*
 *.log
 .env
 dist/*
+src/config/config.js
