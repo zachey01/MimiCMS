@@ -1,207 +1,204 @@
-<div class="mb-3">
-  <label for="exampleInputEmail1" class="form-label">Database</label>
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    value="<%= env.DB_HOST %>"
-  />
+<div class="container-sm">
+	<div
+		id="messageAlertWrapper"
+		class="alert alert-primary d-inline-flex"
+		role="alert"
+	>
+		<div id="messageAlertText">Successful connection to the API!</div>
+		<button
+			type="button"
+			class="btn-close"
+			data-bs-dismiss="alert"
+			aria-label="Close"
+		></button>
+	</div>
+	<div id="DBcfg-wrapper"></div>
+	<button type="button" class="btn btn-outline-primary" id="submit">
+		Save changes
+	</button>
 </div>
-<div class="mb-3">
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    placeholder="DB user"
-    value="<%= env.DB_USER %>"
-  />
-</div>
-<div class="mb-3">
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    placeholder="DB password"
-    value="<%= env.DB_PASSWORD %>"
-  />
-</div>
-<div class="mb-3">
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    placeholder="DB name"
-    value="<%= env.DB_NAME %>"
-  />
-</div>
+<script>
+	const DBcfg = document.getElementById('DBcfg-wrapper');
 
-<div class="d-inline-flex">
-  <div class="d-block">
-    <div class="mb-3 d">
-      <label for="exampleInputEmail1" class="form-label">Server</label>
-      <input
-        type="text"
-        class="form-control"
-        id="exampleInputEmail1"
-        aria-describedby="emailHelp"
-        placeholder="Server IP"
-        value="<%= serverIP %>"
-      />
-    </div>
-    <div class="mb-3">
-      <input
-        type="text"
-        class="form-control"
-        id="exampleInputEmail1"
-        aria-describedby="emailHelp"
-        placeholder="Server port"
-        value="<%= serverPort %>"
-      />
-    </div>
-  </div>
+	JSONEditor.defaults.options.theme = 'bootstrap5';
+	JSONEditor.defaults.options.disable_edit_json = 'true';
+	JSONEditor.defaults.options.disable_properties = 'true';
+	JSONEditor.defaults.options.disable_collapse = 'true';
+	const logoImg = document.getElementById('DBcfg-wrapper');
+	logoImg.innerHTML =
+		'Logo: <img src="<%- cfg.Logo.img %>" alt="" width="25" height="25">';
 
-  <div class="d-block" style="margin-left: 15px">
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">RCON</label>
-      <input
-        type="text"
-        class="form-control"
-        id="exampleInputEmail1"
-        aria-describedby="emailHelp"
-        placeholder="RCON port"
-        value="<%= env.RCON_PORT %>"
-      />
-    </div>
-    <div class="mb-3">
-      <input
-        type="text"
-        class="form-control"
-        id="exampleInputEmail1"
-        aria-describedby="emailHelp"
-        placeholder="RCON password"
-        value="<%= env.RCON_PASSWORD %>"
-      />
-    </div>
-  </div>
-</div>
+	const editor = new JSONEditor(DBcfg, {
+		schema: {
+			type: 'object',
+			title: 'Main configuration',
+			properties: {
+				Name: {
+					type: 'string',
+					default: '<%- cfg.Name %>'
+				},
+				Logo: {
+					type: 'object',
+					properties: {
+						img: {
+							type: 'string',
+							title: 'file',
+							media: {
+								binaryEncoding: 'base64',
+								type: 'img/png'
+							}
+						}
+					}
+				},
+				Currency: {
+					type: 'string',
+					default: '<%- cfg.Currency %>'
+				},
+				SteamWebAPIkey: {
+					type: 'string',
+					default: '<%- cfg.SteamWebAPIkey %>'
+				}
+			}
+		}
+	});
 
-<div class="mb-3">
-  <label for="exampleInputEmail1" class="form-label">Steam web API key</label>
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    value="<%= env.STEAM_API_KEY %>"
-  />
-  <div id="emailHelp" class="form-text">
-    You can get this key
-    <a href="https://steamcommunity.com/dev/apikey">here</a>.
-  </div>
-</div>
+	const serverEditor = new JSONEditor(DBcfg, {
+		schema: {
+			type: 'object',
+			title: 'Game server configuration',
+			properties: {
+				serverIP: {
+					type: 'string',
+					default: '<%- cfg.serverIP %>'
+				},
+				ServerPort: {
+					type: 'number',
+					default: '<%- cfg.ServerPort %>'
+				},
+				RCONport: {
+					type: 'number',
+					default: '<%- cfg.RCONport %>'
+				},
+				RCONpassword: {
+					type: 'string',
+					default: '<%- cfg.RCONpassword %>'
+				}
+			}
+		}
+	});
 
-<div class="mb-3">
-  <label for="exampleInputEmail1" class="form-label">Server name</label>
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    value="<%= env.NAME %>"
-  />
-</div>
+	const webEditor = new JSONEditor(DBcfg, {
+		schema: {
+			type: 'object',
+			title: 'Web server configuration',
+			properties: {
+				Port: {
+					type: 'number',
+					default: '<%- cfg.Port %>',
+					description:
+						'if the port is 80, it will be like this: <%- cfg.domain %>'
+				},
+				Domain: {
+					type: 'string',
+					default: '<%- cfg.Domain %>'
+				}
+			}
+		}
+	});
 
-<div class="mb-3">
-  <label for="exampleInputEmail1" class="form-label">Currency symbol</label>
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    value="<%= env.CURRENCY %>"
-  />
-</div>
+	const DBeditor = new JSONEditor(DBcfg, {
+		schema: {
+			type: 'object',
+			title: 'MYSQL database configuration',
+			properties: {
+				DB_HOST: {
+					type: 'string',
+					default: '<%- cfg.DB_HOST %>'
+				},
+				DB_USER: {
+					type: 'string',
+					default: '<%- cfg.DB_USER %>'
+				},
+				DB_PASSWORD: {
+					type: 'string',
+					default: '<%- cfg.DB_PASSWORD %>'
+				},
+				DB_NAME: {
+					type: 'string',
+					default: '<%- cfg.DB_NAME %>'
+				}
+			}
+		}
+	});
 
-<div class="mb-3 d-block">
-  <label for="exampleInputEmail1" class="form-label"
-    >Secret key for encrypt</label
-  ><br />
-  <div class="d-inline-flex">
-    <input
-      type="text"
-      class="form-control"
-      id="exampleInputEmail1"
-      aria-describedby="emailHelp"
-      value="<%= env.SECRET %>"
-    />
-    <button
-      type="button"
-      class="btn btn-primary btn-sm"
-      style="margin-left: 10px"
-    >
-      Generate
-    </button>
-  </div>
-</div>
+	fetch('/api/token')
+		.then(response => response.json())
+		.then(data => {
+			const token = data.token;
+			fetch('/api/protected', {
+				headers: {
+					Authorization: token
+				}
+			})
+				.then(response => response.json())
+				.then(data => {
+					const alertText =
+						document.getElementById('messageAlertText');
 
-<div class="mb-3">
-  <label for="exampleInputEmail1" class="form-label">Logo</label>
-  <br />
-  <div class="d-inline-flex">
-    <input
-      type="text"
-      class="form-control"
-      id="exampleInputEmail1"
-      aria-describedby="emailHelp"
-      value="<%= env.LOGO %>"
-    />
-    <img
-      src="<%= env.LOGO %>"
-      alt=""
-      height="40"
-      width="40"
-      style="margin-left: 10px"
-    />
-  </div>
-</div>
+					const alertWrapper = document.getElementById(
+						'messageAlertWrapper'
+					);
 
-<div style="text-align: right">
-  <button type="button" class="btn btn-primary">Save Changes</button>
-</div>
+					if (data.message === false || data.message === undefined) {
+						alertText.innerHTML = `Error. Please, check connect to API.`;
+						alertWrapper.classList.remove('alert-primary');
+						alertWrapper.classList.add('alert-danger');
+					}
 
-<a name="configPay"><h4 class="text-center">Pay</h4></a>
+					document
+						.getElementById('submit')
+						.addEventListener('click', function () {
+							// Get the value from the editor
+							let mergedValue = Object.assign(
+								{},
+								editor.getValue(),
+								DBeditor.getValue(),
+								webEditor.getValue(),
+								serverEditor.getValue()
+							);
 
-<div class="d-inline-flex">
-  <div class="card pay-card">
-    <div class="card-body">
-      <h5 class="card-title">PayPal</h5>
-      <button type="button" class="btn btn-outline-secondary">Use</button>
-    </div>
-  </div>
+							// Encrypt the value using AES encryption
+							var encryptedValue = CryptoJS.AES.encrypt(
+								JSON.stringify(mergedValue),
+								'admin'
+							).toString();
 
-  <div class="card pay-card">
-    <div class="card-body">
-      <h5 class="card-title">LavaPay</h5>
-      <button type="button" class="btn btn-outline-secondary">Use</button>
-    </div>
-  </div>
-</div>
-<br /><br />
-<div class="mb-3">
-  <label for="exampleInputEmail1" class="form-label">Token</label>
-  <input
-    type="text"
-    class="form-control"
-    id="exampleInputEmail1"
-    aria-describedby="emailHelp"
-    value="<%= env.PAY_TOKEN %>"
-  />
-</div>
-
-<div style="text-align: right">
-  <button type="button" class="btn btn-primary">Save Changes</button>
-</div>
+							// Send the encrypted value to the server using AJAX
+							var xhr = new XMLHttpRequest();
+							xhr.open('POST', '/submit');
+							xhr.setRequestHeader(
+								'Content-Type',
+								'application/json'
+							);
+							xhr.onreadystatechange = function () {
+								if (
+									xhr.readyState === XMLHttpRequest.DONE &&
+									xhr.status === 200
+								) {
+								}
+							};
+							xhr.send(
+								JSON.stringify({
+									encryptedValue: encryptedValue
+								})
+							);
+						});
+				})
+				.catch(error => {
+					console.error(error); // Обработка ошибки
+				});
+		})
+		.catch(error => {
+			console.error(error); // Обработка ошибки
+		});
+</script>

@@ -1,147 +1,150 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-lg">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Admin Panel</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item header-icon">
-          <a class="nav-link active" aria-current="page" href="#" title="Main"
-            ><i class="fa-solid fa-house-chimney fa-xl"></i
-          ></a>
-        </li>
-        <li class="nav-item header-icon">
-          <a
-            class="nav-link"
-            aria-current="page"
-            href="#"
-            title="File manager"
-            style="color: black"
-            ><i class="fa-solid fa-folder fa-xl"></i
-          ></a>
-        </li>
-        <li class="nav-item header-icon">
-          <a
-            class="nav-link header-icon"
-            aria-current="page"
-            href="#"
-            style="color: black"
-            title="Page constructor"
-            ><i class="fa-solid fa-puzzle-piece fa-xl"></i
-          ></a>
-        </li>
-        <li class="nav-item header-icon">
-          <a class="nav-link active" aria-current="page" href="#" title="Pages"
-            ><i class="fa-solid fa-file fa-xl"></i
-          ></a>
-        </li>
-      </ul>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin-left: 60%">
-        <li class="nav-item">
-          <div class="d-flex">
-            <div class="dropdown">
-              <button
-                class="btn btn-light toggle shadow-sm"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="<%= avatar %>"
-                  class="rounded-circle avatar"
-                  width="50"
-                  height="50"
-                />
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="/"
-                    >Back <i class="fa-solid fa-arrow-rotate-left"></i
-                  ></a>
-                </li>
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">Admin Panel</a>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent"
+			aria-expanded="false"
+			aria-label="Toggle navigation"
+		>
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item header-icon">
+					<a
+						class="nav-link active"
+						aria-current="page"
+						href="#"
+						title="Main"
+						><i class="fa-solid fa-house-chimney fa-xl"></i
+					></a>
+				</li>
+				<li class="nav-item header-icon">
+					<a
+						class="nav-link"
+						aria-current="page"
+						href="#"
+						title="File manager"
+						style="color: black"
+						><i class="fa-solid fa-folder fa-xl"></i
+					></a>
+				</li>
+				<li class="nav-item header-icon">
+					<a
+						class="nav-link header-icon"
+						aria-current="page"
+						href="#"
+						style="color: black"
+						title="Page constructor"
+						><i class="fa-solid fa-puzzle-piece fa-xl"></i
+					></a>
+				</li>
+				<li class="nav-item header-icon">
+					<a
+						class="nav-link active"
+						aria-current="page"
+						href="#"
+						title="Pages"
+						><i class="fa-solid fa-file fa-xl"></i
+					></a>
+				</li>
+			</ul>
+			<ul
+				class="navbar-nav me-auto mb-2 mb-lg-0"
+				style="margin-left: 60%"
+			>
+				<li class="nav-item">
+					<div class="d-flex">
+						<div class="dropdown">
+							<button
+								class="btn btn-light toggle shadow-sm"
+								type="button"
+								data-bs-toggle="dropdown"
+								aria-expanded="false"
+							>
+								<img
+									src="<%= avatar %>"
+									class="rounded-circle avatar"
+									width="50"
+									height="50"
+								/>
+							</button>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="dropdown-item" href="/"
+										>Back
+										<i
+											class="fa-solid fa-arrow-rotate-left"
+										></i
+									></a>
+								</li>
 
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="#"
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    >Exit <i class="fa-solid fa-right-from-bracket"></i
-                  ></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </li>
-      </ul>
+								<li>
+									<a
+										class="dropdown-item"
+										href="#"
+										class="btn btn-primary"
+										data-bs-toggle="modal"
+										data-bs-target="#exampleModal"
+										>Exit
+										<i
+											class="fa-solid fa-right-from-bracket"
+										></i
+									></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</ul>
 
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              Are you sure you want to log out of your account?
-            </div>
-            <div class="modal-footer">
-              <a href="/logout"
-                ><button type="button" class="btn btn-secondary">
-                  Exit
-                </button></a
-              >
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-bs-dismiss="modal"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div
+				class="modal fade"
+				id="exampleModal"
+				tabindex="-1"
+				aria-labelledby="exampleModalLabel"
+				aria-hidden="true"
+			>
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Confirmation
+							</h5>
+							<button
+								type="button"
+								class="btn-close"
+								data-bs-dismiss="modal"
+								aria-label="Close"
+							></button>
+						</div>
+						<div class="modal-body">
+							Are you sure you want to log out of your account?
+						</div>
+						<div class="modal-footer">
+							<a href="/logout"
+								><button
+									type="button"
+									class="btn btn-secondary"
+								>
+									Exit
+								</button></a
+							>
+							<button
+								type="button"
+								class="btn btn-primary"
+								data-bs-dismiss="modal"
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </nav>
-<div
-  class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column"
-  id="sidebar"
->
-  <ul class="nav flex-column text-white w-100">
-    <li href="#" class="nav-link">
-      <i class="fa-solid fa-cloud-arrow-down"></i
-      ><a href="#updates" class="mx-2">Updates</a>
-    </li>
-    <li href="#" class="nav-link">
-      <i class="fa-sharp fa-solid fa-sliders"></i
-      ><a href="#config" class="mx-2">Configuration</a>
-    </li>
-    <li href="#" class="nav-link">
-      ᅠ ᅠ <i class="fa-solid fa-money-check"></i
-      ><a href="#configPay" class="mx-2">Pay</a>
-    </li>
-  </ul>
-</div>

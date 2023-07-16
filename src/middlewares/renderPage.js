@@ -35,7 +35,8 @@ let authVars = {
 	serverName: null,
 	serverDescription: null,
 	cmsVersion: '1.0',
-	cfg: cfg
+	cfg: cfg,
+	env: cfg
 };
 
 function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {

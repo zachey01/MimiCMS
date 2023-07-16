@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const https = require('https');
+const jsonParser = bodyParser.json({ limit: '10mb' });
 const fs = require('fs');
 const app = express();
 const expressWinston = require('express-winston');
@@ -23,6 +24,7 @@ const adminRoute = require('./src/routes/admin');
 
 // ExpressJS configuration
 app.use(compress());
+app.use(jsonParser);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');

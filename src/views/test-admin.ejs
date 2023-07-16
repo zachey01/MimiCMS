@@ -3,6 +3,11 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Basic JSON Editor Example</title>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+			crossorigin="anonymous"
+		></script>
 		<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 		<link
@@ -14,12 +19,26 @@
 	</head>
 	<body>
 		<div class="container-sm">
+			<div
+				id="messageAlertWrapper"
+				class="alert alert-primary fixed-bottom-right d-inline-flex"
+				role="alert"
+			>
+				<div id="messageAlertText">
+					Successful connection to the API!
+				</div>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="alert"
+					aria-label="Close"
+				></button>
+			</div>
 			<div id="DBcfg-wrapper"></div>
 			<button type="button" class="btn btn-outline-primary" id="submit">
 				Save changes
 			</button>
 		</div>
-
 		<script>
 			const DBcfg = document.getElementById('DBcfg-wrapper');
 
@@ -27,21 +46,64 @@
 			JSONEditor.defaults.options.disable_edit_json = 'true';
 			JSONEditor.defaults.options.disable_properties = 'true';
 			JSONEditor.defaults.options.disable_collapse = 'true';
+			const logoImg = document.getElementById('DBcfg-wrapper');
+			logoImg.innerHTML =
+				'Logo: <img src="<%- cfg.Logo.img %>" alt="" width="25" height="25">';
 
 			const editor = new JSONEditor(DBcfg, {
 				schema: {
 					type: 'object',
 					title: 'Main configuration',
 					properties: {
-						name: {
-							type: 'number',
-							default: '<%- cfg.port %>',
-							description:
-								'if the port is 80, it will be like this: <%- cfg.domain %>'
-						},
-						logo: {
+						Name: {
 							type: 'string',
-							default: '<%- cfg.domain %>'
+							default: '<%- cfg.Name %>'
+						},
+						Logo: {
+							type: 'object',
+							properties: {
+								img: {
+									type: 'string',
+									title: 'file',
+									media: {
+										binaryEncoding: 'base64',
+										type: 'img/png'
+									}
+								}
+							}
+						},
+						Currency: {
+							type: 'string',
+							default: '<%- cfg.Currency %>'
+						},
+						SteamWebAPIkey: {
+							type: 'string',
+							default: '<%- cfg.SteamWebAPIkey %>'
+						}
+					}
+				}
+			});
+
+			const serverEditor = new JSONEditor(DBcfg, {
+				schema: {
+					type: 'object',
+					title: 'Game server configuration',
+					properties: {
+						serverIP: {
+							type: 'string',
+							default: '<%- cfg.serverIP %>'
+						},
+						ServerPort: {
+							type: 'number',
+							default: '<%- cfg.ServerPort %>'
+						},
+						RCONport: {
+							type: 'number',
+							default: '<%- cfg.RCONport %>'
+						},
+						RCONpassword: {
+							type: 'string',
+							default: '<%- cfg.RCONpassword %>'
 						}
 					}
 				}
@@ -52,15 +114,15 @@
 					type: 'object',
 					title: 'Web server configuration',
 					properties: {
-						port: {
+						Port: {
 							type: 'number',
-							default: '<%- cfg.port %>',
+							default: '<%- cfg.Port %>',
 							description:
 								'if the port is 80, it will be like this: <%- cfg.domain %>'
 						},
-						domain: {
+						Domain: {
 							type: 'string',
-							default: '<%- cfg.domain %>'
+							default: '<%- cfg.Domain %>'
 						}
 					}
 				}
@@ -95,7 +157,6 @@
 				.then(response => response.json())
 				.then(data => {
 					const token = data.token;
-					// Отправка токена в запросе к защищенному ресурсу
 					fetch('/api/protected', {
 						headers: {
 							Authorization: token
@@ -103,7 +164,21 @@
 					})
 						.then(response => response.json())
 						.then(data => {
-							console.log(data.message); // Вывод сообщения доступа разрешен
+							const alertText =
+								document.getElementById('messageAlertText');
+
+							const alertWrapper = document.getElementById(
+								'messageAlertWrapper'
+							);
+
+							if (
+								data.message === false ||
+								data.message === undefined
+							) {
+								alertText.innerHTML = `Error. Please, check connect to API.`;
+								alertWrapper.classList.remove('alert-primary');
+								alertWrapper.classList.add('alert-danger');
+							}
 
 							document
 								.getElementById('submit')
@@ -113,13 +188,14 @@
 										{},
 										editor.getValue(),
 										DBeditor.getValue(),
-										webEditor.getValue()
+										webEditor.getValue(),
+										serverEditor.getValue()
 									);
 
 									// Encrypt the value using AES encryption
 									var encryptedValue = CryptoJS.AES.encrypt(
 										JSON.stringify(mergedValue),
-										'123'
+										'admin'
 									).toString();
 
 									// Send the encrypted value to the server using AJAX
@@ -135,7 +211,6 @@
 												XMLHttpRequest.DONE &&
 											xhr.status === 200
 										) {
-											window.location.reload(false);
 										}
 									};
 									xhr.send(
