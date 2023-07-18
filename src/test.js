@@ -3,6 +3,20 @@ const fs = require('fs');
 const path = require('path');
 const hljs = require('highlight.js');
 
+const multer = require('multer');
+// Update the upload middleware configuration
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		const folderPath = rootFolder; // Set destination to the root folder
+		cb(null, folderPath);
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.originalname);
+	}
+});
+
+const upload = multer({ dest: './', storage: storage }); // Remove this line
+
 const app = express();
 const rootFolder = __dirname;
 
@@ -40,12 +54,17 @@ app.get('/', (req, res) => {
 			.map(file => `<li><a href="/edit/${file}">${file}</a></li>`)
 			.join('')}
       </ul>
+
+	  <form action="/upload/" method="post" enctype="multipart/form-data">
+	  <input type="file" name="file" />
+	  <button type="submit">Загрузить</button>
+	</form>
     `);
 	});
 });
 
 // Страница редактора кода для выбранного файла или папки
-app.get('/edit/:path(*)', (req, res) => {
+app.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 	const filePath = path.join(rootFolder, req.params.path);
 
 	// Проверка существования файла или папки
@@ -130,36 +149,55 @@ app.get('/folder/:path(*)', (req, res) => {
 
 		// Отправка шаблона с данными
 		res.send(`
-      <h1>Содержимое папки: ${req.params.path}</h1>
-      <h2>Папки:</h2>
-      <ul>
-        ${folders
-			.map(
-				folder =>
-					`<li><a href="/folder/${req.params.path}/${folder}">${folder}</a></li>`
-			)
-			.join('')}
-      </ul>
-      <h2>Файлы:</h2>
-      <ul>
-        ${filesList
-			.map(
-				file =>
-					`<li><a href="/edit/${req.params.path}/${file}">${file}</a></li>`
-			)
-			.join('')}
-      </ul>
-      <a href="/edit/${req.params.path}/newfile">Создать новый файл</a>
-      <br>
-      <a href="/edit/${req.params.path}/newfolder">Создать новую папку</a>
-      <br>
-      <a href="/edit/${req.params.path}/rename">Переименовать папку</a>
-      <br>
-      <a href="/edit/${req.params.path}/delete">Удалить папку</a>
-      <br>
-      <a href="/">Назад</a>
-    `);
+		<h1>Содержимое папки: ${req.params.path}</h1>
+		<h2>Папки:</h2>
+		<ul>
+		  ${folders
+				.map(
+					folder =>
+						`<li><a href="/folder/${req.params.path}/${folder}">${folder}</a></li>`
+				)
+				.join('')}
+		</ul>
+		<h2>Файлы:</h2>
+		<ul>
+		  ${filesList
+				.map(
+					file =>
+						`<li><a href="/edit/${req.params.path}/${file}">${file}</a></li>`
+				)
+				.join('')}
+		</ul>
+		<form action="/upload/${
+			req.params.path
+		}" method="post" enctype="multipart/form-data">
+		  <input type="file" name="file" />
+		  <button type="submit">Загрузить</button>
+		</form>
+		<br>
+		<a href="/">Назад</a>
+	  `);
 	});
+});
+
+app.post('/upload/:path(*)', upload.single('file'), (req, res) => {
+	const folderPath = path.join(rootFolder, req.params.path);
+
+	// Check if the folder exists
+	if (!fs.existsSync(folderPath) || !fs.lstatSync(folderPath).isDirectory()) {
+		return res.status(404).send('Папка не найдена');
+	}
+
+	// Check if a file was uploaded
+	if (!req.file) {
+		return res.status(400).send('Файл не загружен');
+	}
+
+	// Move the uploaded file to the folder
+	const filePath = path.join(folderPath, req.file.originalname);
+	fs.renameSync(req.file.path, filePath);
+
+	res.sendStatus(200);
 });
 
 // Обработка сохранения изменений в файле
