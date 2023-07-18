@@ -27,6 +27,9 @@ app.use(bodyParser.json());
 
 // Главная страница
 app.get('/', (req, res) => {
+	if (req.params.path === undefined) {
+		req.params.path = '/';
+	}
 	// Чтение содержимого папки
 	fs.readdir(rootFolder, { withFileTypes: true }, (err, files) => {
 		if (err) {
@@ -43,23 +46,67 @@ app.get('/', (req, res) => {
 			.map(file => file.name);
 
 		// Отправка шаблона с данными
-		res.send(`
-      <ul>
-        ${folders
-			.map(folder => `<li><a href="/folder/${folder}">${folder}</a></li>`)
-			.join('')}
-      </ul>
-      <ul>
-        ${filesList
-			.map(file => `<li><a href="/edit/${file}">${file}</a></li>`)
-			.join('')}
-      </ul>
+		const currentPath = req.path === '/' ? 'home' : req.path;
+		const breadcrumbItems = currentPath
+			.split('/')
+			.filter(item => item !== '');
+		const breadcrumbLinks = breadcrumbItems.map((item, index) => {
+			const path = `/${breadcrumbItems.slice(0, index + 1).join('/')}`;
+			return `<a href="${path}">${item}</a>`;
+		});
 
-	  <form action="/upload/" method="post" enctype="multipart/form-data">
-	  <input type="file" name="file" />
-	  <button type="submit">Загрузить</button>
-	</form>
-    `);
+		res.send(`
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		
+		<h3><kbd>${req.params.path}</kbd></h3>
+  
+		${folders
+			.map(
+				folder =>
+					`<i class="fa-solid fa-folder" style="margin: 5px"></i><a href="/folder/${folder}">${folder}</a><br>`
+			)
+			.join('')}
+		${filesList
+			.map(
+				file =>
+					`<i class="fa-brands fa-${
+						file.split('.')[1]
+					}" style="margin: 5px"></i><a href="/edit/${file}">${file}</a><br>`
+			)
+			.join('')}
+	
+		<form action="/upload/${
+			req.params.path
+		}" method="post" enctype="multipart/form-data" style="width: 250px">
+		  <input type="file" name="file" class="form-control" onchange="uploadFile()" />
+		</form>
+  
+		<script>
+		  function uploadFile() {
+			const form = document.getElementById('uploadForm');
+			const fileInput = document.querySelector('input[name="file"]');
+  
+			// Создание объекта FormData для отправки файла
+			const formData = new FormData();
+			formData.append('file', fileInput.files[0]);
+  
+			// Создание объекта XHR и отправка файла
+			const xhr = new XMLHttpRequest();
+			xhr.open('POST', '/upload/');
+			xhr.send(formData);
+  
+			// Обработка ответа сервера
+			xhr.onload = function() {
+			  if (xhr.status === 200) {
+				location.reload();
+			  } else {
+				console.error('Ошибка загрузки файла');
+			  }
+			};
+		  }
+		</script>
+	  `);
 	});
 });
 
@@ -92,7 +139,7 @@ app.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 		<style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 </style>
-      <h1>Редактор: ${req.params.path}</h1>
+      <h1>${req.params.path}</h1>
       <pre><code class="javascript" id="code-editor" contenteditable="true" spellcheck="false" style="font-family: 'JetBrains Mono', monospace">${highlightedCode}</code></pre>
       <br>
       <button onclick="saveChanges('${req.params.path}')">Сохранить</button>
@@ -149,25 +196,22 @@ app.get('/folder/:path(*)', (req, res) => {
 
 		// Отправка шаблона с данными
 		res.send(`
-		<h1>Содержимое папки: ${req.params.path}</h1>
-		<h2>Папки:</h2>
-		<ul>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<h3><kbd>${req.params.path}</kbd></h3>
 		  ${folders
 				.map(
 					folder =>
-						`<li><a href="/folder/${req.params.path}/${folder}">${folder}</a></li>`
+						`<a href="/folder/${req.params.path}/${folder}">${folder}</a><br>`
 				)
 				.join('')}
-		</ul>
-		<h2>Файлы:</h2>
-		<ul>
+		
+	
 		  ${filesList
 				.map(
 					file =>
-						`<li><a href="/edit/${req.params.path}/${file}">${file}</a></li>`
+						`<a href="/edit/${req.params.path}/${file}">${file}</a><br>`
 				)
 				.join('')}
-		</ul>
 		<form action="/upload/${
 			req.params.path
 		}" method="post" enctype="multipart/form-data">
