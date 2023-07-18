@@ -30,14 +30,11 @@ app.get('/', (req, res) => {
 
 		// Отправка шаблона с данными
 		res.send(`
-      <h1>Файловый менеджер</h1>
-      <h2>Папки:</h2>
       <ul>
         ${folders
 			.map(folder => `<li><a href="/folder/${folder}">${folder}</a></li>`)
 			.join('')}
       </ul>
-      <h2>Файлы:</h2>
       <ul>
         ${filesList
 			.map(file => `<li><a href="/edit/${file}">${file}</a></li>`)
@@ -73,8 +70,11 @@ app.get('/edit/:path(*)', (req, res) => {
 
 		// Отправка шаблона с данными
 		res.send(`
+		<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+</style>
       <h1>Редактор: ${req.params.path}</h1>
-      <pre><code class="javascript" id="code-editor" contenteditable="true" spellcheck="false">${highlightedCode}</code></pre>
+      <pre><code class="javascript" id="code-editor" contenteditable="true" spellcheck="false" style="font-family: 'JetBrains Mono', monospace">${highlightedCode}</code></pre>
       <br>
       <button onclick="saveChanges('${req.params.path}')">Сохранить</button>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
