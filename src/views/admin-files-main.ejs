@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<%- include('../partials/admin/head'); %>
+	</head>
+	<body>
+		<header id="header"><%- include('../partials/admin/header'); %></header>
+		<div class="float-left">
+			<h3><kbd><%= path %></kbd></h3>
+
+			<% folders.forEach(folder => { %>
+			<i class="fa-solid fa-folder" style="margin: 5px"></i
+			><a href="/admin/folder/<%= folder %>"><%= folder %></a><br />
+			<% }); %> <% filesList.forEach(file => { %>
+			<i class="fa-solid fa-file" style="margin: 5px"></i
+			><a href="/admin/edit/<%= file %>"><%= file %></a><br />
+			<% }); %>
+
+			<form
+				action="/upload/<%= path %>"
+				method="post"
+				enctype="multipart/form-data"
+				style="width: 250px"
+			>
+				<input
+					type="file"
+					name="file"
+					class="form-control"
+					onchange="uploadFile()"
+				/>
+			</form>
+
+			<script>
+				function uploadFile() {
+					const form = document.querySelector('form');
+					const fileInput =
+						document.querySelector('input[name="file"]');
+
+					// Создание объекта FormData для отправки файла
+					const formData = new FormData();
+					formData.append('file', fileInput.files[0]);
+
+					// Создание объекта XHR и отправка файла
+					const xhr = new XMLHttpRequest();
+					xhr.open('POST', '/upload/');
+					xhr.send(formData);
+
+					// Обработка ответа сервера
+					xhr.onload = function () {
+						if (xhr.status === 200) {
+							location.reload();
+						} else {
+							console.error('Ошибка загрузки файла');
+						}
+					};
+				}
+			</script>
+		</div>
+	</body>
+</html>

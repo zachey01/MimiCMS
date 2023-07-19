@@ -35,8 +35,13 @@ let authVars = {
 	serverName: null,
 	serverDescription: null,
 	cmsVersion: '1.0',
-	cfg: cfg,
-	env: cfg
+	cfg: cfg || null,
+	env: cfg,
+	// Admin File manager
+	path: null,
+	folders: null,
+	filesList: null,
+	highlightedCode: null
 };
 
 function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {

@@ -70,9 +70,7 @@ app.get('/', (req, res) => {
 		${filesList
 			.map(
 				file =>
-					`<i class="fa-brands fa-${
-						file.split('.')[1]
-					}" style="margin: 5px"></i><a href="/edit/${file}">${file}</a><br>`
+					`<i class="fa-solid fa-file" style="margin: 5px"></i><a href="/edit/${file}">${file}</a><br>`
 			)
 			.join('')}
 	
@@ -197,21 +195,20 @@ app.get('/folder/:path(*)', (req, res) => {
 		// Отправка шаблона с данными
 		res.send(`
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		<h3><kbd>${req.params.path}</kbd></h3>
-		  ${folders
-				.map(
-					folder =>
-						`<a href="/folder/${req.params.path}/${folder}">${folder}</a><br>`
-				)
-				.join('')}
-		
-	
-		  ${filesList
-				.map(
-					file =>
-						`<a href="/edit/${req.params.path}/${file}">${file}</a><br>`
-				)
-				.join('')}
+		${folders
+			.map(
+				folder =>
+					`<i class="fa-solid fa-folder" style="margin: 5px"></i><a href="/folder/${req.params.path}/${folder}">${folder}</a><br>`
+			)
+			.join('')}
+		${filesList
+			.map(
+				file =>
+					`<i class="fa-solid fa-file" style="margin: 5px"></i><a href="/edit/${req.params.path}/${file}">${file}</a><br>`
+			)
+			.join('')}
 		<form action="/upload/${
 			req.params.path
 		}" method="post" enctype="multipart/form-data">

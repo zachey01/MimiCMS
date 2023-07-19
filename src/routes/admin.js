@@ -22,7 +22,19 @@ require('dotenv').config();
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
 const { renderPage, authVars } = require('../middlewares/renderPage');
-
+const rootFolder = './';
+const hljs = require('highlight.js');
+const multer = require('multer');
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		const folderPath = rootFolder; // Set destination to the root folder
+		cb(null, folderPath);
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.originalname);
+	}
+});
+const upload = multer({ dest: './', storage: storage });
 router.get('/', function (req, res) {
 	userSteamID = req.session.steamid;
 
@@ -31,6 +43,97 @@ router.get('/', function (req, res) {
 	} else {
 		renderPage(req, res, userSteamID, 'nonAuth404', '404');
 	}
+});
+
+router.get('/files', function (req, res) {
+	authVars.path = req.params.path;
+
+	if (req.params.path === undefined) {
+		authVars.path = '/';
+	}
+	fs.readdir(rootFolder, { withFileTypes: true }, (err, files) => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send('Ошибка сервера');
+		}
+		authVars.folders = files
+			.filter(file => file.isDirectory())
+			.map(folder => folder.name);
+		authVars.filesList = files
+			.filter(file => file.isFile())
+			.map(file => file.name);
+
+		const currentPath = req.path === '/' ? 'home' : req.path;
+		const breadcrumbItems = currentPath
+			.split('/')
+			.filter(item => item !== '');
+		const breadcrumbLinks = breadcrumbItems.map((item, index) => {
+			const path = `/${breadcrumbItems.slice(0, index + 1).join('/')}`;
+			return `<a href="${path}">${item}</a>`;
+		});
+
+		userSteamID = req.session.steamid;
+		if (userSteamID === '76561199219730677') {
+			renderPage(req, res, userSteamID, 'admin-files-main', '404');
+		} else {
+			renderPage(req, res, userSteamID, 'nonAuth404', '404');
+		}
+	});
+});
+
+router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
+	const filePath = path.join(rootFolder, req.params.path);
+
+	// Проверка существования файла или папки
+	if (!fs.existsSync(filePath)) {
+		return res.status(404).send('Файл или папка не найдены');
+	}
+
+	// Если путь указывает на папку, перенаправляем на страницу содержимого папки
+	if (fs.lstatSync(filePath).isDirectory()) {
+		return res.redirect(`/folder/${req.params.path}`);
+	}
+
+	// Чтение содержимого файла
+	fs.readFile(filePath, 'utf8', (err, data) => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send('Ошибка сервера');
+		}
+
+		// Подсветка синтаксиса кода
+		authVars.highlightedCode = data;
+
+		// Отправка шаблона с данными
+		userSteamID = req.session.steamid;
+		if (userSteamID === '76561199219730677') {
+			renderPage(req, res, userSteamID, 'admin-files-editor', '404');
+		} else {
+			renderPage(req, res, userSteamID, 'nonAuth404', '404');
+		}
+	});
+});
+
+router.post('/save/:path(*)', (req, res) => {
+	const filePath = path.join(rootFolder, req.params.path);
+	authVars.path = filePath;
+	// Проверка существования файла
+	if (!fs.existsSync(filePath)) {
+		return res.status(404).send('Файл не найден');
+	}
+
+	// Получение данных из тела запроса
+	const { code } = req.body;
+
+	// Запись данных в файл
+	fs.writeFile(filePath, code, err => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send('Ошибка сервера');
+		}
+
+		res.sendStatus(200);
+	});
 });
 
 module.exports = router;
