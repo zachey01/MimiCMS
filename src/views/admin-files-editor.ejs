@@ -1,37 +1,18 @@
-<style>
-	@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/atom-one-dark.min.css"
-	rel="stylesheet"
-/>
-
-<h1><%= path %></h1>
-<pre><code class="javascript" id="code-editor" contenteditable="true" spellcheck="false" style="font-family: 'JetBrains Mono', monospace"><%= highlightedCode %></code></pre>
-<br />
-<button onclick="saveChanges('<%= path %>')">Сохранить</button>
-
-<script>
-	hljs.initHighlightingOnLoad();
-</script>
-<script>
-	function saveChanges(filename) {
-		const code = document.getElementById('code-editor').innerText;
-		fetch('/admin/save/' + filename, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ code: code })
-		})
-			.then(() => {
-				alert('Изменения сохранены');
-				window.location.href = '/';
-			})
-			.catch(error => {
-				console.error(error);
-				alert('Ошибка при сохранении изменений');
-			});
-	}
-</script>
+<!doctype html>
+<html lang="en">
+	<head>
+		<%- include('../partials/admin/head'); %>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+		<script src="/js/FMSave.js" async></script>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/atom-one-dark.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+	<body class="file-manager">
+		<h1><%= filePath %></h1>
+		<pre><code class="javascript" id="code-editor" contenteditable="true" spellcheck="false" data-filename="<%= filePath %>"><%= highlightedCode %></code></pre>
+		<br />
+		<button onclick="saveChanges()">Save</button>
+	</body>
+</html>

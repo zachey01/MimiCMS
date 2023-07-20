@@ -82,20 +82,20 @@ router.get('/files', function (req, res) {
 });
 
 router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
-	const filePath = path.join(rootFolder, req.params.path);
+	authVars.filePath = path.join(rootFolder, req.params.path);
 
 	// Проверка существования файла или папки
-	if (!fs.existsSync(filePath)) {
+	if (!fs.existsSync(authVars.filePath)) {
 		return res.status(404).send('Файл или папка не найдены');
 	}
 
 	// Если путь указывает на папку, перенаправляем на страницу содержимого папки
-	if (fs.lstatSync(filePath).isDirectory()) {
+	if (fs.lstatSync(authVars.filePath).isDirectory()) {
 		return res.redirect(`/folder/${req.params.path}`);
 	}
 
 	// Чтение содержимого файла
-	fs.readFile(filePath, 'utf8', (err, data) => {
+	fs.readFile(authVars.filePath, 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
 			return res.status(500).send('Ошибка сервера');
@@ -115,21 +115,17 @@ router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 });
 
 router.post('/save/:path(*)', (req, res) => {
-	const filePath = path.join(rootFolder, req.params.path);
-	authVars.path = filePath;
-	// Проверка существования файла
-	if (!fs.existsSync(filePath)) {
-		return res.status(404).send('Файл не найден');
-	}
-
-	// Получение данных из тела запроса
+	authVars.filePath = path.join(rootFolder, req.params.path);
 	const { code } = req.body;
 
-	// Запись данных в файл
-	fs.writeFile(filePath, code, err => {
+	if (!fs.existsSync(authVars.filePath)) {
+		return res.status(404).send('File not found');
+	}
+
+	fs.writeFile(authVars.filePath, code, err => {
 		if (err) {
 			console.error(err);
-			return res.status(500).send('Ошибка сервера');
+			return res.status(500).send('Error: ' + err.message);
 		}
 
 		res.sendStatus(200);

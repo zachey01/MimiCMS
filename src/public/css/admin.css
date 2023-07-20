@@ -1,4 +1,9 @@
-.mx-2 {
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+.file-manager {
+	background: #282c34;
+	border-radius: 10px;
+}
+a {
 	text-decoration: none;
 }
 .navbar .navbar-nav .nav-link {
@@ -66,4 +71,9 @@ main {
 }
 .input-inline:last-child {
 	margin-left: 0;
+}
+#code-editor {
+	padding: 1.5em;
+	font-family: 'JetBrains Mono', monospace;
+	font-size: 1em;
 }
