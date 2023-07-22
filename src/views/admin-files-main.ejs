@@ -2,18 +2,36 @@
 <html lang="en">
 	<head>
 		<%- include('../partials/admin/head'); %>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+		<script src="/js/FMSave.js" async></script>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/atom-one-dark.min.css"
+			rel="stylesheet"
+		/>
 	</head>
-	<body class="file-manager">
+	<body>
 		<header id="header"><%- include('../partials/admin/header'); %></header>
-		<div class="float-left">
+		<div id="editor-alert"></div>
+
+		<div class="float-left file-manager">
 			<h3><kbd><%= path %></kbd></h3>
 
 			<% folders.forEach(folder => { %>
-			<i class="fa-solid fa-folder" style="margin: 5px"></i
-			><a href="/admin/folder/<%= folder %>"><%= folder %></a><br />
+			<i
+				class="fa-solid fa-folder"
+				style="margin: 5px; margin-left: 10px; color: wheat"
+			></i
+			><a href="/admin/folder/<%= folder %>" class="file-manager-name"
+				><%= folder %></a
+			><br />
 			<% }); %> <% filesList.forEach(file => { %>
-			<i class="fa-solid fa-file" style="margin: 5px"></i
-			><a href="/admin/edit/<%= file %>"><%= file %></a><br />
+			<i class="fa-solid fa-file" style="margin: 5px; color: wheat"></i
+			><a
+				href="#"
+				onclick="renderEditor('<%= file %>')"
+				class="file-manager-name"
+				><%= file %></a
+			><br />
 			<% }); %>
 
 			<form
@@ -53,6 +71,28 @@
 							console.error('Ошибка загрузки файла');
 						}
 					};
+				}
+
+				function renderEditor(filename) {
+					const editor = document.getElementById('editor-alert');
+					editor.innerHTML = `			<div
+			class="alert alert-info alert-dismissible fade show bg-white"
+			role="alert"
+			id="editor-alert"
+		>
+		<iframe
+						src="http://localhost:3000/admin/edit/${filename}"
+						frameborder="0"
+						width="100%"
+						height="100%"
+					></iframe>
+			<button
+				type="button"
+				class="btn-close"
+				data-bs-dismiss="alert"
+				aria-label="Close"
+			></button>
+		</div>`;
 				}
 			</script>
 		</div>
