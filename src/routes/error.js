@@ -1,10 +1,10 @@
-let // Modules
-	express = require('express'),
-	router = express.Router();
-require('dotenv').config();
+const express = require('express');
+const router = express.Router();
+const { renderPage, authVars } = require('../middlewares/renderPage');
 
 router.get('/', function (req, res) {
-	res.send('12773');
+	userSteamID = req.session.steamid;
+	renderPage(req, res, userSteamID, '404');
 });
 
 module.exports = router;
