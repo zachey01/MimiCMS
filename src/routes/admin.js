@@ -39,7 +39,7 @@ router.get('/files', function (req, res) {
 	fs.readdir(rootFolder, { withFileTypes: true }, (err, files) => {
 		if (err) {
 			console.error(err);
-			return res.status(500).send('Ошибка сервера');
+			return res.status(500).send('Server error: ' + err);
 		}
 		authVars.folders = files
 			.filter(file => file.isDirectory())
