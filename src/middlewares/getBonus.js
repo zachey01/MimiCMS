@@ -1,8 +1,8 @@
 const axios = require('axios');
-require('dotenv').config;
+const cfg = require('../config/config');
 
 module.exports = async function (userSteamID) {
-	const apiKey = process.env.STEAM_API_KEY;
+	const apiKey = cfg.SteamWebAPIkey;
 	const url = `https://api.steampowered.com/ISteamUser/GetUserGroupList/v1/?key=${apiKey}&steamid=${userSteamID}&relationship=friend&format=json`;
 
 	try {
@@ -12,7 +12,7 @@ module.exports = async function (userSteamID) {
 		let hasValue = false;
 		for (let i = 0; i < groupList.length; i++) {
 			const group = groupList[i];
-			if (group.gid === process.env.STEAM_GROUP_ID) {
+			if (group.gid === cfg.SteamGroup) {
 				hasValue = true;
 				break;
 			}

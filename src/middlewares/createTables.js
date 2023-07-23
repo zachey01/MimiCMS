@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-require('dotenv').config();
 const pool = require('../config/db');
 module.exports = function createTables() {
 	// Products table

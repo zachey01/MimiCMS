@@ -1,14 +1,14 @@
 const express = require('express');
 const passport = require('passport');
-require('dotenv').config();
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
 const path = require('path');
 const cfg = require('../config/config');
+
 let authVars = {
-	slide_1: process.env.SLIDE_1 || 'https://dummyimage.com/1920x720/000/fff',
-	slide_2: process.env.SLIDE_2 || 'https://dummyimage.com/1920x720/000/fff',
-	slide_3: process.env.SLIDE_3 || 'https://dummyimage.com/1920x720/000/fff',
+	slide_1: cfg.SLIDE_1 || 'https://dummyimage.com/1920x720/000/fff',
+	slide_2: cfg.SLIDE_2 || 'https://dummyimage.com/1920x720/000/fff',
+	slide_3: cfg.SLIDE_3 || 'https://dummyimage.com/1920x720/000/fff',
 	cfg: cfg,
 	steamid: null,
 	avatar: null,

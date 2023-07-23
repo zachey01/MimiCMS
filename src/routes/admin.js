@@ -87,7 +87,7 @@ router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 	authVars.filePath = path.join(rootFolder, req.params.path);
 
 	if (!fs.existsSync(authVars.filePath)) {
-		return res.status(404).send('Файл или папка не найдены');
+		return res.status(404).send('File or folder not found');
 	}
 
 	if (fs.lstatSync(authVars.filePath).isDirectory()) {
@@ -97,7 +97,7 @@ router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 	fs.readFile(authVars.filePath, 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
-			return res.status(500).send('Ошибка сервера');
+			return res.status(500).send('Server error: ' + err);
 		}
 
 		authVars.highlightedCode = data;
