@@ -49,4 +49,24 @@ module.exports = function createTables() {
 			connection.release();
 		});
 	});
+
+	// Tickets table
+	pool.getConnection((err, connection) => {
+		if (err) throw err;
+		connection.query('SELECT 1 FROM tickets LIMIT 1', (err, result) => {
+			if (err) {
+				const tickets = `CREATE TABLE tickets (
+			  steamid VARCHAR(255) NOT NULL,
+			  message VARCHAR(255) NOT NULL,
+			  PRIMARY KEY (steamid)
+			)`;
+				connection.query(tickets, (err, result) => {
+					if (err) throw err;
+					console.log('Table tickets created ✅');
+				});
+			} else {
+			}
+			connection.release();
+		});
+	});
 };
