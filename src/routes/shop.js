@@ -1,24 +1,5 @@
-let // Modules
-	express = require('express'),
-	passport = require('passport'),
-	SteamStrategy = require('passport-steam').Strategy,
-	SteamWebAPI = require('steam-web'),
-	mysql = require('mysql'),
-	session = require('express-session'),
-	app = express(),
-	router = express.Router(),
-	moment = require('moment'),
-	path = require('path'),
-	ejs = require('ejs'),
-	{
-		Server,
-		RCON,
-		MasterServer
-	} = require('@fabricio-191/valve-server-query'),
-	winston = require('winston'),
-	fs = require('fs'),
-	expressWinston = require('express-winston');
-require('dotenv').config();
+const express = require('express');
+const router = express.Router();
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
 const { renderPage, authVars } = require('../middlewares/renderPage');

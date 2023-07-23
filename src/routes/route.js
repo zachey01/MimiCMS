@@ -1,42 +1,12 @@
-let // Modules
-	express = require('express'),
-	passport = require('passport'),
-	SteamStrategy = require('passport-steam').Strategy,
-	SteamWebAPI = require('steam-web'),
-	mysql = require('mysql'),
-	session = require('express-session'),
-	app = express(),
-	router = express.Router(),
-	moment = require('moment'),
-	path = require('path'),
-	ejs = require('ejs'),
-	{
-		Server,
-		RCON,
-		MasterServer
-	} = require('@fabricio-191/valve-server-query'),
-	winston = require('winston'),
-	fs = require('fs'),
-	expressWinston = require('express-winston');
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
 require('dotenv').config();
-const logger = require('../middlewares/logger');
-const pool = require('../config/db');
 const CryptoJS = require('crypto-js');
 const { renderPage, authVars } = require('../middlewares/renderPage');
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
-// Update the upload middleware configuration
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		const folderPath = rootFolder; // Set destination to the root folder
-		cb(null, folderPath);
-	},
-	filename: (req, file, cb) => {
-		cb(null, file.originalname);
-	}
-});
 
-const upload = multer({ dest: './', storage: storage }); // Remove this line
 router.get('/', async function (req, res) {
 	try {
 		userSteamID = req.session.steamid;
@@ -56,7 +26,6 @@ router.get('/', async function (req, res) {
 
 		renderPage(req, res, userSteamID, 'index');
 	} catch (error) {
-		// Обработка ошибки и присвоение переменным значение null
 		authVars.serverPing = null;
 		authVars.serverPlayerCountOnline = null;
 		authVars.serverPlayerCountMax = null;
@@ -116,7 +85,6 @@ router.get('/api/protected', (req, res) => {
 	const token = req.headers.authorization;
 	jwt.verify(token, pass, (err, decoded) => {
 		if (err) {
-			// Обработка ошибки аутентификации
 			return res.status(401).json({ error: false });
 		}
 		const userId = decoded.userId;

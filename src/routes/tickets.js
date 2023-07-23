@@ -1,7 +1,5 @@
-let // Modules
-	express = require('express'),
-	router = express.Router();
-require('dotenv').config();
+const express = require('express');
+const router = express.Router();
 const { renderPage, authVars } = require('../middlewares/renderPage');
 const { stringify } = require('querystring');
 const pool = require('../config/db');

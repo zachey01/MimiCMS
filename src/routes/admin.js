@@ -1,30 +1,13 @@
-let // Modules
-	express = require('express'),
-	passport = require('passport'),
-	SteamStrategy = require('passport-steam').Strategy,
-	SteamWebAPI = require('steam-web'),
-	mysql = require('mysql'),
-	session = require('express-session'),
-	app = express(),
-	router = express.Router(),
-	moment = require('moment'),
-	path = require('path'),
-	ejs = require('ejs'),
-	{
-		Server,
-		RCON,
-		MasterServer
-	} = require('@fabricio-191/valve-server-query'),
-	winston = require('winston'),
-	fs = require('fs'),
-	expressWinston = require('express-winston');
-require('dotenv').config();
+const express = require('express');
+const router = express.Router();
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
 const { renderPage, authVars } = require('../middlewares/renderPage');
 const rootFolder = './';
-const hljs = require('highlight.js');
-const multer = require('multer');
+
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		const folderPath = rootFolder;
@@ -35,6 +18,7 @@ const storage = multer.diskStorage({
 	}
 });
 const upload = multer({ dest: './', storage: storage });
+
 router.get('/', function (req, res) {
 	userSteamID = req.session.steamid;
 

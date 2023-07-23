@@ -2,7 +2,6 @@ const express = require('express');
 const passport = require('passport');
 const SteamStrategy = require('passport-steam').Strategy;
 const SteamWebAPI = require('steam-web');
-const session = require('express-session');
 const port = process.env.PORT || 3000;
 const pool = require('../config/db');
 const router = express.Router();
