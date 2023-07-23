@@ -46,7 +46,7 @@ let authVars = {
 	tickets: null
 };
 
-function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
+function renderPage(req, res, userSteamID, fileName) {
 	if (userSteamID) {
 		logger.info(`User with steamid ${userSteamID} is authenticated`);
 		pool.query(
@@ -80,21 +80,6 @@ function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {
 				});
 			}
 		);
-	} else {
-		pool.query('SELECT * FROM products', (error, results) => {
-			if (error) {
-				logger.error('Error getting products', { error });
-				throw error;
-			}
-			authVars.products = results;
-			res.render(
-				path.join(__dirname, '../views', `./${nonAuthFileName}.ejs`),
-				authVars
-			);
-			logger.info(
-				`Rendered ${nonAuthFileName} page for non-authenticated user`
-			);
-		});
 	}
 }
 
