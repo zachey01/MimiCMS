@@ -16,15 +16,16 @@
 		<div class="float-left file-manager">
 			<h3><kbd><%= path %></kbd></h3>
 
-			<% folders.forEach(folder => { %>
+			<!-- <% folders.forEach(folder => { %>
 			<i
 				class="fa-solid fa-folder"
 				style="margin: 5px; margin-left: 10px; color: wheat"
 			></i
-			><a href="/admin/folder/<%= folder %>" class="file-manager-name"
+			><a href="/folder/<%= folder %>" class="file-manager-name"
 				><%= folder %></a
 			><br />
-			<% }); %> <% filesList.forEach(file => { %>
+			<% }); %>  -->
+			<% filesList.forEach(file => { %>
 			<i class="fa-solid fa-file" style="margin: 5px; color: wheat"></i
 			><a
 				href="#"
@@ -34,67 +35,7 @@
 			><br />
 			<% }); %>
 
-			<form
-				action="/upload/<%= path %>"
-				method="post"
-				enctype="multipart/form-data"
-				style="width: 250px"
-			>
-				<input
-					type="file"
-					name="file"
-					class="form-control"
-					onchange="uploadFile()"
-				/>
-			</form>
-
-			<script>
-				function uploadFile() {
-					const form = document.querySelector('form');
-					const fileInput =
-						document.querySelector('input[name="file"]');
-
-					// Создание объекта FormData для отправки файла
-					const formData = new FormData();
-					formData.append('file', fileInput.files[0]);
-
-					// Создание объекта XHR и отправка файла
-					const xhr = new XMLHttpRequest();
-					xhr.open('POST', '/upload/');
-					xhr.send(formData);
-
-					// Обработка ответа сервера
-					xhr.onload = function () {
-						if (xhr.status === 200) {
-							location.reload();
-						} else {
-							console.error('Ошибка загрузки файла');
-						}
-					};
-				}
-
-				function renderEditor(filename) {
-					const editor = document.getElementById('editor-alert');
-					editor.innerHTML = `			<div
-			class="alert alert-info alert-dismissible fade show bg-white"
-			role="alert"
-			id="editor-alert"
-		>
-		<iframe
-						src="http://localhost:3000/admin/edit/${filename}"
-						frameborder="0"
-						width="100%"
-						height="100%"
-					></iframe>
-			<button
-				type="button"
-				class="btn-close"
-				data-bs-dismiss="alert"
-				aria-label="Close"
-			></button>
-		</div>`;
-				}
-			</script>
+			<script src="/js/codeEditor.js"></script>
 		</div>
 	</body>
 </html>

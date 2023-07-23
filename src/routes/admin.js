@@ -46,6 +46,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/files', function (req, res) {
+	(authVars.filePath = rootFolder), req.params.path;
 	authVars.path = req.params.path;
 
 	if (req.params.path === undefined) {
