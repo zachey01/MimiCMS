@@ -28,16 +28,6 @@ router.get('/', function (req, res) {
 	renderPage(req, res, userSteamID, 'products', 'nonAuthproducts');
 });
 
-router.get('/models', function (req, res) {
-	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'productsModels', 'nonAuthErr');
-});
-
-router.get('/privilege', function (req, res) {
-	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'productsPrivilege', 'nonAuthErr');
-});
-
 router.post('/debit/:amount/:productId', (req, res) => {
 	userSteamID = req.session.steamid;
 	const amount = parseInt(req.params.amount);
