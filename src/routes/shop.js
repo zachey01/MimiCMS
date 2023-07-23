@@ -25,7 +25,7 @@ const { renderPage, authVars } = require('../middlewares/renderPage');
 
 router.get('/', function (req, res) {
 	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'products', 'nonAuthproducts');
+	renderPage(req, res, userSteamID, 'products');
 });
 
 router.post('/debit/:amount/:productId', (req, res) => {
