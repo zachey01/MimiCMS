@@ -39,9 +39,9 @@ router.get('/', function (req, res) {
 	userSteamID = req.session.steamid;
 
 	if (userSteamID === '76561199219730677') {
-		renderPage(req, res, userSteamID, 'admin-main', 'nonAuthErr');
+		renderPage(req, res, userSteamID, 'admin-main');
 	} else {
-		renderPage(req, res, userSteamID, 'nonAuth404', '404');
+		renderPage(req, res, userSteamID, 'nonAuth404');
 	}
 });
 
@@ -75,9 +75,9 @@ router.get('/files', function (req, res) {
 
 		userSteamID = req.session.steamid;
 		if (userSteamID === '76561199219730677') {
-			renderPage(req, res, userSteamID, 'admin-files-main', '404');
+			renderPage(req, res, userSteamID, 'admin-files-main');
 		} else {
-			renderPage(req, res, userSteamID, 'nonAuth404', '404');
+			renderPage(req, res, userSteamID, 'nonAuth404');
 		}
 	});
 });
@@ -93,9 +93,9 @@ router.get('/tickets', function (req, res) {
 		authVars.tickets = rows;
 	});
 	if (userSteamID === '76561199219730677') {
-		renderPage(req, res, userSteamID, 'adminTickets', 'nonAuthErr');
+		renderPage(req, res, userSteamID, 'adminTickets');
 	} else {
-		renderPage(req, res, userSteamID, 'nonAuth404', '404');
+		renderPage(req, res, userSteamID, 'nonAuth404');
 	}
 });
 
@@ -119,9 +119,9 @@ router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 		authVars.highlightedCode = data;
 		userSteamID = req.session.steamid;
 		if (userSteamID === '76561199219730677') {
-			renderPage(req, res, userSteamID, 'admin-files-editor', '404');
+			renderPage(req, res, userSteamID, 'admin-files-editor');
 		} else {
-			renderPage(req, res, userSteamID, 'nonAuth404', '404');
+			renderPage(req, res, userSteamID, 'nonAuth404');
 		}
 	});
 });
