@@ -42,7 +42,8 @@ let authVars = {
 	folders: null,
 	filesList: null,
 	highlightedCode: null,
-	filePath: null
+	filePath: null,
+	tickets: null
 };
 
 function renderPage(req, res, userSteamID, fileName, nonAuthFileName) {

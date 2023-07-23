@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<%- include('../partials/admin/head'); %>
+	</head>
+	<body>
+		<%- include('../partials/admin/chekUpdateModal'); %>
+		<header id="header"><%- include('../partials/admin/header'); %></header>
+		<main class="p-1 my-container active-cont">
+			<div class="container-sm">
+				<% if (tickets && tickets.length > 0) { %>
+				<h1>Tickets</h1>
+				<% tickets.forEach(function(ticket) { %>
+				<div class="alert alert-light" role="alert">
+					<p>
+						<i class="fa-solid fa-pen" style="margin: 5px"></i><%=
+						ticket.steamid %>
+					</p>
+					<p>
+						<i class="fa-solid fa-message" style="margin: 5px"></i
+						><%= ticket.message %>
+					</p>
+				</div>
+
+				<% }); %> <% } else { %>
+				<p>No tickets found.</p>
+				<% } %>
+			</div>
+		</main>
+	</body>
+</html>

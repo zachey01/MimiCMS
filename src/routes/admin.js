@@ -27,7 +27,7 @@ const hljs = require('highlight.js');
 const multer = require('multer');
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		const folderPath = rootFolder; // Set destination to the root folder
+		const folderPath = rootFolder;
 		cb(null, folderPath);
 	},
 	filename: (req, file, cb) => {
@@ -82,30 +82,41 @@ router.get('/files', function (req, res) {
 	});
 });
 
+router.get('/tickets', function (req, res) {
+	userSteamID = req.session.steamid;
+	pool.query('SELECT * FROM tickets', function (err, rows) {
+		if (err) {
+			logger.error('Error fetching tickets:', err);
+
+			return;
+		}
+		authVars.tickets = rows;
+	});
+	if (userSteamID === '76561199219730677') {
+		renderPage(req, res, userSteamID, 'adminTickets', 'nonAuthErr');
+	} else {
+		renderPage(req, res, userSteamID, 'nonAuth404', '404');
+	}
+});
+
 router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 	authVars.filePath = path.join(rootFolder, req.params.path);
 
-	// Проверка существования файла или папки
 	if (!fs.existsSync(authVars.filePath)) {
 		return res.status(404).send('Файл или папка не найдены');
 	}
 
-	// Если путь указывает на папку, перенаправляем на страницу содержимого папки
 	if (fs.lstatSync(authVars.filePath).isDirectory()) {
 		return res.redirect(`/folder/${req.params.path}`);
 	}
 
-	// Чтение содержимого файла
 	fs.readFile(authVars.filePath, 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
 			return res.status(500).send('Ошибка сервера');
 		}
 
-		// Подсветка синтаксиса кода
 		authVars.highlightedCode = data;
-
-		// Отправка шаблона с данными
 		userSteamID = req.session.steamid;
 		if (userSteamID === '76561199219730677') {
 			renderPage(req, res, userSteamID, 'admin-files-editor', '404');
