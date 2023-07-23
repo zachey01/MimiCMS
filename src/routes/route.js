@@ -21,8 +21,10 @@ let // Modules
 require('dotenv').config();
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
+const CryptoJS = require('crypto-js');
 const { renderPage, authVars } = require('../middlewares/renderPage');
 const multer = require('multer');
+const jwt = require('jsonwebtoken');
 // Update the upload middleware configuration
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -62,51 +64,30 @@ router.get('/', async function (req, res) {
 		authVars.serverName = 'server is offline';
 		authVars.serverDescription = null;
 
-		renderPage(req, res, userSteamID, 'index', 'nonAuthIndex');
+		renderPage(req, res, userSteamID, 'index');
 	}
 });
 
 router.get('/profile', function (req, res) {
 	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'user-profile', 'nonAuthErr');
+	renderPage(req, res, userSteamID, 'user-profile');
 });
 
 router.get('/purchases', function (req, res) {
 	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, '404', 'nonAuthErr');
+	renderPage(req, res, userSteamID, '404');
 });
 
 router.get('/balance', function (req, res) {
 	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'balance', 'nonAuthErr');
+	renderPage(req, res, userSteamID, 'balance');
 });
 
 router.get('/rules', function (req, res) {
 	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'rules', 'nonAuthrules');
+	renderPage(req, res, userSteamID, 'rules');
 });
 
-router.get('/privacy', function (req, res) {
-	res.sendFile(path.join(__dirname, '../public/other/privacy.pdf'));
-});
-
-router.get('/oferts', function (req, res) {
-	res.sendFile(path.join(__dirname, '../public/other/oferts.pdf'));
-});
-
-router.get('/contacts', function (req, res) {
-	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'contacts', 'nonAuthcontacts');
-});
-
-router.get('/mapViewer', function (req, res) {
-	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'mapViewer', 'mapViewerNonAuth');
-});
-
-const CryptoJS = require('crypto-js');
-
-// Генерируем пароль из 128 символов
 function generatePassword() {
 	const passwordLength = 128;
 	const characters =
@@ -120,10 +101,7 @@ function generatePassword() {
 
 	return password;
 }
-
 const pass = generatePassword();
-
-const jwt = require('jsonwebtoken');
 
 router.get('/api/token', (req, res) => {
 	const token = jwt.sign({ userId: 'admin' }, pass);
@@ -168,59 +146,6 @@ router.post('/submit', (req, res) => {
 			console.error('Error:', error);
 			res.sendStatus(500);
 		});
-});
-
-router.get('/folder/:path(*)', (req, res) => {
-	const rootFolder = './';
-	const folderPath = path.join(rootFolder, req.params.path);
-
-	// Проверка существования папки
-	if (!fs.existsSync(folderPath) || !fs.lstatSync(folderPath).isDirectory()) {
-		return res.status(404).send('Папка не найдена');
-	}
-
-	// Чтение содержимого папки
-	fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
-		if (err) {
-			console.error(err);
-			return res.status(500).send('Ошибка сервера');
-		}
-
-		// Фильтрация папок и файлов
-		const folders = files
-			.filter(file => file.isDirectory())
-			.map(folder => folder.name);
-		const filesList = files
-			.filter(file => file.isFile())
-			.map(file => file.name);
-
-		// Отправка шаблона с данными
-		res.send(`
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-		<h3><kbd>${req.params.path}</kbd></h3>
-		${folders
-			.map(
-				folder =>
-					`<i class="fa-solid fa-folder" style="margin: 5px"></i><a href="/folder/${req.params.path}/${folder}">${folder}</a><br>`
-			)
-			.join('')}
-		${filesList
-			.map(
-				file =>
-					`<i class="fa-solid fa-file" style="margin: 5px"></i><a href="/edit/${req.params.path}/${file}">${file}</a><br>`
-			)
-			.join('')}
-		<form action="/upload/${
-			req.params.path
-		}" method="post" enctype="multipart/form-data">
-		  <input type="file" name="file" />
-		  <button type="submit">Загрузить</button>
-		</form>
-		<br>
-		<a href="/">Назад</a>
-	  `);
-	});
 });
 
 module.exports = router;
