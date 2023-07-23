@@ -6,20 +6,10 @@ const pool = require('../config/db');
 const path = require('path');
 const cfg = require('../config/config');
 let authVars = {
-	logo:
-		process.env.LOGO ||
-		'https://cdn.jsdelivr.net/gh/zachey01/MimiCMS/images/logo.png',
-	currency: process.env.CURRENCY || '$',
 	slide_1: process.env.SLIDE_1 || 'https://dummyimage.com/1920x720/000/fff',
 	slide_2: process.env.SLIDE_2 || 'https://dummyimage.com/1920x720/000/fff',
 	slide_3: process.env.SLIDE_3 || 'https://dummyimage.com/1920x720/000/fff',
-	tgChannelLink: process.env.TG_LINK || '#',
-	discordServerLink: process.env.DISCORD_LINK || '#',
-	name: process.env.NAME || 'MimiCMS',
-	tg_token: process.env.TG_BOT_TOKEN,
-	tg_group: process.env.TG_GROUP_ID,
-	serverIP: process.env.SERVER_IP,
-	serverPort: process.env.SERVER_PORT,
+	cfg: cfg,
 	steamid: null,
 	avatar: null,
 	balance: null,
@@ -35,8 +25,6 @@ let authVars = {
 	serverName: null,
 	serverDescription: null,
 	cmsVersion: '1.0',
-	cfg: cfg || null,
-	env: cfg,
 	// Admin File manager
 	path: null,
 	folders: null,
