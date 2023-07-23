@@ -25,7 +25,7 @@ router.get('/', function (req, res) {
 	if (userSteamID === '76561199219730677') {
 		renderPage(req, res, userSteamID, 'admin-main');
 	} else {
-		renderPage(req, res, userSteamID, 'nonAuth404');
+		renderPage(req, res, userSteamID, '404');
 	}
 });
 
@@ -61,7 +61,7 @@ router.get('/files', function (req, res) {
 		if (userSteamID === '76561199219730677') {
 			renderPage(req, res, userSteamID, 'admin-files-main');
 		} else {
-			renderPage(req, res, userSteamID, 'nonAuth404');
+			renderPage(req, res, userSteamID, '404');
 		}
 	});
 });
@@ -79,7 +79,7 @@ router.get('/tickets', function (req, res) {
 	if (userSteamID === '76561199219730677') {
 		renderPage(req, res, userSteamID, 'admin-tickets');
 	} else {
-		renderPage(req, res, userSteamID, 'nonAuth404');
+		renderPage(req, res, userSteamID, '404');
 	}
 });
 
@@ -105,7 +105,7 @@ router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 		if (userSteamID === '76561199219730677') {
 			renderPage(req, res, userSteamID, 'admin-files-editor');
 		} else {
-			renderPage(req, res, userSteamID, 'nonAuth404');
+			renderPage(req, res, userSteamID, '404');
 		}
 	});
 });
