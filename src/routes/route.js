@@ -54,7 +54,7 @@ router.get('/', async function (req, res) {
 		authVars.serverName = infoServer.name;
 		authVars.serverDescription = process.env.SERVER_DESCRIPTION;
 
-		renderPage(req, res, userSteamID, 'index', 'index');
+		renderPage(req, res, userSteamID, 'index');
 	} catch (error) {
 		// Обработка ошибки и присвоение переменным значение null
 		authVars.serverPing = null;

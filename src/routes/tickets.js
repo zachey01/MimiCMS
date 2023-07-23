@@ -9,7 +9,7 @@ const logger = require('../middlewares/logger');
 
 router.get('/', function (req, res) {
 	userSteamID = req.session.steamid;
-	renderPage(req, res, userSteamID, 'tickets', 'nonAuthErr');
+	renderPage(req, res, userSteamID, 'tickets');
 });
 
 router.post('/send', (req, res) => {

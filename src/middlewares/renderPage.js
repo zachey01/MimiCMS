@@ -80,6 +80,19 @@ function renderPage(req, res, userSteamID, fileName) {
 				});
 			}
 		);
+	} else {
+		pool.query('SELECT * FROM products', (error, results) => {
+			if (error) {
+				logger.error('Error getting products', { error });
+				throw error;
+			}
+			authVars.products = results;
+			res.render(
+				path.join(__dirname, '../views', `./${fileName}.ejs`),
+				authVars
+			);
+			logger.info(`Rendered ${fileName} page for non-authenticated user`);
+		});
 	}
 }
 
