@@ -93,7 +93,7 @@ router.get('/tickets', function (req, res) {
 		authVars.tickets = rows;
 	});
 	if (userSteamID === '76561199219730677') {
-		renderPage(req, res, userSteamID, 'adminTickets');
+		renderPage(req, res, userSteamID, 'admin-tickets');
 	} else {
 		renderPage(req, res, userSteamID, 'nonAuth404');
 	}
