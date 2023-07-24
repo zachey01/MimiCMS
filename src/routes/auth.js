@@ -2,24 +2,22 @@ const express = require('express');
 const passport = require('passport');
 const SteamStrategy = require('passport-steam').Strategy;
 const SteamWebAPI = require('steam-web');
-const port = process.env.PORT || 3000;
 const pool = require('../config/db');
 const router = express.Router();
 const logger = require('../middlewares/logger');
+const cfg = require('../config/config');
 
 // Passport configuration
 passport.use(
 	new SteamStrategy(
 		{
-			returnURL: `http://${
-				process.env.DOMAIN || 'localhost'
-			}:${port}/auth/steam/return`,
-			realm: `http://${process.env.DOMAIN || 'localhost'}:${port}/`,
-			apiKey: process.env.STEAM_API_KEY
+			returnURL: `http://${cfg.Domain}:${cfg.Port}/auth/steam/return`,
+			realm: `http://${cfg.Domain}:${cfg.Port}/`,
+			apiKey: cfg.SteamWebAPIkey
 		},
 		(identifier, profile, done) => {
 			const steam = new SteamWebAPI({
-				apiKey: process.env.STEAM_API_KEY
+				apiKey: cfg.SteamWebAPIkey
 			});
 			steam.getPlayerSummaries({
 				steamids: profile.id,

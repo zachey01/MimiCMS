@@ -1,15 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const https = require('https');
 const jsonParser = bodyParser.json({ limit: '10mb' });
 const fs = require('fs');
 const app = express();
 const expressWinston = require('express-winston');
 const compress = require('compression');
-const port = process.env.PORT || 3000;
+const cfg = require('./src/config/config');
 const logger = require('./src/middlewares/logger');
-require('dotenv').config();
 
 const createTables = require('./src/middlewares/createTables');
 createTables();
@@ -30,7 +28,6 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static('./src/public'));
 app.set('view engine', 'ejs');
-app.use(express.static('./src/public'));
 app.use(
 	expressWinston.errorLogger({
 		winstonInstance: logger
@@ -38,7 +35,7 @@ app.use(
 );
 app.use(
 	session({
-		secret: process.env.SECRET,
+		secret: require('crypto').randomBytes(32).toString('hex'),
 		resave: false,
 		saveUninitialized: false
 	})
@@ -66,4 +63,4 @@ app.use('/shop', shopRoute);
 app.use('/admin', adminRoute);
 app.use('*', errorRoutes);
 
-app.listen(port, () => logger.info('Server started on port ' + port));
+app.listen(cfg.Port, () => logger.info('Server started on port ' + cfg.Port));

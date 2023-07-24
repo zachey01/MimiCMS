@@ -27,7 +27,6 @@
 		"axios": "^1.4.0",
 		"body-parser": "^1.20.2",
 		"compression": "^1.7.4",
-		"dotenv": "^16.3.1",
 		"ejs": "^3.1.9",
 		"express": "^4.18.2",
 		"express-session": "^1.17.3",
@@ -39,13 +38,12 @@
 		"mysqldump": "^3.2.0",
 		"passport": "^0.6.0",
 		"passport-steam": "^1.0.18",
-		"request": "^2.88.2",
-		"steam-webapi": "^0.6.5"
+		"steam-webapi": "^0.6.5",
+		"express-winston": "^4.2.0",
+		"winston": "^3.9.0",
+		"nodemon": "^3.0.1"
 	},
 	"devDependencies": {
-		"express-winston": "^4.2.0",
-		"nodemon": "^3.0.1",
-		"prettier": "^3.0.0",
-		"winston": "^3.9.0"
+		"prettier": "^3.0.0"
 	}
 }
