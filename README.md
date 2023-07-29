@@ -1,4 +1,4 @@
-# MimiCMS <img src="https://raw.githubusercontent.com/zachey01/MimiCMS/00811dab155500cf51263bd73262cbdd1a45ceb2/images/logo.svg" height="40">
+# MimiCMS <img src="https://github.com/zachey01/MimiCMS/blob/main/images/logo.svg?raw=true" height="40">
 
 > The CMS for Valve Game Servers!
 
