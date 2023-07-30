@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "nodemon",
 		"format": "prettier ./ --write",
-		"backup": "node scripts/backup"
+		"backup": "node scripts/backup",
+		"start": "nodemon"
 	},
 	"keywords": [
 		"CMS",
@@ -27,21 +28,22 @@
 		"axios": "^1.4.0",
 		"body-parser": "^1.20.2",
 		"compression": "^1.7.4",
+		"crypto-js": "^4.1.1",
 		"ejs": "^3.1.9",
 		"express": "^4.18.2",
 		"express-session": "^1.17.3",
+		"express-winston": "^4.2.0",
 		"highlight.js": "^11.8.0",
 		"jsonwebtoken": "^9.0.1",
 		"moment": "^2.29.4",
 		"multer": "^1.4.5-lts.1",
 		"mysql": "^2.18.1",
 		"mysqldump": "^3.2.0",
+		"nodemon": "^3.0.1",
 		"passport": "^0.6.0",
 		"passport-steam": "^1.0.18",
 		"steam-webapi": "^0.6.5",
-		"express-winston": "^4.2.0",
-		"winston": "^3.9.0",
-		"nodemon": "^3.0.1"
+		"winston": "^3.9.0"
 	},
 	"devDependencies": {
 		"prettier": "^3.0.0"

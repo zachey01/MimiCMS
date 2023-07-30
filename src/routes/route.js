@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-require('dotenv').config();
+const cfg = require('../config/config');
 const CryptoJS = require('crypto-js');
 const { renderPage, authVars } = require('../middlewares/renderPage');
 const multer = require('multer');
@@ -12,8 +12,8 @@ router.get('/', async function (req, res) {
 		userSteamID = req.session.steamid;
 
 		const server = await Server({
-			ip: process.env.SERVER_IP,
-			port: parseInt(process.env.SERVER_PORT, 10),
+			ip: cfg.ServerIP,
+			port: parseInt(cfg.ServerPort, 10),
 			timeout: 5000
 		});
 		const infoServer = await server.getInfo();
@@ -22,7 +22,7 @@ router.get('/', async function (req, res) {
 		authVars.serverPlayerCountMax = await infoServer.players.max;
 		authVars.serverMap = infoServer.map;
 		authVars.serverName = infoServer.name;
-		authVars.serverDescription = process.env.SERVER_DESCRIPTION;
+		authVars.serverDescription = '';
 
 		renderPage(req, res, userSteamID, 'index');
 	} catch (error) {
