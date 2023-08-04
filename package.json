@@ -4,10 +4,10 @@
 	"description": "MimiCMS is a CMS for Valve games servers of the new level.",
 	"main": "app.js",
 	"scripts": {
-		"dev": "nodemon",
-		"format": "prettier ./ --write",
+		"dev": "npx nodemon",
+		"format": "npx prettier ./ --write",
 		"backup": "node scripts/backup",
-		"start": "nodemon"
+		"start": "npm nodemon"
 	},
 	"keywords": [
 		"CMS",
