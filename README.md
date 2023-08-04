@@ -17,7 +17,7 @@
 ### Installation
 
 ```shell
-npm i mimicms -g
+npm i mimcms -g
 ```
 
 and
