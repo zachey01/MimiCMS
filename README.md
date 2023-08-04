@@ -17,7 +17,7 @@
 ### Installation
 
 ```shell
-npm i mimcms -g
+npm install mimcms -g
 ```
 
 ```shell
@@ -26,6 +26,10 @@ npx mimicms install
 
 ```
 cd MimiCMS-main
+```
+
+```
+npm install --production  
 ```
 
 ```shell
