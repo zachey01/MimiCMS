@@ -20,13 +20,13 @@
 npm i mimcms -g
 ```
 
-and
-
 ```shell
 npx mimicms install
 ```
 
-You can start by going to the directory you created and typing:
+```
+cd MimiCMS-main
+```
 
 ```shell
 npm run start
