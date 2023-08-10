@@ -6,6 +6,7 @@ const multer = require('multer');
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
 const { renderPage, authVars } = require('../middlewares/renderPage');
+const cfg = require('../config/config');
 const rootFolder = './';
 
 const storage = multer.diskStorage({
@@ -22,7 +23,7 @@ const upload = multer({ dest: './', storage: storage });
 router.get('/', function (req, res) {
 	userSteamID = req.session.steamid;
 
-	if (userSteamID === '76561199219730677') {
+	if (userSteamID === cfg.OwnerID) {
 		renderPage(req, res, userSteamID, 'admin-main');
 	} else {
 		renderPage(req, res, userSteamID, '404');
@@ -58,7 +59,7 @@ router.get('/files', function (req, res) {
 		});
 
 		userSteamID = req.session.steamid;
-		if (userSteamID === '76561199219730677') {
+		if (userSteamID === cfg.OwnerID) {
 			renderPage(req, res, userSteamID, 'admin-files-main');
 		} else {
 			renderPage(req, res, userSteamID, '404');
@@ -76,7 +77,7 @@ router.get('/tickets', function (req, res) {
 		}
 		authVars.tickets = rows;
 	});
-	if (userSteamID === '76561199219730677') {
+	if (userSteamID === cfg.OwnerID) {
 		renderPage(req, res, userSteamID, 'admin-tickets');
 	} else {
 		renderPage(req, res, userSteamID, '404');
@@ -102,7 +103,7 @@ router.get('/edit/:path(*)', upload.single('file'), (req, res) => {
 
 		authVars.highlightedCode = data;
 		userSteamID = req.session.steamid;
-		if (userSteamID === '76561199219730677') {
+		if (userSteamID === cfg.OwnerID) {
 			renderPage(req, res, userSteamID, 'admin-files-editor');
 		} else {
 			renderPage(req, res, userSteamID, '404');
