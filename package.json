@@ -7,7 +7,7 @@
 		"dev": "npx nodemon",
 		"format": "npx prettier ./ --write",
 		"backup": "node scripts/backup",
-		"start": "npm nodemon"
+		"start": "npx nodemon"
 	},
 	"keywords": [
 		"CMS",
