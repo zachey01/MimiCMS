@@ -1,6 +1,6 @@
 {
 	"name": "mimicms",
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"description": "MimiCMS is a CMS for Valve games servers of the new level.",
 	"main": "app.js",
 	"scripts": {
