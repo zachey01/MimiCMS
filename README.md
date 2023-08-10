@@ -1,4 +1,4 @@
-# MimiCMS <img src="https://github.com/zachey01/MimiCMS/blob/main/images/logo.svg?raw=true" height="40">
+# MimiCMS <img src="https://zachey01.github.io/MimiCMS/logo.svg" height="40">
 
 > The CMS for Valve Game Servers!
 
@@ -29,7 +29,7 @@ cd MimiCMS-main
 ```
 
 ```
-npm install --production  
+npm install --production
 ```
 
 ```shell
@@ -38,4 +38,4 @@ npm run start
 
 ### Screenshots
 
-![](https://github.com/zachey01/MimiCMS/blob/main/images/screenshot.png?raw=true)
+![](https://zachey01.github.io/MimiCMS/screenshots.png)
