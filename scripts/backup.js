@@ -1,7 +1,7 @@
-let mysqldump = require('mysqldump'),
-	moment = require('moment'),
-	fs = require('fs');
-require('dotenv').config();
+const mysqldump = require('mysqldump');
+const moment = require('moment');
+const fs = require('fs');
+const cfg = require('../src/config/config');
 
 async function backupDatabase() {
 	try {
@@ -13,10 +13,10 @@ async function backupDatabase() {
 		// dump the result straight to a file
 		await mysqldump({
 			connection: {
-				host: process.env.DB_HOST,
-				user: process.env.DB_USER,
-				password: process.env.DB_PASSWORD,
-				database: process.env.DB_NAME
+				host: cfg.DB_HOST,
+				user: cfg.DB_USER,
+				password: cfg.DB_PASSWORD,
+				database: cfg.DB_NAME
 			},
 			dumpToFile: `./backup/dump-${moment().format(
 				'YYYY-MM-DD-HH-mm-ss'
@@ -26,10 +26,10 @@ async function backupDatabase() {
 		// return the dump from the function and not to a file
 		const result = await mysqldump({
 			connection: {
-				host: process.env.DB_HOST,
-				user: process.env.DB_USER,
-				password: process.env.DB_PASSWORD,
-				database: process.env.DB_NAME
+				host: cfg.DB_HOST,
+				user: cfg.DB_USER,
+				password: cfg.DB_PASSWORD,
+				database: cfg.DB_NAME
 			}
 		});
 
