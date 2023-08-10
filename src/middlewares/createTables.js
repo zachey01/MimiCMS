@@ -1,5 +1,13 @@
 const mysql = require('mysql');
 const pool = require('../config/db');
+
+/**
++ * Creates database tables for products, users, and tickets.
++ *
++ * @param {type} pool - the connection pool object
++ * @return {type} none
++ */
+
 module.exports = function createTables() {
 	// Products table
 	pool.getConnection((err, connection) => {
