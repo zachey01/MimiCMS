@@ -28,11 +28,15 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static('./src/public'));
 app.set('view engine', 'ejs');
+
+// Error logging middleware
 app.use(
 	expressWinston.errorLogger({
 		winstonInstance: logger
 	})
 );
+
+// Session middleware
 app.use(
 	session({
 		secret: require('crypto').randomBytes(32).toString('hex'),
@@ -40,6 +44,8 @@ app.use(
 		saveUninitialized: false
 	})
 );
+
+// Request logging middleware
 app.use(
 	expressWinston.logger({
 		winstonInstance: logger,
@@ -63,4 +69,7 @@ app.use('/shop', shopRoute);
 app.use('/admin', adminRoute);
 app.use('*', errorRoutes);
 
-app.listen(cfg.Port, () => logger.info('Server started on port ' + cfg.Port));
+// Start the server
+app.listen(cfg.Port, () => {
+	logger.info('Server started on port ' + cfg.Port);
+});
