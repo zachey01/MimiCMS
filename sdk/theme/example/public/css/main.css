@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Work+Sans:wght@300&display=swap');
+
+header {
+	margin-bottom: 30px;
+}
+
+.title404 {
+	user-select: none;
+}
+
+footer {
+	margin-top: 50px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Montserrat', sans-serif;
+}
+
+.header-icon {
+	padding-left: 25px;
+	opacity: 1;
+	color: gray;
+}
+
+.navbar-brand {
+	font-family: 'Work Sans', sans-serif;
+}
+
+.hover-bounce-animation:hover {
+	animation: bouncing 0.5s 0.3s;
+}
+
+.profile-icon {
+	margin-left: 5px;
+	opacity: 1;
+}
+
+.me-4 {
+	text-decoration: none;
+}
+
+a.nav-link {
+	color: gray;
+	font-size: 18px;
+}
+
+.avatar-container {
+	margin-left: 50%;
+}
+
+@media (max-width: 987px) {
+	.avatar-container {
+		margin-left: 0%;
+	}
+}
+
+.avatar {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: 2px solid #2071ce;
+	padding: 2px;
+	flex: none;
+}
+
+@media (max-width: 993px) {
+	header {
+		text-align: center;
+	}
+	.header-icon {
+		margin-top: 15px;
+		opacity: 1;
+	}
+}
+
+input:focus {
+	outline: 0px !important;
+	box-shadow: none !important;
+}
+
+.card-text {
+	border: 2px solid #ddd;
+	border-radius: 8px;
+}
+
+.card {
+	border: none;
+	border-radius: 0;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+	font-size: 1.5rem;
+}
+
+.balance {
+	font-size: 15px;
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+}
+
+label {
+	font-size: 1rem;
+}
+
+.form-control {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	border-bottom: 1px solid #ccc;
+}
+
+.form-control:focus {
+	border-color: #007bff;
+	box-shadow: none;
+}
+
+textarea.form-control {
+	resize: none;
+}
+
+.btn-primary {
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.btn-primary:hover {
+	background-color: #0069d9;
+	border-color: #0062cc;
+}
+
+.title404 {
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: 100;
+	font-size: 130px;
+}
+
+.contact-info {
+	font-size: 25px;
+	text-align: center;
+}
+
+.server-map-img {
+	margin-left: 10px;
+}
+
+@media (max-width: 769px) {
+	.server-map-img {
+		margin-left: 0px;
+		height: 20%;
+	}
+}
+
+.header-auth-btn button {
+	color: white;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.banners svg {
+	color: black;
+}
+
+.shop-menu-container {
+	max-width: 150px;
+}
+model-viewer {
+	width: 250px;
+	height: 250px;
+	margin: 0 auto;
+}
+
+@keyframes bouncing {
+	from,
+	to {
+		transform: scale(1, 1);
+	}
+	25% {
+		transform: scale(0.9, 1.1);
+	}
+	50% {
+		transform: scale(1.1, 0.9);
+	}
+	75% {
+		transform: scale(0.95, 1.05);
+	}
+}

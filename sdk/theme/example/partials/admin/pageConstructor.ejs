@@ -1,0 +1,70 @@
+<style>
+	.editor {
+		display: flex;
+		height: 400px;
+	}
+	.toolbox {
+		width: 200px;
+		padding: 10px;
+		background-color: #f1f1f1;
+	}
+	.preview {
+		flex: 1;
+		padding: 10px;
+		background-color: #fff;
+		border: 1px solid #ccc;
+	}
+</style>
+
+<div class="editor">
+	<div class="toolbox">
+		<h3>Drag and Drop Elements</h3>
+		<ul>
+			<li draggable="true" ondragstart="drag(event)">Heading</li>
+			<li draggable="true" ondragstart="drag(event)">Paragraph</li>
+			<li draggable="true" ondragstart="drag(event)">Link</li>
+		</ul>
+	</div>
+	<div class="preview" ondrop="drop(event)" ondragover="allowDrop(event)">
+		<h3>Preview</h3>
+		<div id="previewContent"></div>
+		<button onclick="saveAsHTML()">Сохранить</button>
+	</div>
+</div>
+
+<script>
+	function allowDrop(event) {
+		event.preventDefault();
+	}
+
+	function drag(event) {
+		event.dataTransfer.setData('text', event.target.innerText);
+	}
+
+	function drop(event) {
+		event.preventDefault();
+		var data = event.dataTransfer.getData('text');
+		var previewContent = document.getElementById('previewContent');
+		var element = document.createElement('div');
+
+		if (data === 'Heading') {
+			element.innerHTML = '<h1>New Heading</h1>';
+		} else if (data === 'Paragraph') {
+			element.innerHTML = '<p>New Paragraph</p>';
+		} else if (data === 'Link') {
+			element.innerHTML = '<a href="#">New Link</a>';
+		}
+
+		previewContent.appendChild(element);
+	}
+
+	function saveAsHTML() {
+		var previewContent = document.getElementById('previewContent');
+		var html = previewContent.innerHTML;
+		var blob = new Blob([html], { type: 'text/html' });
+		var a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = 'preview.html';
+		a.click();
+	}
+</script>

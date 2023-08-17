@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head'); %>
+	</head>
+	<body class="container bg-slate-200">
+		<header id="header"><%- include('../partials/header'); %></header>
+		<% if(steamid === null){ %>
+		<h1>Please login to view this page</h1>
+		<% } else{ %>
+		<main><%- include('../partials/user-profile'); %></main>
+		<% } %>
+		<footer id="footer" class="text-center text-muted">
+			<%- include('../partials/footer'); %>
+		</footer>
+	</body>
+</html>

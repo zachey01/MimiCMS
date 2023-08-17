@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head'); %>
+	</head>
+	<body class="container bg-slate-200">
+		<header id="header"><%- include('../partials/header'); %></header>
+		<main>
+			<% if(steamid === null){ %>
+			<h1>Please login to view this page</h1>
+			<% } else{ %>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="mb-0">Balance replenishment</h4>
+							</div>
+							<div class="card-body">
+								<form>
+									<div class="form-group">
+										<label for="cardNumber">Amount</label>
+										<input
+											type="text"
+											class="form-control"
+											id="cardNumber"
+											placeholder="Enter the amount of replenishment"
+										/>
+									</div>
+									<button
+										type="submit"
+										class="btn btn-primary"
+									>
+										Replenish
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</main>
+		<footer id="footer" class="text-center text-muted">
+			<%- include('../partials/footer'); %>
+		</footer>
+	</body>
+</html>

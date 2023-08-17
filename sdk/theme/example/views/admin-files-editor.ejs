@@ -1,0 +1,20 @@
+<%- include('../partials/admin/head'); %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+<script src="/js/FMSave.js" async></script>
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/atom-one-dark.min.css"
+	rel="stylesheet"
+/>
+
+<div class="file-manager">
+	<h1 class="editor-title"><%= filePath %></h1>
+	<pre><code class="javascript" id="code-editor" contenteditable="true" spellcheck="false" data-filename="<%= filePath %>"><%= highlightedCode %></code></pre>
+	<br />
+	<button
+		onclick="saveChanges()"
+		class="btn btn-outline-primary editor-save-btn"
+		type="button"
+	>
+		Save
+	</button>
+</div>
