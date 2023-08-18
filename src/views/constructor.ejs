@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<%- include('../partials/admin/head'); %>
+		<script
+			src="https://code.jquery.com/jquery-3.7.0.min.js"
+			integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<body>
+		<%- include('../partials/admin/chekUpdateModal'); %>
+		<header id="header"><%- include('../partials/admin/header'); %></header>
+		<main>
+			<div class="menu-section">
+				<button
+					type="button"
+					class="btn btn-danger btn-sm remove-button"
+					title="Remove last component"
+				>
+					<i class="fa-sharp fa-solid fa-rotate-left"></i>
+				</button>
+
+				<button
+					type="button"
+					class="btn btn-info btn-sm export-button"
+					title="Export"
+				>
+					<i class="fa-solid fa-file-export"></i>
+				</button>
+
+				<button
+					type="button"
+					class="btn btn-info btn-sm import-button"
+					title="Import"
+				>
+					<i class="fa-solid fa-file-import"></i>
+				</button>
+			</div>
+
+			<div class="builder-container row">
+				<div class="sidebar">
+					<div class="sidebar-header">Add a component:</div>
+				</div>
+
+				<div class="preview-container container-fluid">
+					<div class="preview">
+						<div class="preview-instructons">
+							The preview will appear here. You can edit the text
+							inside the components.
+						</div>
+					</div>
+				</div>
+				<div class="preview-end"></div>
+			</div>
+			<%- include('../public/js/constructor.ejs'); %>
+		</main>
+	</body>
+</html>

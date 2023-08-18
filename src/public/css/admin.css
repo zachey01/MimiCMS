@@ -104,3 +104,133 @@ main {
 	font-family: 'JetBrains Mono', monospace;
 	font-size: 1em;
 }
+
+.builder-menu {
+	padding: 12px;
+	margin: 0px auto;
+	z-index: 999;
+}
+
+.menu-section {
+	text-align: right;
+}
+
+.menu-title {
+	margin-top: 2px;
+	color: white;
+}
+
+.sidebar {
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: inline-flex;
+	box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+	margin: 16px;
+}
+
+.sidebar-card {
+	cursor: pointer;
+	background-color: #ffffff;
+	padding: 8px;
+
+	border-radius: 8px;
+
+	box-shadow:
+		0 1px 4px rgba(0, 0, 0, 0.16),
+		0 1px 4px rgba(0, 0, 0, 0.14);
+
+	margin: 8px;
+
+	vertical-align: top;
+}
+
+.sidebar-card:hover {
+	box-shadow:
+		0 0px 4px rgba(0, 0, 0, 0.16),
+		0 4px 6px rgba(0, 0, 0, 0.25);
+
+	transition: all 200 ease-in-out;
+}
+
+.sidebar-card-title {
+	vertical-align: middle;
+}
+
+.preview-container {
+	padding-top: 55px;
+	padding-left: 234px;
+}
+
+.preview-header {
+	margin-top: 32px;
+	margin-bottom: 16px;
+	text-align: center;
+}
+
+.preview {
+	margin: 0px auto;
+	border-bottom: 1px dashed blue;
+}
+
+.preview-instructons {
+	margin: 16px;
+	text-align: center;
+}
+
+.preview-end {
+	height: 240px;
+}
+
+.builder-element {
+	margin: 0px auto;
+}
+
+.builder-spacer {
+	height: 32px;
+}
+
+.jumbotron {
+	padding-left: 6rem;
+}
+
+.material-icons {
+	vertical-align: middle;
+	margin-right: 4px;
+}
+
+.sidebar .material-icons {
+	color: #007bff;
+}
+
+.preview .btn {
+	border-radius: 100px;
+	padding-left: 24px;
+	padding-right: 24px;
+}
+
+.card-container {
+	text-align: center;
+	display: inline-flex;
+}
+
+.card {
+	display: inline-flex;
+	margin-left: 12px;
+	margin-right: 12px;
+}
+
+.menu-section .btn {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+.form-check-input {
+	margin-left: 0px;
+}
+
+.form-check-label {
+	margin-left: 24px;
+}

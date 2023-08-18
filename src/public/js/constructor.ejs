@@ -1,0 +1,136 @@
+<script>
+	var componentData = [
+		{
+			id: 1,
+			name: 'Header',
+			icon: 'fa-regular fa-address-card',
+			description: 'Add header',
+			html: `<%- include('../../partials/header.ejs'); %>`
+		},
+		{
+			id: 2,
+			name: 'Footer',
+			icon: 'fa-solid fa-chevron-down',
+			description: 'Add footer',
+			html: `<%- include('../../partials/footer.ejs'); %>`
+		}
+	];
+
+	function applyBuilderClass(elem) {
+		elem.attr('contenteditable', 'false');
+		elem.addClass('builder-element');
+	}
+
+	// meny button functionality
+	$('.remove-button').click(function () {
+		console.log($('.builder-element').last());
+
+		$('.builder-element').last().remove();
+	});
+
+	$('.export-button').click(function () {
+		if ($('.builder-element').length > 0) {
+			var elements = [];
+			$('.builder-element').each(function (index, element) {
+				var component = $(this).data('component');
+
+				console.log(component.id);
+
+				// adds the component ID to the array
+				elements.push(component.id);
+			});
+
+			var newWin = open('url', 'windowName', 'height=300,width=300');
+			newWin.document.write(elements);
+		} else {
+			alert("There's nothing to export.");
+		}
+	});
+
+	$('.import-button').click(function () {
+		console.log('import');
+
+		if ($('.builder-element').length == 0) {
+			let elements = prompt(
+				'Enter the exported code from a previous project'
+			);
+			if (elements == 'null' || elements == '') {
+				alert('nothing entered');
+			} else {
+				console.log('input');
+				console.log(elements);
+
+				elementArray = elements.split(',');
+
+				console.log(elementArray);
+
+				if (elementArray.length > 0) {
+					for (var i = 0; i < elementArray.length; i++) {
+						console.log('id of component');
+						console.log(elementArray[i]);
+
+						var exportid = elementArray[i];
+
+						// finds the relevant component
+						var item = componentData.find(
+							item => item.id == exportid
+						);
+
+						// if the component is found, add it to the page
+						if (item != undefined) {
+							elem = $(item.html);
+
+							$('.preview-instructons').remove();
+
+							applyBuilderClass(elem);
+
+							$('.preview').append(elem);
+						}
+					}
+				}
+			}
+		} else {
+			alert('You can only import on a blank page.');
+		}
+	});
+
+	// generating the sidebar
+	for (var i = 0; i < componentData.length; i++) {
+		var component = componentData[i];
+
+		// the HMTL of the cards
+		var cardHTML = '';
+		cardHTML += "<div class = 'sidebar-card'>";
+		cardHTML += "<i class='" + component.icon + "'></i> ";
+		cardHTML +=
+			"<span class = 'sidebar-card-title'><b>" +
+			component.name +
+			'</b></span>';
+		cardHTML += '</br>' + component.description;
+		cardHTML += '</div>';
+
+		var cardjquery = $(cardHTML);
+
+		cardjquery.data('component', component);
+
+		// when the card is clicked, it will add the component HTML to the page
+		cardjquery.click(function () {
+			$('.preview-instructons').remove();
+
+			// add the element to the preview
+			var elem = $($(this).data('component').html);
+
+			// adds the component details to the element
+			elem.data('component', $(this).data('component'));
+
+			applyBuilderClass(elem);
+
+			$('.preview').append(elem);
+			window.scrollTo(0, document.body.scrollHeight);
+		});
+
+		// added the cards to the menu
+
+		$('.sidebar').append(cardjquery);
+	}
+</script>
