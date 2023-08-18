@@ -1,5 +1,5 @@
 <script>
-	var componentData = [
+	let componentData = [
 		{
 			id: 1,
 			name: 'Header',
@@ -21,7 +21,6 @@
 		elem.addClass('builder-element');
 	}
 
-	// meny button functionality
 	$('.remove-button').click(function () {
 		console.log($('.builder-element').last());
 
@@ -30,17 +29,16 @@
 
 	$('.export-button').click(function () {
 		if ($('.builder-element').length > 0) {
-			var elements = [];
+			let elements = [];
 			$('.builder-element').each(function (index, element) {
-				var component = $(this).data('component');
+				let component = $(this).data('component');
 
 				console.log(component.id);
 
-				// adds the component ID to the array
 				elements.push(component.id);
 			});
 
-			var newWin = open('url', 'windowName', 'height=300,width=300');
+			let newWin = open('url', 'windowName', 'height=300,width=300');
 			newWin.document.write(elements);
 		} else {
 			alert("There's nothing to export.");
@@ -65,18 +63,16 @@
 				console.log(elementArray);
 
 				if (elementArray.length > 0) {
-					for (var i = 0; i < elementArray.length; i++) {
+					for (let i = 0; i < elementArray.length; i++) {
 						console.log('id of component');
 						console.log(elementArray[i]);
 
-						var exportid = elementArray[i];
+						let exportid = elementArray[i];
 
-						// finds the relevant component
-						var item = componentData.find(
+						let item = componentData.find(
 							item => item.id == exportid
 						);
 
-						// if the component is found, add it to the page
 						if (item != undefined) {
 							elem = $(item.html);
 
@@ -94,12 +90,10 @@
 		}
 	});
 
-	// generating the sidebar
-	for (var i = 0; i < componentData.length; i++) {
-		var component = componentData[i];
+	for (let i = 0; i < componentData.length; i++) {
+		let component = componentData[i];
 
-		// the HMTL of the cards
-		var cardHTML = '';
+		let cardHTML = '';
 		cardHTML += "<div class = 'sidebar-card'>";
 		cardHTML += "<i class='" + component.icon + "'></i> ";
 		cardHTML +=
@@ -109,18 +103,13 @@
 		cardHTML += '</br>' + component.description;
 		cardHTML += '</div>';
 
-		var cardjquery = $(cardHTML);
+		let cardjquery = $(cardHTML);
 
 		cardjquery.data('component', component);
 
-		// when the card is clicked, it will add the component HTML to the page
 		cardjquery.click(function () {
 			$('.preview-instructons').remove();
-
-			// add the element to the preview
-			var elem = $($(this).data('component').html);
-
-			// adds the component details to the element
+			let elem = $($(this).data('component').html);
 			elem.data('component', $(this).data('component'));
 
 			applyBuilderClass(elem);
@@ -128,9 +117,6 @@
 			$('.preview').append(elem);
 			window.scrollTo(0, document.body.scrollHeight);
 		});
-
-		// added the cards to the menu
-
 		$('.sidebar').append(cardjquery);
 	}
 </script>
