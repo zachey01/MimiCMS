@@ -16,25 +16,7 @@
 
 ### Installation
 
-```shell
-npm install mimcms -g
-```
-
-```shell
-npx mimicms install
-```
-
-```
-cd MimiCMS-main
-```
-
-```
-npm install --production
-```
-
-```shell
-npm run start
-```
+Go to website http://mimicms.zachey.space/#install and fill out form and click the "Download" button.
 
 ### Screenshots
 
