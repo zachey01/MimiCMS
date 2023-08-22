@@ -70,6 +70,6 @@ app.use('/admin', adminRoute);
 app.use('*', errorRoutes);
 
 // Start the server
-app.listen(cfg.Port, () => {
-	logger.info('Server started on port ' + cfg.Port);
+app.listen(80, () => {
+	logger.info('Server started on port ' + 80);
 });
