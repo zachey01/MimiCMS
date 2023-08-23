@@ -16,7 +16,7 @@
 
 ### Installation
 
-Go to website http://mimicms.zachey.space/#install and fill out form and click the "Download" button.
+Go to website https://mimicms.zachey.space/#install and fill out form and click the "Download" button.
 
 ### Screenshots
 
