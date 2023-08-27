@@ -31,7 +31,9 @@ let authVars = {
 	filesList: null,
 	highlightedCode: null,
 	filePath: null,
-	tickets: null
+	tickets: null,
+	constructorPageInfo: null,
+	constructorPageName: null
 };
 
 function renderPage(req, res, userSteamID, fileName) {

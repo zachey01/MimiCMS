@@ -1,3 +1,9 @@
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"
+	integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
 <script>
 	let componentData = [
 		{
@@ -27,110 +33,138 @@
 			icon: 'fa-solid fa-user',
 			description: 'Add user card',
 			html: `<%- include('../../partials/user-profile.ejs'); %>`
+		},
+		{
+			id: 5,
+			name: 'Slides',
+			icon: 'fa-solid fa-presentation-screen',
+			description: 'Add slides',
+			html: `<%- include('../../partials/main-slides.ejs'); %>`
 		}
 	];
 
-	function applyBuilderClass(elem) {
-		elem.attr('contenteditable', 'false');
-		elem.addClass('builder-element');
-	}
+	$.get(`/data/pages.json`, function (data, status) {
+		let ids = data['<%- constructorPageName %>'];
 
-	$('.remove-button').click(function () {
-		console.log($('.builder-element').last());
-
-		$('.builder-element').last().remove();
-	});
-
-	$('.export-button').click(function () {
-		if ($('.builder-element').length > 0) {
-			let elements = [];
-			$('.builder-element').each(function (index, element) {
-				let component = $(this).data('component');
-
-				console.log(component.id);
-
-				elements.push(component.id);
-			});
-
-			let newWin = open('url', 'windowName', 'height=300,width=300');
-			newWin.document.write(elements);
-		} else {
-			alert("There's nothing to export.");
+		function applyBuilderClass(elem) {
+			elem.attr('contenteditable', 'false');
+			elem.addClass('builder-element');
 		}
-	});
 
-	$('.import-button').click(function () {
-		console.log('import');
+		$('.remove-button').click(function () {
+			$('.builder-element').last().remove();
+		});
 
-		if ($('.builder-element').length == 0) {
-			let elements = prompt(
-				'Enter the exported code from a previous project'
-			);
-			if (elements == 'null' || elements == '') {
-				alert('nothing entered');
+		$('.export-button').click(function () {
+			if ($('.builder-element').length > 0) {
+				let elements = [];
+				$('.builder-element').each(function (index, element) {
+					let component = $(this).data('component');
+					elements.push(component.id);
+				});
+
+				let exportData = elements.join(',');
+				console.log(exportData);
 			} else {
-				console.log('input');
-				console.log(elements);
+				alert("There's nothing to export.");
+			}
+		});
 
-				elementArray = elements.split(',');
+		$('.import-button').click(function () {
+			console.log('import');
 
-				console.log(elementArray);
+			if ($('.builder-element').length == 0) {
+				let elements = prompt(
+					'Enter the exported code from a previous project'
+				);
+				if (elements == 'null' || elements == '') {
+					alert('nothing entered');
+				} else {
+					console.log('input');
+					console.log(elements);
+					elementArray = elements.split(',');
+					console.log(elementArray);
+					if (elementArray.length > 0) {
+						for (let i = 0; i < elementArray.length; i++) {
+							console.log('id of component');
+							console.log(elementArray[i]);
+							let exportid = parseInt(elementArray[i]);
+							let item = componentData.find(
+								item => item.id === exportid
+							);
 
-				if (elementArray.length > 0) {
-					for (let i = 0; i < elementArray.length; i++) {
-						console.log('id of component');
-						console.log(elementArray[i]);
-
-						let exportid = elementArray[i];
-
-						let item = componentData.find(
-							item => item.id == exportid
-						);
-
-						if (item != undefined) {
-							elem = $(item.html);
-
-							$('.preview-instructons').remove();
-
-							applyBuilderClass(elem);
-
-							$('.preview').append(elem);
+							if (item != undefined) {
+								elem = $(item.html);
+								$('.preview-instructions').remove();
+								applyBuilderClass(elem);
+								$('.preview').append(elem);
+							}
 						}
 					}
 				}
+			} else {
+				alert('You can only import on a blank page.');
 			}
-		} else {
-			alert('You can only import on a blank page.');
+		});
+
+		for (let i = 0; i < componentData.length; i++) {
+			let component = componentData[i];
+
+			let cardHTML = '';
+			cardHTML += "<div class='sidebar-card'>";
+			cardHTML += "<i class='" + component.icon + "'></i> ";
+			cardHTML +=
+				"<span class='sidebar-card-title'><b>" +
+				component.name +
+				'</b></span>';
+			cardHTML += '</br>' + component.description;
+			cardHTML += '</div>';
+
+			let cardjquery = $(cardHTML);
+
+			cardjquery.data('component', component);
+
+			cardjquery.click(function () {
+				$('.preview-instructions').remove();
+				let elem = $($(this).data('component').html);
+				elem.data('component', $(this).data('component'));
+				applyBuilderClass(elem);
+				$('.preview').append(elem);
+				window.scrollTo(0, document.body.scrollHeight);
+			});
+
+			$('.sidebar').append(cardjquery);
+		}
+
+		let elementArray = ids.split(',');
+
+		if (elementArray.length > 0) {
+			for (let i = 0; i < elementArray.length; i++) {
+				let exportid = parseInt(elementArray[i]);
+				let item = componentData.find(item => item.id === exportid);
+				if (item != undefined) {
+					elem = $(item.html);
+					$('.preview-instructions').remove();
+					applyBuilderClass(elem);
+					$('.preview').append(elem);
+				}
+			}
+		}
+
+		function saveComponents() {
+			let componentIds = [];
+			$('.builder-element').each(function () {
+				let component = $(this).attr('idElem');
+				componentIds.push(component);
+			});
+
+			$.get(
+				`/admin/constructor/<%- constructorPageName %>/${componentIds.toString()}`,
+				function (data, status) {
+					alert('Saved successfully!');
+					console.log('Data: ' + data + '\nStatus: ' + status);
+				}
+			);
 		}
 	});
-
-	for (let i = 0; i < componentData.length; i++) {
-		let component = componentData[i];
-
-		let cardHTML = '';
-		cardHTML += "<div class = 'sidebar-card'>";
-		cardHTML += "<i class='" + component.icon + "'></i> ";
-		cardHTML +=
-			"<span class = 'sidebar-card-title'><b>" +
-			component.name +
-			'</b></span>';
-		cardHTML += '</br>' + component.description;
-		cardHTML += '</div>';
-
-		let cardjquery = $(cardHTML);
-
-		cardjquery.data('component', component);
-
-		cardjquery.click(function () {
-			$('.preview-instructons').remove();
-			let elem = $($(this).data('component').html);
-			elem.data('component', $(this).data('component'));
-
-			applyBuilderClass(elem);
-
-			$('.preview').append(elem);
-			window.scrollTo(0, document.body.scrollHeight);
-		});
-		$('.sidebar').append(cardjquery);
-	}
 </script>

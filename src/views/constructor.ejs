@@ -20,21 +20,13 @@
 				>
 					<i class="fa-sharp fa-solid fa-rotate-left"></i>
 				</button>
-
 				<button
 					type="button"
-					class="btn btn-info btn-sm export-button"
+					class="btn btn-info btn-sm"
 					title="Export"
+					onclick="saveComponents()"
 				>
-					<i class="fa-solid fa-file-export"></i>
-				</button>
-
-				<button
-					type="button"
-					class="btn btn-info btn-sm import-button"
-					title="Import"
-				>
-					<i class="fa-solid fa-file-import"></i>
+					<i class="fa-solid fa-save"></i>
 				</button>
 			</div>
 
@@ -43,7 +35,7 @@
 
 				<div class="preview-container container-fluid">
 					<div class="preview">
-						<div class="preview-instructons">
+						<div class="preview-instructions">
 							The preview will appear here. You can edit the text
 							inside the components.
 						</div>
@@ -51,6 +43,7 @@
 				</div>
 				<div class="preview-end"></div>
 			</div>
+
 			<%- include('../public/js/constructor.ejs'); %>
 		</main>
 	</body>

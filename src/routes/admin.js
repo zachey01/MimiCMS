@@ -30,14 +30,43 @@ router.get('/', function (req, res) {
 	}
 });
 
-router.get('/constructor', function (req, res) {
-	userSteamID = req.session.steamid;
-
+router.get('/constructor/:file', function (req, res) {
+	const userSteamID = '76561199219730677';
+	const file = req.params.file;
+	authVars.constructorPageName = file;
+	const pagesInfo = JSON.parse(
+		fs.readFileSync('./src/public/data/pages.json')
+	);
+	authVars.constructorPageInfo = pagesInfo[file].id;
 	if (userSteamID === cfg.OwnerID) {
 		renderPage(req, res, userSteamID, 'constructor');
 	} else {
 		renderPage(req, res, userSteamID, '404');
 	}
+});
+
+router.get('/constructor/:file/:id', function (req, res) {
+	const filePath = './src/public/data/pages.json';
+	const file = req.params.file;
+	const id = req.params.id;
+	fs.readFile(filePath, 'utf8', (err, data) => {
+		if (err) {
+			logger.error('Error to read file:', err);
+			return;
+		}
+
+		const json = JSON.parse(data);
+		json[file] = id;
+		const updatedJson = JSON.stringify(json, null, 2);
+
+		fs.writeFile(filePath, updatedJson, 'utf8', err => {
+			if (err) {
+				logger.error('Error write to file:', err);
+				return;
+			}
+		});
+	});
+	res.json('OK');
 });
 
 router.get('/files', function (req, res) {
