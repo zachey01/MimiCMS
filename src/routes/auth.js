@@ -11,8 +11,8 @@ const cfg = require('../config/config');
 passport.use(
 	new SteamStrategy(
 		{
-			returnURL: `http://${cfg.Domain}:${cfg.Port}/auth/steam/return`,
-			realm: `http://${cfg.Domain}:${cfg.Port}/`,
+			returnURL: `http://${cfg.Domain}/auth/steam/return`,
+			realm: `http://${cfg.Domain}/`,
 			apiKey: cfg.SteamWebAPIkey
 		},
 		(identifier, profile, done) => {
