@@ -78,10 +78,6 @@ router.get('/api/token', (req, res) => {
 });
 
 router.get('/api/protected', (req, res) => {
-	const referer = req.headers.referer;
-	if (referer !== 'http://localhost:3000/admin') {
-		return res.status(403).json({ message: false });
-	}
 	const token = req.headers.authorization;
 	jwt.verify(token, pass, (err, decoded) => {
 		if (err) {

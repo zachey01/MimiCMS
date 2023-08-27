@@ -30,6 +30,14 @@ router.get('/', function (req, res) {
 	}
 });
 
+router.get('/constructor', async function (req, res) {
+	if (userSteamID === cfg.OwnerID) {
+		renderPage(req, res, userSteamID, 'constructor-list');
+	} else {
+		renderPage(req, res, userSteamID, '404');
+	}
+});
+
 router.get('/constructor/:file', function (req, res) {
 	userSteamID = req.session.steamid;
 	const file = req.params.file;
