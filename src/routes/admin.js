@@ -31,7 +31,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/constructor/:file', function (req, res) {
-	const userSteamID = '76561199219730677';
+	userSteamID = req.session.steamid;
 	const file = req.params.file;
 	authVars.constructorPageName = file;
 	const pagesInfo = JSON.parse(
