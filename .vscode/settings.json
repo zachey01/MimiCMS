@@ -1,8 +1,4 @@
 {
-	"files.associations": {
-		"*.ejs": "html",
-		"*.cfg": "CSGO cfg"
-	},
 	"emmet.includeLanguages": {
 		"ejs": "html"
 	},
