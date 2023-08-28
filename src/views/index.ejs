@@ -6,6 +6,7 @@
 
 	<body class="container bg-slate-200"></body>
 	<%- include('../public/js/constructor.ejs'); %>
+
 	<script>
 		const body = document.querySelector('body');
 		$.getJSON('/data/pages.json', function (data) {
@@ -13,9 +14,8 @@
 			var arr = str.split(',');
 
 			for (var i = 0; i < arr.length; i++) {
-				body.innerHTML += componentData[arr[i] - 1].html.toString();
+				body.innerHTML += componentData[arr[i] - 1].html;
 			}
 		});
 	</script>
-	<script src="/js/themeSwitch.js"></script>
 </html>
