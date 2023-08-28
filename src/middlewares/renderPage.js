@@ -6,9 +6,9 @@ const path = require('path');
 const cfg = require('../config/config');
 
 let authVars = {
-	slide_1: cfg.SLIDE_1 || 'https://dummyimage.com/1920x720/000/fff',
-	slide_2: cfg.SLIDE_2 || 'https://dummyimage.com/1920x720/000/fff',
-	slide_3: cfg.SLIDE_3 || 'https://dummyimage.com/1920x720/000/fff',
+	slide_1: cfg.SLIDE_1 || 'https://placeholder.zachey.space/p/1920x720',
+	slide_2: cfg.SLIDE_2 || 'https://placeholder.zachey.space/p/1920x720',
+	slide_3: cfg.SLIDE_3 || 'https://placeholder.zachey.space/p/1920x720',
 	cfg: cfg,
 	steamid: null,
 	avatar: null,
