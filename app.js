@@ -6,6 +6,7 @@ const fs = require('fs');
 const app = express();
 const expressWinston = require('express-winston');
 const compress = require('compression');
+const ejs = require('ejs');
 const minify = require('express-minify');
 const cfg = require('./src/config/config');
 const logger = require('./src/middlewares/logger');
