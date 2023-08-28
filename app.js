@@ -6,6 +6,7 @@ const fs = require('fs');
 const app = express();
 const expressWinston = require('express-winston');
 const compress = require('compression');
+const minify = require('express-minify');
 const cfg = require('./src/config/config');
 const logger = require('./src/middlewares/logger');
 
@@ -26,8 +27,17 @@ app.use(jsonParser);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.use(
+	minify({
+		cache: false,
+		uglifyJsModule: null,
+		errorHandler: null,
+		jsMatch: /js/,
+		cssMatch: /css/,
+		jsonMatch: /data/
+	})
+);
 app.use(express.static('./src/public'));
-app.set('view engine', 'ejs');
 
 // Error logging middleware
 app.use(
