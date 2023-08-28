@@ -7,7 +7,8 @@
 		"dev": "npx nodemon",
 		"format": "npx prettier ./ --write",
 		"backup": "node scripts/backup",
-		"start": "npx nodemon"
+		"start": "npx pm2 start app.js --name mimicms --watch",
+		"stop": "npx pm2 stop mimicms"
 	},
 	"keywords": [
 		"CMS",
@@ -43,6 +44,7 @@
 		"nodemon": "^3.0.1",
 		"passport": "^0.6.0",
 		"passport-steam": "^1.0.18",
+		"pm2": "^5.3.0",
 		"steam-webapi": "^0.6.5",
 		"winston": "^3.9.0"
 	},
