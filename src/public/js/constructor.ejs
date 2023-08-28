@@ -1,9 +1,3 @@
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"
-	integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="
-	crossorigin="anonymous"
-	referrerpolicy="no-referrer"
-></script>
 <script>
 	let componentData = [
 		{
@@ -40,6 +34,13 @@
 			icon: 'fa-solid fa-presentation-screen',
 			description: 'Add slides',
 			html: `<%- include('../../partials/main-slides.ejs'); %>`
+		},
+		{
+			id: 6,
+			name: 'Balance form',
+			icon: 'fa-solid fa-presentation-screen',
+			description: 'Add balance form',
+			html: `<%- include('../../partials/balance.ejs'); %>`
 		}
 	];
 
@@ -150,21 +151,20 @@
 				}
 			}
 		}
-
-		function saveComponents() {
-			let componentIds = [];
-			$('.builder-element').each(function () {
-				let component = $(this).attr('idElem');
-				componentIds.push(component);
-			});
-
-			$.get(
-				`/admin/constructor/<%- constructorPageName %>/${componentIds.toString()}`,
-				function (data, status) {
-					alert('Saved successfully!');
-					console.log('Data: ' + data + '\nStatus: ' + status);
-				}
-			);
-		}
 	});
+	function saveComponents() {
+		let componentIds = [];
+		$('.builder-element').each(function () {
+			let component = $(this).attr('idElem');
+			componentIds.push(component);
+		});
+
+		$.get(
+			`/admin/constructor/<%- constructorPageName %>/${componentIds.toString()}`,
+			function (data, status) {
+				alert('Saved successfully!');
+				console.log('Data: ' + data + '\nStatus: ' + status);
+			}
+		);
+	}
 </script>

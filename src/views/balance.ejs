@@ -3,46 +3,18 @@
 	<head>
 		<%- include('../partials/head'); %>
 	</head>
-	<body class="container bg-slate-200">
-		<header id="header"><%- include('../partials/header'); %></header>
-		<main>
-			<% if(steamid === null){ %>
-			<h1>Please login to view this page</h1>
-			<% } else{ %>
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="mb-0">Balance replenishment</h4>
-							</div>
-							<div class="card-body">
-								<form>
-									<div class="form-group">
-										<label for="cardNumber">Amount</label>
-										<input
-											type="text"
-											class="form-control"
-											id="cardNumber"
-											placeholder="Enter the amount of replenishment"
-										/>
-									</div>
-									<button
-										type="submit"
-										class="btn btn-primary"
-									>
-										Replenish
-									</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<% } %>
-		</main>
-		<footer id="footer" class="text-center text-muted">
-			<%- include('../partials/footer'); %>
-		</footer>
-	</body>
+
+	<body class="container bg-slate-200"></body>
+	<%- include('../public/js/constructor.ejs'); %>
+	<script>
+		const body = document.querySelector('body');
+		$.getJSON('/data/pages.json', function (data) {
+			let str = data['<%- constructorPageName %>'];
+			var arr = str.split(',');
+
+			for (var i = 0; i < arr.length; i++) {
+				body.innerHTML += componentData[arr[i] - 1].html.toString();
+			}
+		});
+	</script>
 </html>

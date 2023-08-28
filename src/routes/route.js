@@ -34,6 +34,7 @@ router.get('/', async function (req, res) {
 		authVars.serverDescription = null;
 
 		renderPage(req, res, userSteamID, 'index');
+		authVars.constructorPageName = 'index';
 	}
 });
 
@@ -49,6 +50,7 @@ router.get('/purchases', function (req, res) {
 
 router.get('/balance', function (req, res) {
 	userSteamID = req.session.steamid;
+	authVars.constructorPageName = 'balance';
 	renderPage(req, res, userSteamID, 'balance');
 });
 

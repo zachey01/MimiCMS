@@ -86,23 +86,7 @@
 					</div>
 				</div>
 			</div>
-			<script>
-				function submitForm(event) {
-					event.preventDefault();
-					let data = $('#text').val();
-					$.ajax({
-						url: '/tickets/send',
-						type: 'POST',
-						data: data,
-						success: function (response) {
-							$('#successModal').modal('show');
-						},
-						error: function (error) {
-							console.error('error', error);
-						}
-					});
-				}
-			</script>
+			<script src="/js/tickets.js"></script>
 			<% } %>
 		</main>
 

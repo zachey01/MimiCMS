@@ -1,8 +1,4 @@
 {
-	"404": "1,2,1",
-	"index": "1,2,1",
-	"products": "1,2,1",
-	"tickets": "1,2,1",
-	"balance": "1,2,1",
-	"user-profile": "1,2,1"
+	"index": "1,5,3,2",
+	"balance": "1,6,2"
 }

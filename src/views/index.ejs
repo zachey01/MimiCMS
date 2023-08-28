@@ -3,17 +3,19 @@
 	<head>
 		<%- include('../partials/head'); %>
 	</head>
-	<body class="container bg-slate-200">
-		<header id="header"><%- include('../partials/header'); %></header>
 
-		<main>
-			<%- include('../partials/main-slides'); %>
-			<br />
-			<%- include('../partials/serverCard'); %>
-		</main>
+	<body class="container bg-slate-200"></body>
+	<%- include('../public/js/constructor.ejs'); %>
+	<script>
+		const body = document.querySelector('body');
+		$.getJSON('/data/pages.json', function (data) {
+			let str = data['<%- constructorPageName %>'];
+			var arr = str.split(',');
 
-		<footer id="footer" class="text-center text-muted">
-			<%- include('../partials/footer'); %>
-		</footer>
-	</body>
+			for (var i = 0; i < arr.length; i++) {
+				body.innerHTML += componentData[arr[i] - 1].html.toString();
+			}
+		});
+	</script>
+	<script src="/js/themeSwitch.js"></script>
 </html>
