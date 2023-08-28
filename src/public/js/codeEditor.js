@@ -5,7 +5,7 @@ class="alert alert-info alert-dismissible fade show bg-white"
 role="alert"
 id="editor-alert">
 <iframe
-    src="http://localhost:3000/admin/edit/${filename}"
+    src="/admin/edit/${filename}"
     frameborder="0"
     width="100%"
     height="100%"></iframe>
