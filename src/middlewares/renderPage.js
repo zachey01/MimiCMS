@@ -1,5 +1,3 @@
-const express = require('express');
-const passport = require('passport');
 const logger = require('../middlewares/logger');
 const pool = require('../config/db');
 const path = require('path');
