@@ -11,6 +11,22 @@
 	<body>
 		<%- include('../partials/admin/chekUpdateModal'); %>
 		<header id="header"><%- include('../partials/admin/header'); %></header>
-		<main>test</main>
+		<main><div id="pagesList"></div></main>
+		<script>
+			$.getJSON('/data/pages.json', function (data) {
+				const pagesListContainer = $('#pagesList');
+				const jsonData = JSON.parse(JSON.stringify(data));
+
+				for (let page in jsonData) {
+					if (jsonData.hasOwnProperty(page)) {
+						pagesListContainer.append(
+							`<div class="constructor-page-list-item"><a href="/admin/constructor/${page}">${page}</a></div>`
+						);
+					}
+				}
+			}).fail(function () {
+				console.log('An error has occurred.');
+			});
+		</script>
 	</body>
 </html>

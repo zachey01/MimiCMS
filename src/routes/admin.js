@@ -31,6 +31,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/constructor', async function (req, res) {
+	userSteamID = req.session.steamid;
 	if (userSteamID === cfg.OwnerID) {
 		renderPage(req, res, userSteamID, 'constructor-list');
 	} else {

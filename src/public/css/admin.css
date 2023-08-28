@@ -234,3 +234,13 @@ main {
 .form-check-label {
 	margin-left: 24px;
 }
+
+.constructor-page-list-item {
+	margin-left: 50%;
+	margin-top: 0.5em;
+}
+
+.constructor-page-list-item a {
+	text-decoration: none;
+	font-weight: bold;
+}

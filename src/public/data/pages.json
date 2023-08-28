@@ -1,18 +1,8 @@
 {
-  "404": {
-    "id": "1, 2"
-  },
-  "index": "1,2,1",
-  "products": {
-    "id": "1, 2"
-  },
-  "tickets": {
-    "id": "1, 2"
-  },
-  "balance": {
-    "id": "1, 2"
-  },
-  "user-profile": {
-    "id": "1, 2"
-  }
+	"404": "1,2,1",
+	"index": "1,2,1",
+	"products": "1,2,1",
+	"tickets": "1,2,1",
+	"balance": "1,2,1",
+	"user-profile": "1,2,1"
 }
